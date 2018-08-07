@@ -9,7 +9,7 @@ dbRpc(conn, func, args)
 \arguments{
 \item{conn}{The connector object.}
 
-\item{func}{The function name running the DolphinDB server.}
+\item{func}{The function name running on the DolphinDB server.}
 
 \item{args}{The list containing all arguments needed to be uploaded to server.}
 }

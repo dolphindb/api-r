@@ -103,7 +103,7 @@ setMethod(
 #'
 #' @description Method of running remote procedure call.
 #' @param conn The connector object.
-#' @param func The function name running the DolphinDB server.
+#' @param func The function name running on the DolphinDB server.
 #' @param args The list containing all arguments needed to be uploaded to server.
 #' @return Return the excuted result of function from server in R type.
 #' @export
