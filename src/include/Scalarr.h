@@ -213,6 +213,27 @@ public:
     void* getValue() {return (void *)(&value);}
 };
 
+class ScalarMonth : public Scalarr
+{
+private: 
+    string value;
+public: 
+    ScalarMonth(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseMonth(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarMonth() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
 class ScalarDateTime : public Scalarr
 {
 private: 
@@ -232,6 +253,48 @@ public:
     ~ScalarDateTime() {}
 
     void* getValue() {return (void *)(&value);}
+};
+
+class ScalarTime : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarTime(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseTime(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarTime() {}
+
+    void* getValue() {return (void*)(&value);}
+};
+
+class ScalarMinute : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarMinute(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseMinute(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarMinute() {}
+
+    void* getValue() {return (void*)(&value);}
 };
 
 void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
@@ -262,8 +325,17 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
         case DATA_TYPE::DT_DATE: 
             scalar_ptr = new ScalarDate(in);
             break;
+        case DATA_TYPE::DT_MONTH:
+            scalar_ptr = new ScalarMonth(in);
+            break;
         case DATA_TYPE::DT_DATETIME: 
             scalar_ptr = new ScalarDateTime(in);
+            break;
+        case DATA_TYPE::DT_TIME:
+            scalar_ptr = new ScalarTime(in);
+            break;
+        case DATA_TYPE::DT_MINUTE:
+            scalar_ptr = new ScalarMinute(in);
             break;
         case DATA_TYPE::DT_VOID: 
             bool temp;

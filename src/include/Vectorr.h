@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.14, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.14, Hangzhou
  * 
  *****************************************/
 
@@ -263,6 +263,33 @@ public:
     void* getVector() {return (void *)(&vec);}
 };
 
+class VectorMonth : public Vectorr
+{
+private: 
+    vector <string> vec;
+public: 
+    VectorMonth(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp;
+            in.readInt(temp);
+            string month_str = Utill::ParseMonth(temp);
+            vec.push_back(month_str);
+            if (temp == DDB_NULL_INTEGER)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorMonth() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
 class VectorDateTime : public Vectorr 
 {
 private: 
@@ -286,6 +313,60 @@ public:
         }
     }
     ~VectorDateTime() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
+class VectorTime : public Vectorr
+{
+private:
+    vector <string> vec;
+public:
+    VectorTime(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp;
+            in.readInt(temp);
+            string time_str = Utill::ParseTime(temp);
+            vec.push_back(time_str);
+            if (temp == DDB_NULL_INTEGER)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorTime() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
+class VectorMinute : public Vectorr
+{
+private:
+    vector <string> vec;
+public:
+    VectorMinute(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp;
+            in.readInt(temp);
+            string minute_str = Utill::ParseMinute(temp);
+            vec.push_back(minute_str);
+            if (temp == DDB_NULL_INTEGER)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorMinute() {}
 
     void* getVector() {return (void *)(&vec);}
 };
@@ -327,8 +408,20 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
             vector_ptr = new VectorDate(in);
             return VECTOR_DATE;
 
+        case DATA_TYPE::DT_MONTH:
+            vector_ptr = new VectorMonth(in);
+            return VECTOR_DATE;
+
         case DATA_TYPE::DT_DATETIME: 
             vector_ptr = new VectorDateTime(in);
+            return VECTOR_DATETIME;
+
+        case DATA_TYPE::DT_TIME:
+            vector_ptr = new VectorTime(in);
+            return VECTOR_DATETIME;
+
+        case DATA_TYPE::DT_MINUTE:
+            vector_ptr = new VectorMinute(in);
             return VECTOR_DATETIME;
             
         default:

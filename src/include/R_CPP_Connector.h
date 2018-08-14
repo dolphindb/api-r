@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.12, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.14, Hangzhou
  * 
  **************************************************/
 
@@ -841,12 +841,19 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
                 return SCALAR_NUMERIC;
             case DATA_TYPE::DT_DATE: 
                 return SCALAR_DATE;
+            case DATA_TYPE::DT_MONTH:
+                return SCALAR_DATE;
             case DATA_TYPE::DT_DATETIME: 
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_TIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_MINUTE:
                 return SCALAR_DATETIME;
             case DATA_TYPE::DT_VOID: 
                 return VOIDD;
             default:
-                cout << "[ERROR] Data type not support in R" << endl;
+                cout << Utill::ErrorTypeNotSupport << endl;
                 return 0;
         }
     }
@@ -871,10 +878,17 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
                 return VECTOR_CHARACTER;
             case DATA_TYPE::DT_DATE: 
                 return VECTOR_DATE;
+            case DATA_TYPE::DT_MONTH:
+                return VECTOR_DATE;
             case DATA_TYPE::DT_DATETIME: 
                 return VECTOR_DATETIME;
+            case DATA_TYPE::DT_TIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_MINUTE:
+                return VECTOR_DATETIME;
             default:
-                cout << "[ERROR] Data type not support in R" << endl;
+                cout << Utill::ErrorTypeNotSupport << endl;
                 return 0;
         }
     }
@@ -896,10 +910,17 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
                 return MATRIX_NUMERIC;
             case DATA_TYPE::DT_DATE: 
                 return MATRIX_DATE;
+            case DATA_TYPE::DT_MONTH:
+                return MATRIX_DATE;
             case DATA_TYPE::DT_DATETIME: 
                 return MATRIX_DATETIME;
+            case DATA_TYPE::DT_TIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_MINUTE:
+                return MATRIX_DATETIME;
             default:
-                cout << "[ERROR] Data type not support in R" << endl;
+                cout << Utill::ErrorTypeNotSupport << endl;
                 return 0;
         }
     }
@@ -909,7 +930,7 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
     }
     else
     {
-        cout << "[ERROR] Data form not support in R" << endl;
+        cout << Utill::ErrorFormNotSupport << endl;
     }
 }
 
