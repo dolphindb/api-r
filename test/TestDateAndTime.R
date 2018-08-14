@@ -11,19 +11,19 @@ conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
 if (conn@connected == TRUE) {
   
     ptm <- proc.time()
-    result <- dbRun(conn, "matrix(2018.8.14T16:16:16.016 2018.8.17T03:26:56.088, 2018.8.25T19:24:46.832 2018.8.25T19:24:46.832, NULL 2018.8.25T19:24:46.832)")
+    result <- dbRun(conn, "matrix(2018.08.14T16:16:16.016 2018.08.17T03:26:56.088, 2018.08.25T19:24:46.832 2018.08.25T19:24:46.832, NULL 2018.08.25T19:24:46.832)")
     print(result)
     print(class(result))
     print(proc.time() - ptm)
     
     ptm <- proc.time()
-    result <- dbRun(conn, "2018.8.14T16:16:16.016 2018.8.17T03:26:56.088 2018.8.25T19:24:46.832")
+    result <- dbRun(conn, "2018.08.14T16:16:16.016 2018.08.17T03:26:56.088 2018.08.25T19:24:46.832")
     print(result)
     print(class(result))
     print(proc.time() - ptm)
     
     ptm <- proc.time()
-    result <- dbRun(conn, "2018.8.14T16:16:16.016")
+    result <- dbRun(conn, "2018.08.14T16:16:16.016")
     print(result)
     print(class(result))
     print(proc.time() - ptm)

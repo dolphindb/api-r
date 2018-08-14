@@ -852,6 +852,9 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
                 return SCALAR_DATETIME;
             case DATA_TYPE::DT_SECOND:
                 return SCALAR_DATETIME;
+            case DATA_TYPE::DT_TIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return SCALAR_DATETIME;
             case DATA_TYPE::DT_VOID: 
                 return VOIDD;
             default:
@@ -891,6 +894,9 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
                 return VECTOR_DATETIME;
             case DATA_TYPE::DT_SECOND:
                 return VECTOR_DATETIME;
+            case DATA_TYPE::DT_TIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return VECTOR_DATETIME;
             default:
                 cout << Utill::ErrorTypeNotSupport << endl;
                 return 0;
@@ -924,6 +930,9 @@ int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
             case DATA_TYPE::DT_MINUTE:
                 return MATRIX_DATETIME;
             case DATA_TYPE::DT_SECOND:
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_TIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
                 return MATRIX_DATETIME;
             default:
                 cout << Utill::ErrorTypeNotSupport << endl;

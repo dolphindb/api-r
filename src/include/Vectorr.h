@@ -398,6 +398,33 @@ public:
     void* getVector() {return (void *)(&vec);}
 };
 
+class VectorTimestamp : public Vectorr
+{
+private:
+    vector <string> vec;
+public:
+    VectorTimestamp(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            long long temp;
+            in.readLong(temp);
+            string timestamp_str = Utill::ParseTimestamp(temp);
+            vec.push_back(timestamp_str);
+            if (temp < DDB_NULL_LONG)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorTimestamp() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
 int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 {
     // cout << data_type << endl;
@@ -453,6 +480,10 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 
         case DATA_TYPE::DT_SECOND:
             vector_ptr = new VectorSecond(in);
+            return VECTOR_DATETIME;
+
+        case DATA_TYPE::DT_TIMESTAMP:
+            vector_ptr = new VectorTimestamp(in);
             return VECTOR_DATETIME;
             
         default:

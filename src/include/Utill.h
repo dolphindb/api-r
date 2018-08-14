@@ -46,6 +46,7 @@ public:
     static string ParseTime(int milliseconds);
     static string ParseMinute(int minutes);
     static string ParseSecond(int seconds);
+    static string ParseTimestamp(long long milliseconds);
     static int CountDays(string date_str);
     static int CountSeconds(string date_time_str);
     static bool IsVariableCandidate(string key);
@@ -54,6 +55,26 @@ public:
 string Utill::ErrorTypeNotSupport = "[ERROR] Data type not support in R";
 string Utill::ErrorFormNotSupport = "[ERROR] Data form not support in R";
 string Utill::WarnPrecisonLost = "[WARNING] Precison may lost in casting";
+
+string Utill::ParseTimestamp(long long milliseconds)
+{
+    int days = (int) floor((double) milliseconds / 86400000.0);
+    string date_str = ParseDate(days);
+
+    milliseconds %= 86400000L;
+    if(milliseconds < 0)
+    {
+        milliseconds += 86400000;
+    }
+    int millisecond = (int)(milliseconds % 1000);
+    int seconds = (int)(milliseconds / 1000);
+    int hour = seconds / 3600;
+    seconds %= 3600;
+    int minute = seconds / 60;
+    int second = seconds % 60;
+
+    return FormatRDateTime(date_str, hour, minute, second);
+}
 
 string Utill::ParseSecond(int seconds)
 {

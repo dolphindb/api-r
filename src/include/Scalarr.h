@@ -318,6 +318,27 @@ public:
     void* getValue() {return (void*)(&value);}
 };
 
+class ScalarTimestamp : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarTimestamp(DataInputStream &in)
+        :Scalarr()
+    {
+        long long temp;
+        in.readLong(temp);
+        value = Utill::ParseTimestamp(temp);
+        if (temp < DDB_NULL_LONG)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarTimestamp() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
 void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
 {
     switch(data_type)
@@ -360,6 +381,9 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
             break;
         case DATA_TYPE::DT_SECOND:
             scalar_ptr = new ScalarSecond(in);
+            break;
+        case DATA_TYPE::DT_TIMESTAMP:
+            scalar_ptr = new ScalarTimestamp(in);
             break;
         case DATA_TYPE::DT_VOID: 
             bool temp;
