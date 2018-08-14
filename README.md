@@ -57,9 +57,9 @@ on _DolphinDB_ server, while receiving object from server in the form and type o
 library(RDolphinDB)
 conn <- dbConnect(DolphinDB(), "localhost", 8848)
 if (conn@connected) {
-    dbUpload(conn, c("KEYS"), list("VALUES"))
-    res_run <- dbRun(conn, "SCRIPT")
-    res_rpc <- dbRpc(conn, "FUNCTION", list("ARGUMENTS"))
+    dbUpload(conn, c("val1", "val2"), list(3.5, c(1.3, 2.6, 3.7)))
+    res_run <- dbRun(conn, "1 2 3")
+    res_rpc <- dbRpc(conn, "size", list(c(1, 2, 3)))
     print(res_run)
     print(res_rpc)
 }
