@@ -297,6 +297,27 @@ public:
     void* getValue() {return (void*)(&value);}
 };
 
+class ScalarSecond : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarSecond(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseSecond(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarSecond() {}
+
+    void* getValue() {return (void*)(&value);}
+};
+
 void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
 {
     switch(data_type)
@@ -336,6 +357,9 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
             break;
         case DATA_TYPE::DT_MINUTE:
             scalar_ptr = new ScalarMinute(in);
+            break;
+        case DATA_TYPE::DT_SECOND:
+            scalar_ptr = new ScalarSecond(in);
             break;
         case DATA_TYPE::DT_VOID: 
             bool temp;

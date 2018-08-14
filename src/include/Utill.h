@@ -45,6 +45,7 @@ public:
     static string ParseMonth(int months);
     static string ParseTime(int milliseconds);
     static string ParseMinute(int minutes);
+    static string ParseSecond(int seconds);
     static int CountDays(string date_str);
     static int CountSeconds(string date_time_str);
     static bool IsVariableCandidate(string key);
@@ -53,6 +54,15 @@ public:
 string Utill::ErrorTypeNotSupport = "[ERROR] Data type not support in R";
 string Utill::ErrorFormNotSupport = "[ERROR] Data form not support in R";
 string Utill::WarnPrecisonLost = "[WARNING] Precison may lost in casting";
+
+string Utill::ParseSecond(int seconds)
+{
+    int hour = seconds / 3600;
+    int minute = seconds % 3600 / 60;
+    int second = seconds % 60;
+
+    return FormatRDateTime(1970, 1, 1, hour, minute, second);
+}
 
 string Utill::ParseMinute(int minutes)
 {

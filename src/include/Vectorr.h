@@ -371,6 +371,33 @@ public:
     void* getVector() {return (void *)(&vec);}
 };
 
+class VectorSecond : public Vectorr 
+{
+private:
+    vector <string> vec;
+public:
+    VectorSecond(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp;
+            in.readInt(temp);
+            string second_str = Utill::ParseSecond(temp);
+            vec.push_back(second_str);
+            if (temp == DDB_NULL_INTEGER)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorSecond() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
 int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 {
     // cout << data_type << endl;
@@ -422,6 +449,10 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 
         case DATA_TYPE::DT_MINUTE:
             vector_ptr = new VectorMinute(in);
+            return VECTOR_DATETIME;
+
+        case DATA_TYPE::DT_SECOND:
+            vector_ptr = new VectorSecond(in);
             return VECTOR_DATETIME;
             
         default:
