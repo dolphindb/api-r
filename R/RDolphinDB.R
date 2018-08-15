@@ -220,11 +220,11 @@ obj <- new("RDolphinDB")
 #' @description Method to getting an object of connector.
 #' @export
 #' @examples
-#' conn <- DolphinDB()
-#' conn <- dbConnect(conn, "localhost", 8848)
-#' 
-#' # Recommanded
 #' conn <- dbConnect(DolphinDB(), "localhost", 8848)
+#' if (conn@connected == TRUE) {
+#'     # TO DO ...
+#'     # dbRun(...)
+#' }
 DolphinDB <- function() {
     return (obj)
 }

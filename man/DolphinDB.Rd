@@ -10,9 +10,9 @@ DolphinDB()
 Method to getting an object of connector.
 }
 \examples{
-conn <- DolphinDB()
-conn <- dbConnect(conn, "localhost", 8848)
-
-# Recommanded
 conn <- dbConnect(DolphinDB(), "localhost", 8848)
+if (conn@connected == TRUE) {
+    # TO DO ...
+    # dbRun(...)
+}
 }
