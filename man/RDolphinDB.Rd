@@ -22,5 +22,5 @@ dbClose()
 }
 
 \author{
-xxx <xxx@dolphindb.com>
+Jingtang Zhang <jingtang.zhang@dolphindb.com>
 }

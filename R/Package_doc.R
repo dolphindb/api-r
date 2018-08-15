@@ -17,7 +17,7 @@
 #' @description You can use R connecting to DolphinDB with IP address and port, 
 #' @description and then running scripts or functions and geting result in R form.
 #' 
-#' @author xxx <xxx@dolphindb.com>
+#' @author Jingtang Zhang <jingtang.zhang@dolphindb.com>
 #' @section RDolphinDB functions:
 #' DolphinDB()
 #' dbConnect()
