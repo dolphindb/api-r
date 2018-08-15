@@ -2,11 +2,12 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.8.2, Hangzhou
+# @Update -- 2018.8.15, Hangzhou
 #
 #
 
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.1.32", 8888)
+conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
 if (conn@connected == TRUE) {
 
     ptm <- proc.time()

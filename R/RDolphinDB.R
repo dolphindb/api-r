@@ -95,7 +95,8 @@ setMethod(
     signature(conn = "RDolphinDB"),
     function(conn, script) {
         type <- RunScript(script)
-        DDB_GetEntity(type)
+        entity <- DDB_GetEntity(type)
+        return (entity)
     }
 )
 

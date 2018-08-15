@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.14, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.15, Hangzhou
  * 
  *********************************************/
 
@@ -339,6 +339,48 @@ public:
     void* getValue() {return (void *)(&value);}
 };
 
+class ScalarNanotime : public Scalarr 
+{
+private:
+    string value;
+public:
+    ScalarNanotime(DataInputStream &in)
+        :Scalarr()
+    {
+        long long temp;
+        in.readLong(temp);
+        value = Utill::ParseNanotime(temp);
+        if (temp < DDB_NULL_LONG)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarNanotime() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
+class ScalarNanotimestamp : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarNanotimestamp(DataInputStream &in)
+        :Scalarr()
+    {
+        long long temp;
+        in.readLong(temp);
+        value = Utill::ParseNanotimestamp(temp);
+        if (temp < DDB_NULL_LONG)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarNanotimestamp() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
 void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
 {
     switch(data_type)
@@ -353,6 +395,9 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
             scalar_ptr = new ScalarDouble(in);
             break;
         case DATA_TYPE::DT_STRING:
+            scalar_ptr = new ScalarString(in);
+            break;
+        case DATA_TYPE::DT_SYMBOL:
             scalar_ptr = new ScalarString(in);
             break;
         case DATA_TYPE::DT_LONG:
@@ -384,6 +429,12 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
             break;
         case DATA_TYPE::DT_TIMESTAMP:
             scalar_ptr = new ScalarTimestamp(in);
+            break;
+        case DATA_TYPE::DT_NANOTIME:
+            scalar_ptr = new ScalarNanotime(in);
+            break;
+        case DATA_TYPE::DT_NANOTIMESTAMP:
+            scalar_ptr = new ScalarNanotimestamp(in);
             break;
         case DATA_TYPE::DT_VOID: 
             bool temp;

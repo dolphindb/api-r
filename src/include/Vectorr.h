@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.14, Hangzhou
- * @Update -- 2018.8.14, Hangzhou
+ * @Update -- 2018.8.15, Hangzhou
  * 
  *****************************************/
 
@@ -425,6 +425,60 @@ public:
     void* getVector() {return (void *)(&vec);}
 };
 
+class VectorNanotime : public Vectorr
+{
+private:
+    vector <string> vec;
+public:
+    VectorNanotime(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            long long temp;
+            in.readLong(temp);
+            string nanotime_str = Utill::ParseNanotime(temp);
+            vec.push_back(nanotime_str);
+            if (temp < DDB_NULL_LONG)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorNanotime() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
+class VectorNanotimestamp : public Vectorr
+{
+private:
+    vector <string> vec;
+public:
+    VectorNanotimestamp(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            long long temp;
+            in.readLong(temp);
+            string nanotimestamp_str = Utill::ParseNanotimestamp(temp);
+            vec.push_back(nanotimestamp_str);
+            if (temp < DDB_NULL_LONG)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorNanotimestamp() {}
+
+    void* getVector() {return (void *)(&vec);}
+};
+
 int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 {
     // cout << data_type << endl;
@@ -458,6 +512,10 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
             vector_ptr = new VectorString(in);
             return VECTOR_CHARACTER;
 
+        case DATA_TYPE::DT_SYMBOL:
+            vector_ptr = new VectorString(in);
+            return VECTOR_CHARACTER;
+
         case DATA_TYPE::DT_DATE: 
             vector_ptr = new VectorDate(in);
             return VECTOR_DATE;
@@ -484,6 +542,14 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 
         case DATA_TYPE::DT_TIMESTAMP:
             vector_ptr = new VectorTimestamp(in);
+            return VECTOR_DATETIME;
+
+        case DATA_TYPE::DT_NANOTIME:
+            vector_ptr = new VectorNanotime(in);
+            return VECTOR_DATETIME;
+
+        case DATA_TYPE::DT_NANOTIMESTAMP:
+            vector_ptr = new VectorNanotimestamp(in);
             return VECTOR_DATETIME;
             
         default:

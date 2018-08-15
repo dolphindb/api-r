@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.31, Hangzhou
- * @Update -- 2018.8.14, Hangzhou
+ * @Update -- 2018.8.15, Hangzhou
  * 
  *****************************************************/
 
@@ -43,10 +43,12 @@ public:
     static string ParseDate(int days);
     static string ParseDateTime(int seconds);
     static string ParseMonth(int months);
-    static string ParseTime(int milliseconds);
     static string ParseMinute(int minutes);
     static string ParseSecond(int seconds);
+    static string ParseTime(int milliseconds);
     static string ParseTimestamp(long long milliseconds);
+    static string ParseNanotime(long long nanoseconds);
+    static string ParseNanotimestamp(long long nanoseconds);
     static int CountDays(string date_str);
     static int CountSeconds(string date_time_str);
     static bool IsVariableCandidate(string key);
@@ -55,6 +57,41 @@ public:
 string Utill::ErrorTypeNotSupport = "[ERROR] Data type not support in R";
 string Utill::ErrorFormNotSupport = "[ERROR] Data form not support in R";
 string Utill::WarnPrecisonLost = "[WARNING] Precison may lost in casting";
+
+string Utill::ParseNanotimestamp(long long nanoseconds)
+{
+    long long NANOS_PER_DAY = 24L*60L*60L*1000000000L;
+    int days = (int) floor((double)nanoseconds / NANOS_PER_DAY);
+    string date_str = ParseDate(days);
+
+    nanoseconds %= NANOS_PER_DAY;
+    if (nanoseconds < 0)
+    {
+        nanoseconds += NANOS_PER_DAY;
+    }
+    
+    nanoseconds %= NANOS_PER_DAY;
+    int hours = (int)(nanoseconds / (60L*60L*1000000000L));
+    nanoseconds -= hours * (60L*60L*1000000000L);
+    int minutes = (int)(nanoseconds / (60L*1000000000L));
+    nanoseconds -= minutes * (60L*1000000000L);
+    int seconds = (int)(nanoseconds / (1000000000L));
+    nanoseconds -= seconds * (1000000000L);
+
+    return FormatRDateTime(date_str, hours, minutes, seconds);
+}
+
+string Utill::ParseNanotime(long long nanoseconds)
+{
+    int hours = (int)(nanoseconds / (60L*60L*1000000000L));
+    nanoseconds -= hours * (60L*60L*1000000000L);
+    int minutes = (int)(nanoseconds / (60L*1000000000L));
+    nanoseconds -= minutes * (60L*1000000000L);
+    int seconds = (int)(nanoseconds / (1000000000L));
+    nanoseconds -= seconds * (1000000000L);
+
+    return FormatRDateTime(1970, 1, 1, hours, minutes, seconds);
+}
 
 string Utill::ParseTimestamp(long long milliseconds)
 {

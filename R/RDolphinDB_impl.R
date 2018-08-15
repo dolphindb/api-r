@@ -235,6 +235,7 @@ DDB_GetEntity <- function(xxdb_type) {
 
     } else if (xxdb_type == 12) {
         # Character Matrix
+        return (NULL)
 
     } else if (xxdb_type == 13) {
         # DataFrame
