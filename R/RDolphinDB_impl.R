@@ -2,7 +2,7 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.13, Hangzhou
-# @Update -- 2018.8.2, Hangzhou
+# @Update -- 2018.8.16, Hangzhou
 #
 # @description Implementation of class 'RDolphinDB'
 #
@@ -278,6 +278,14 @@ DDB_GetEntity <- function(xxdb_type) {
         Clear()
         return (result)
 
+    } else if (xxdb_type == 20) {
+        # AnyVector => list
+        typelist <- ReturnAnyVectorTypelist()
+        for (i in 1:length(typelist)) {
+            print(typelist[i])
+        }
+        Clear()
+        return (NULL)
     } else {
         # print("Error")
         Clear()

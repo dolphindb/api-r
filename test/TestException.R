@@ -11,7 +11,7 @@ conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
 if (conn@connected == TRUE) {
 
     ptm <- proc.time()
-    result <- dbRun(conn, "(1,2,3,4,5.5)")
+    result <- dbRun(conn, "(1,2,3,4,5.5, 1 2 3, 2012.06M)")
     print(result)
     print(class(result))
     print(proc.time() - ptm)

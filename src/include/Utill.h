@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.31, Hangzhou
- * @Update -- 2018.8.15, Hangzhou
+ * @Update -- 2018.8.16, Hangzhou
  * 
  *****************************************************/
 
@@ -52,11 +52,169 @@ public:
     static int CountDays(string date_str);
     static int CountSeconds(string date_time_str);
     static bool IsVariableCandidate(string key);
+
+    static int ReturnRType(int data_form, int data_type);
 };
 
 string Utill::ErrorTypeNotSupport = "[ERROR] Data type not support in R";
 string Utill::ErrorFormNotSupport = "[ERROR] Data form not support in R";
 string Utill::WarnPrecisonLost = "[WARNING] Precison may lost in casting";
+
+int Utill::ReturnRType(int data_form, int data_type)
+{
+    if (data_form == DATA_FORM::DF_SCALAR)
+    {
+        switch(data_type)
+        {
+            case DATA_TYPE::DT_BOOL:
+                return SCALAR_LOGICAL;
+            case DATA_TYPE::DT_INT:
+                return SCALAR_INTEGER;
+            case DATA_TYPE::DT_SHORT: 
+                return SCALAR_INTEGER;
+            case DATA_TYPE::DT_DOUBLE:
+                return SCALAR_NUMERIC;
+            case DATA_TYPE::DT_LONG: 
+                return SCALAR_NUMERIC;
+            case DATA_TYPE::DT_STRING:
+                return SCALAR_CHARACTER;
+            case DATA_TYPE::DT_SYMBOL:
+                return SCALAR_CHARACTER;
+            case DATA_TYPE::DT_FLOAT:
+                return SCALAR_NUMERIC;
+            case DATA_TYPE::DT_DATE: 
+                return SCALAR_DATE;
+            case DATA_TYPE::DT_MONTH:
+                return SCALAR_DATE;
+            case DATA_TYPE::DT_DATETIME: 
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_MINUTE:
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_SECOND:
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_TIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_TIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_NANOTIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_NANOTIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return SCALAR_DATETIME;
+            case DATA_TYPE::DT_VOID: 
+                return VOIDD;
+            default:
+                cout << Utill::ErrorTypeNotSupport << endl;
+                return 0;
+        }
+    }
+    else if (data_form == DATA_FORM::DF_VECTOR || 
+             data_form == DATA_FORM::DF_SET)
+    {
+        switch(data_type)
+        {
+            case DATA_TYPE::DT_BOOL:
+                return VECTOR_LOGICAL;
+            case DATA_TYPE::DT_INT:
+                return VECTOR_INTEGER;
+            case DATA_TYPE::DT_SHORT:
+                return VECTOR_INTEGER;
+            case DATA_TYPE::DT_DOUBLE:
+                return VECTOR_NUMERIC;
+            case DATA_TYPE::DT_LONG:
+                return VECTOR_NUMERIC;
+            case DATA_TYPE::DT_FLOAT: 
+                return VECTOR_NUMERIC;
+            case DATA_TYPE::DT_STRING:
+                return VECTOR_CHARACTER;
+            case DATA_TYPE::DT_SYMBOL:
+                return VECTOR_CHARACTER;
+            case DATA_TYPE::DT_DATE: 
+                return VECTOR_DATE;
+            case DATA_TYPE::DT_MONTH:
+                return VECTOR_DATE;
+            case DATA_TYPE::DT_DATETIME: 
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_MINUTE:
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_SECOND:
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_TIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_TIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_NANOTIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_NANOTIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return VECTOR_DATETIME;
+            case DATA_TYPE::DT_ANY:
+                return VECTOR_ANY;
+            default:
+                cout << Utill::ErrorTypeNotSupport << endl;
+                return 0;
+        }
+    }
+    else if (data_form == DATA_FORM::DF_MATRIX)
+    {
+        switch(data_type)
+        {
+            case DATA_TYPE::DT_BOOL:
+                return MATRIX_LOGICAL;
+            case DATA_TYPE::DT_INT: 
+                return MATRIX_INTEGER;
+            case DATA_TYPE::DT_SHORT: 
+                return MATRIX_INTEGER;
+            case DATA_TYPE::DT_DOUBLE: 
+                return MATRIX_NUMERIC;
+            case DATA_TYPE::DT_LONG: 
+                return MATRIX_NUMERIC;
+            case DATA_TYPE::DT_FLOAT: 
+                return MATRIX_NUMERIC;
+            case DATA_TYPE::DT_DATE: 
+                return MATRIX_DATE;
+            case DATA_TYPE::DT_MONTH:
+                return MATRIX_DATE;
+            case DATA_TYPE::DT_DATETIME: 
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_MINUTE:
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_SECOND:
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_TIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_TIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_NANOTIME:
+                cout << Utill::WarnPrecisonLost << endl;
+                return MATRIX_DATETIME;
+            case DATA_TYPE::DT_NANOTIMESTAMP:
+                cout << Utill::WarnPrecisonLost << endl;
+                return MATRIX_DATETIME;
+            default:
+                cout << Utill::ErrorTypeNotSupport << endl;
+                return 0;
+        }
+    }
+    else if (data_form == DATA_FORM::DF_TABLE)
+    {
+        return TABLEE;
+    }
+    else
+    {
+        cout << Utill::ErrorFormNotSupport << endl;
+    }
+
+    return 0;
+}
 
 string Utill::ParseNanotimestamp(long long nanoseconds)
 {
