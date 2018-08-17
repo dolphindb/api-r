@@ -105,6 +105,12 @@ if (conn@connected == TRUE) {
     print(result)
     print(class(result))
     print(proc.time() - ptm)
+    
+    ptm <- proc.time()
+    result <- dbRun(conn, "'a'")
+    print(result)
+    print(class(result))
+    print(proc.time() - ptm)
 
     ptm <- proc.time()
     result <- dbRun(conn, "16")

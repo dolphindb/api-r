@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.16, Hangzhou
- * @Update -- 2018.7.29, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  ********************************************/
 
@@ -92,6 +92,9 @@ Entity::Entity(int df, int dt, DataInputStream& in)
             CreateScalar(scalar_ptr, dt, in);
             break;
         case DATA_FORM::DF_VECTOR:
+            CreateVector(vector_ptr, dt, in);
+            break;
+        case DATA_FORM::DF_PAIR:
             CreateVector(vector_ptr, dt, in);
             break;
         case DATA_FORM::DF_SET: 

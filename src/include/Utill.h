@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.31, Hangzhou
- * @Update -- 2018.8.16, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  *****************************************************/
 
@@ -112,7 +112,8 @@ int Utill::ReturnRType(int data_form, int data_type)
         }
     }
     else if (data_form == DATA_FORM::DF_VECTOR || 
-             data_form == DATA_FORM::DF_SET)
+             data_form == DATA_FORM::DF_SET ||
+             data_form == DATA_FORM::DF_PAIR)
     {
         switch(data_type)
         {
