@@ -311,315 +311,355 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// ReturnScalarNA
-bool ReturnScalarNA();
-RcppExport SEXP _RDolphinDB_ReturnScalarNA() {
+// ReturnAnyVectorTypelist
+IntegerVector ReturnAnyVectorTypelist();
+RcppExport SEXP _RDolphinDB_ReturnAnyVectorTypelist() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnScalarNA());
+    rcpp_result_gen = Rcpp::wrap(ReturnAnyVectorTypelist());
+    return rcpp_result_gen;
+END_RCPP
+}
+// ReturnScalarNA
+bool ReturnScalarNA(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarNA(SEXP indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarNA(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnScalarBool
-bool ReturnScalarBool();
-RcppExport SEXP _RDolphinDB_ReturnScalarBool() {
+bool ReturnScalarBool(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarBool(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnScalarBool());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarBool(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnScalarInt
-int ReturnScalarInt();
-RcppExport SEXP _RDolphinDB_ReturnScalarInt() {
+int ReturnScalarInt(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarInt(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnScalarInt());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarInt(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnScalarDouble
-double ReturnScalarDouble();
-RcppExport SEXP _RDolphinDB_ReturnScalarDouble() {
+double ReturnScalarDouble(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarDouble(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnScalarDouble());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarDouble(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnScalarString
-String ReturnScalarString();
-RcppExport SEXP _RDolphinDB_ReturnScalarString() {
+String ReturnScalarString(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarString(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnScalarString());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarString(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnVectorBool
-LogicalVector ReturnVectorBool();
-RcppExport SEXP _RDolphinDB_ReturnVectorBool() {
+LogicalVector ReturnVectorBool(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorBool(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnVectorBool());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorBool(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnVectorInt
-IntegerVector ReturnVectorInt();
-RcppExport SEXP _RDolphinDB_ReturnVectorInt() {
+IntegerVector ReturnVectorInt(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorInt(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnVectorInt());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorInt(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnVectorDouble
-NumericVector ReturnVectorDouble();
-RcppExport SEXP _RDolphinDB_ReturnVectorDouble() {
+NumericVector ReturnVectorDouble(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorDouble(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnVectorDouble());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorDouble(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnVectorString
-CharacterVector ReturnVectorString();
-RcppExport SEXP _RDolphinDB_ReturnVectorString() {
+CharacterVector ReturnVectorString(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorString(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnVectorString());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorString(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnVectorNAIndex
-IntegerVector ReturnVectorNAIndex();
-RcppExport SEXP _RDolphinDB_ReturnVectorNAIndex() {
+IntegerVector ReturnVectorNAIndex(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorNAIndex(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnVectorNAIndex());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorNAIndex(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixHasLable
-bool ReturnMatrixHasLable(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixHasLable(SEXP rowSEXP) {
+bool ReturnMatrixHasLable(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixHasLable(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixHasLable(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixHasLable(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixLableType
-int ReturnMatrixLableType(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixLableType(SEXP rowSEXP) {
+int ReturnMatrixLableType(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixLableType(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixLableType(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixLableType(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixLableNAIndex
-IntegerVector ReturnMatrixLableNAIndex(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixLableNAIndex(SEXP rowSEXP) {
+IntegerVector ReturnMatrixLableNAIndex(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixLableNAIndex(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixLableNAIndex(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixLableNAIndex(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixVectorBoolLable
-LogicalVector ReturnMatrixVectorBoolLable(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixVectorBoolLable(SEXP rowSEXP) {
+LogicalVector ReturnMatrixVectorBoolLable(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixVectorBoolLable(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorBoolLable(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorBoolLable(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixVectorIntLable
-IntegerVector ReturnMatrixVectorIntLable(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixVectorIntLable(SEXP rowSEXP) {
+IntegerVector ReturnMatrixVectorIntLable(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixVectorIntLable(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorIntLable(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorIntLable(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixVectorDoubleLable
-NumericVector ReturnMatrixVectorDoubleLable(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixVectorDoubleLable(SEXP rowSEXP) {
+NumericVector ReturnMatrixVectorDoubleLable(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixVectorDoubleLable(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorDoubleLable(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorDoubleLable(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixVectorStringLable
-CharacterVector ReturnMatrixVectorStringLable(bool row);
-RcppExport SEXP _RDolphinDB_ReturnMatrixVectorStringLable(SEXP rowSEXP) {
+CharacterVector ReturnMatrixVectorStringLable(bool row, int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixVectorStringLable(SEXP rowSEXP, SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type row(rowSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorStringLable(row));
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixVectorStringLable(row, index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixBool
-LogicalMatrix ReturnMatrixBool();
-RcppExport SEXP _RDolphinDB_ReturnMatrixBool() {
+LogicalMatrix ReturnMatrixBool(int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixBool(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixBool());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixBool(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixInt
-IntegerMatrix ReturnMatrixInt();
-RcppExport SEXP _RDolphinDB_ReturnMatrixInt() {
+IntegerMatrix ReturnMatrixInt(int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixInt(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixInt());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixInt(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixDouble
-NumericMatrix ReturnMatrixDouble();
-RcppExport SEXP _RDolphinDB_ReturnMatrixDouble() {
+NumericMatrix ReturnMatrixDouble(int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixDouble(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixDouble());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixDouble(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixString
-CharacterMatrix ReturnMatrixString();
-RcppExport SEXP _RDolphinDB_ReturnMatrixString() {
+CharacterMatrix ReturnMatrixString(int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixString(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixString());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixString(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnMatrixNAIndex
-IntegerVector ReturnMatrixNAIndex();
-RcppExport SEXP _RDolphinDB_ReturnMatrixNAIndex() {
+IntegerVector ReturnMatrixNAIndex(int index);
+RcppExport SEXP _RDolphinDB_ReturnMatrixNAIndex(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnMatrixNAIndex());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnMatrixNAIndex(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumnType
-IntegerVector ReturnTableColumnType();
-RcppExport SEXP _RDolphinDB_ReturnTableColumnType() {
+IntegerVector ReturnTableColumnType(int index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnType(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnType());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnType(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumeName
-CharacterVector ReturnTableColumeName();
-RcppExport SEXP _RDolphinDB_ReturnTableColumeName() {
+CharacterVector ReturnTableColumeName(int index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumeName(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumeName());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumeName(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnEmptyDataFrame
-DataFrame ReturnEmptyDataFrame();
-RcppExport SEXP _RDolphinDB_ReturnEmptyDataFrame() {
+DataFrame ReturnEmptyDataFrame(int index);
+RcppExport SEXP _RDolphinDB_ReturnEmptyDataFrame(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ReturnEmptyDataFrame());
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnEmptyDataFrame(index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumnLogical
-LogicalVector ReturnTableColumnLogical(int index);
-RcppExport SEXP _RDolphinDB_ReturnTableColumnLogical(SEXP indexSEXP) {
+LogicalVector ReturnTableColumnLogical(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnLogical(SEXP indexSEXP, SEXP entity_indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type index(indexSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnLogical(index));
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnLogical(index, entity_index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumnInteger
-IntegerVector ReturnTableColumnInteger(int index);
-RcppExport SEXP _RDolphinDB_ReturnTableColumnInteger(SEXP indexSEXP) {
+IntegerVector ReturnTableColumnInteger(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnInteger(SEXP indexSEXP, SEXP entity_indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type index(indexSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnInteger(index));
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnInteger(index, entity_index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumnDouble
-NumericVector ReturnTableColumnDouble(int index);
-RcppExport SEXP _RDolphinDB_ReturnTableColumnDouble(SEXP indexSEXP) {
+NumericVector ReturnTableColumnDouble(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnDouble(SEXP indexSEXP, SEXP entity_indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type index(indexSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnDouble(index));
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnDouble(index, entity_index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumnString
-CharacterVector ReturnTableColumnString(int index);
-RcppExport SEXP _RDolphinDB_ReturnTableColumnString(SEXP indexSEXP) {
+CharacterVector ReturnTableColumnString(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnString(SEXP indexSEXP, SEXP entity_indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type index(indexSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnString(index));
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnString(index, entity_index));
     return rcpp_result_gen;
 END_RCPP
 }
 // ReturnTableColumnNAIndex
-IntegerVector ReturnTableColumnNAIndex(int index);
-RcppExport SEXP _RDolphinDB_ReturnTableColumnNAIndex(SEXP indexSEXP) {
+IntegerVector ReturnTableColumnNAIndex(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnNAIndex(SEXP indexSEXP, SEXP entity_indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type index(indexSEXP);
-    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnNAIndex(index));
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnNAIndex(index, entity_index));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -654,36 +694,37 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RDolphinDB_UploadScalarString", (DL_FUNC) &_RDolphinDB_UploadScalarString, 1},
     {"_RDolphinDB_Clear", (DL_FUNC) &_RDolphinDB_Clear, 0},
     {"_RDolphinDB_DisConnect", (DL_FUNC) &_RDolphinDB_DisConnect, 0},
-    {"_RDolphinDB_ReturnScalarNA", (DL_FUNC) &_RDolphinDB_ReturnScalarNA, 0},
-    {"_RDolphinDB_ReturnScalarBool", (DL_FUNC) &_RDolphinDB_ReturnScalarBool, 0},
-    {"_RDolphinDB_ReturnScalarInt", (DL_FUNC) &_RDolphinDB_ReturnScalarInt, 0},
-    {"_RDolphinDB_ReturnScalarDouble", (DL_FUNC) &_RDolphinDB_ReturnScalarDouble, 0},
-    {"_RDolphinDB_ReturnScalarString", (DL_FUNC) &_RDolphinDB_ReturnScalarString, 0},
-    {"_RDolphinDB_ReturnVectorBool", (DL_FUNC) &_RDolphinDB_ReturnVectorBool, 0},
-    {"_RDolphinDB_ReturnVectorInt", (DL_FUNC) &_RDolphinDB_ReturnVectorInt, 0},
-    {"_RDolphinDB_ReturnVectorDouble", (DL_FUNC) &_RDolphinDB_ReturnVectorDouble, 0},
-    {"_RDolphinDB_ReturnVectorString", (DL_FUNC) &_RDolphinDB_ReturnVectorString, 0},
-    {"_RDolphinDB_ReturnVectorNAIndex", (DL_FUNC) &_RDolphinDB_ReturnVectorNAIndex, 0},
-    {"_RDolphinDB_ReturnMatrixHasLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixHasLable, 1},
-    {"_RDolphinDB_ReturnMatrixLableType", (DL_FUNC) &_RDolphinDB_ReturnMatrixLableType, 1},
-    {"_RDolphinDB_ReturnMatrixLableNAIndex", (DL_FUNC) &_RDolphinDB_ReturnMatrixLableNAIndex, 1},
-    {"_RDolphinDB_ReturnMatrixVectorBoolLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorBoolLable, 1},
-    {"_RDolphinDB_ReturnMatrixVectorIntLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorIntLable, 1},
-    {"_RDolphinDB_ReturnMatrixVectorDoubleLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorDoubleLable, 1},
-    {"_RDolphinDB_ReturnMatrixVectorStringLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorStringLable, 1},
-    {"_RDolphinDB_ReturnMatrixBool", (DL_FUNC) &_RDolphinDB_ReturnMatrixBool, 0},
-    {"_RDolphinDB_ReturnMatrixInt", (DL_FUNC) &_RDolphinDB_ReturnMatrixInt, 0},
-    {"_RDolphinDB_ReturnMatrixDouble", (DL_FUNC) &_RDolphinDB_ReturnMatrixDouble, 0},
-    {"_RDolphinDB_ReturnMatrixString", (DL_FUNC) &_RDolphinDB_ReturnMatrixString, 0},
-    {"_RDolphinDB_ReturnMatrixNAIndex", (DL_FUNC) &_RDolphinDB_ReturnMatrixNAIndex, 0},
-    {"_RDolphinDB_ReturnTableColumnType", (DL_FUNC) &_RDolphinDB_ReturnTableColumnType, 0},
-    {"_RDolphinDB_ReturnTableColumeName", (DL_FUNC) &_RDolphinDB_ReturnTableColumeName, 0},
-    {"_RDolphinDB_ReturnEmptyDataFrame", (DL_FUNC) &_RDolphinDB_ReturnEmptyDataFrame, 0},
-    {"_RDolphinDB_ReturnTableColumnLogical", (DL_FUNC) &_RDolphinDB_ReturnTableColumnLogical, 1},
-    {"_RDolphinDB_ReturnTableColumnInteger", (DL_FUNC) &_RDolphinDB_ReturnTableColumnInteger, 1},
-    {"_RDolphinDB_ReturnTableColumnDouble", (DL_FUNC) &_RDolphinDB_ReturnTableColumnDouble, 1},
-    {"_RDolphinDB_ReturnTableColumnString", (DL_FUNC) &_RDolphinDB_ReturnTableColumnString, 1},
-    {"_RDolphinDB_ReturnTableColumnNAIndex", (DL_FUNC) &_RDolphinDB_ReturnTableColumnNAIndex, 1},
+    {"_RDolphinDB_ReturnAnyVectorTypelist", (DL_FUNC) &_RDolphinDB_ReturnAnyVectorTypelist, 0},
+    {"_RDolphinDB_ReturnScalarNA", (DL_FUNC) &_RDolphinDB_ReturnScalarNA, 1},
+    {"_RDolphinDB_ReturnScalarBool", (DL_FUNC) &_RDolphinDB_ReturnScalarBool, 1},
+    {"_RDolphinDB_ReturnScalarInt", (DL_FUNC) &_RDolphinDB_ReturnScalarInt, 1},
+    {"_RDolphinDB_ReturnScalarDouble", (DL_FUNC) &_RDolphinDB_ReturnScalarDouble, 1},
+    {"_RDolphinDB_ReturnScalarString", (DL_FUNC) &_RDolphinDB_ReturnScalarString, 1},
+    {"_RDolphinDB_ReturnVectorBool", (DL_FUNC) &_RDolphinDB_ReturnVectorBool, 1},
+    {"_RDolphinDB_ReturnVectorInt", (DL_FUNC) &_RDolphinDB_ReturnVectorInt, 1},
+    {"_RDolphinDB_ReturnVectorDouble", (DL_FUNC) &_RDolphinDB_ReturnVectorDouble, 1},
+    {"_RDolphinDB_ReturnVectorString", (DL_FUNC) &_RDolphinDB_ReturnVectorString, 1},
+    {"_RDolphinDB_ReturnVectorNAIndex", (DL_FUNC) &_RDolphinDB_ReturnVectorNAIndex, 1},
+    {"_RDolphinDB_ReturnMatrixHasLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixHasLable, 2},
+    {"_RDolphinDB_ReturnMatrixLableType", (DL_FUNC) &_RDolphinDB_ReturnMatrixLableType, 2},
+    {"_RDolphinDB_ReturnMatrixLableNAIndex", (DL_FUNC) &_RDolphinDB_ReturnMatrixLableNAIndex, 2},
+    {"_RDolphinDB_ReturnMatrixVectorBoolLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorBoolLable, 2},
+    {"_RDolphinDB_ReturnMatrixVectorIntLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorIntLable, 2},
+    {"_RDolphinDB_ReturnMatrixVectorDoubleLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorDoubleLable, 2},
+    {"_RDolphinDB_ReturnMatrixVectorStringLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixVectorStringLable, 2},
+    {"_RDolphinDB_ReturnMatrixBool", (DL_FUNC) &_RDolphinDB_ReturnMatrixBool, 1},
+    {"_RDolphinDB_ReturnMatrixInt", (DL_FUNC) &_RDolphinDB_ReturnMatrixInt, 1},
+    {"_RDolphinDB_ReturnMatrixDouble", (DL_FUNC) &_RDolphinDB_ReturnMatrixDouble, 1},
+    {"_RDolphinDB_ReturnMatrixString", (DL_FUNC) &_RDolphinDB_ReturnMatrixString, 1},
+    {"_RDolphinDB_ReturnMatrixNAIndex", (DL_FUNC) &_RDolphinDB_ReturnMatrixNAIndex, 1},
+    {"_RDolphinDB_ReturnTableColumnType", (DL_FUNC) &_RDolphinDB_ReturnTableColumnType, 1},
+    {"_RDolphinDB_ReturnTableColumeName", (DL_FUNC) &_RDolphinDB_ReturnTableColumeName, 1},
+    {"_RDolphinDB_ReturnEmptyDataFrame", (DL_FUNC) &_RDolphinDB_ReturnEmptyDataFrame, 1},
+    {"_RDolphinDB_ReturnTableColumnLogical", (DL_FUNC) &_RDolphinDB_ReturnTableColumnLogical, 2},
+    {"_RDolphinDB_ReturnTableColumnInteger", (DL_FUNC) &_RDolphinDB_ReturnTableColumnInteger, 2},
+    {"_RDolphinDB_ReturnTableColumnDouble", (DL_FUNC) &_RDolphinDB_ReturnTableColumnDouble, 2},
+    {"_RDolphinDB_ReturnTableColumnString", (DL_FUNC) &_RDolphinDB_ReturnTableColumnString, 2},
+    {"_RDolphinDB_ReturnTableColumnNAIndex", (DL_FUNC) &_RDolphinDB_ReturnTableColumnNAIndex, 2},
     {NULL, NULL, 0}
 };
 

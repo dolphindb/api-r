@@ -5,7 +5,7 @@ using namespace Rcpp;
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.15, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.16, Hangzhou
  * 
  *************************************************/
 
@@ -244,18 +244,24 @@ void DisConnect()
 }
 
 //[[Rcpp::export]]
-bool ReturnScalarNA()
+IntegerVector ReturnAnyVectorTypelist()
 {
-    return cnt.Rcpp_GetEntity()->getScalar()->IsNull();
+    return wrap(cnt.Rcpp_GetAnyVector()->getRType());
 }
 
 //[[Rcpp::export]]
-bool ReturnScalarBool()
+bool ReturnScalarNA(int index = -1)
+{
+    return cnt.Rcpp_GetEntity(index)->getScalar()->IsNull();
+}
+
+//[[Rcpp::export]]
+bool ReturnScalarBool(int index = -1)
 {
     return *(
         (bool *)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getScalar()->
             getValue()
         )
@@ -263,12 +269,12 @@ bool ReturnScalarBool()
 }
 
 //[[Rcpp::export]]
-int ReturnScalarInt()
+int ReturnScalarInt(int index = -1)
 {
     return *(
         (int *)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getScalar()->
             getValue()
         )
@@ -276,13 +282,13 @@ int ReturnScalarInt()
 }
 
 //[[Rcpp::export]]
-double ReturnScalarDouble()
+double ReturnScalarDouble(int index = -1)
 {
     return 
     *(
         (double *)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getScalar()->
             getValue()
         )
@@ -290,12 +296,12 @@ double ReturnScalarDouble()
 }
 
 //[[Rcpp::export]]
-String ReturnScalarString()
+String ReturnScalarString(int index = -1)
 {
     return *(
         (string *)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getScalar()->
             getValue()
         )
@@ -303,13 +309,13 @@ String ReturnScalarString()
 }
 
 //[[Rcpp::export]]
-LogicalVector ReturnVectorBool()
+LogicalVector ReturnVectorBool(int index = -1)
 {
     return wrap(
         *(
             (vector <bool> *)
             (
-                cnt.Rcpp_GetEntity()->
+                cnt.Rcpp_GetEntity(index)->
                 getVector()->
                 getVector()
             )
@@ -318,14 +324,14 @@ LogicalVector ReturnVectorBool()
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnVectorInt()
+IntegerVector ReturnVectorInt(int index = -1)
 {
     // No Need to convert -2147483648
     return wrap(
         *(
             (vector <int> *)
             (
-                cnt.Rcpp_GetEntity()->
+                cnt.Rcpp_GetEntity(index)->
                 getVector()->
                 getVector()
             )
@@ -334,13 +340,13 @@ IntegerVector ReturnVectorInt()
 }
 
 //[[Rcpp::export]]
-NumericVector ReturnVectorDouble()
+NumericVector ReturnVectorDouble(int index = -1)
 {
     return wrap(
         *(
             (vector <double> *)
             (
-                cnt.Rcpp_GetEntity()->
+                cnt.Rcpp_GetEntity(index)->
                 getVector()->
                 getVector()
             )
@@ -349,13 +355,13 @@ NumericVector ReturnVectorDouble()
 }
 
 //[[Rcpp::export]]
-CharacterVector ReturnVectorString()
+CharacterVector ReturnVectorString(int index = -1)
 {
     return wrap(
         *(
             (vector <string> *)
             (
-                cnt.Rcpp_GetEntity()->
+                cnt.Rcpp_GetEntity(index)->
                 getVector()->
                 getVector()
             )
@@ -364,66 +370,66 @@ CharacterVector ReturnVectorString()
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnVectorNAIndex()
+IntegerVector ReturnVectorNAIndex(int index = -1)
 {
     return wrap(
-        cnt.Rcpp_GetEntity()->
+        cnt.Rcpp_GetEntity(index)->
         getVector()->
         getNAIndex()
     );
 }
 
 //[[Rcpp::export]]
-bool ReturnMatrixHasLable(bool row)
+bool ReturnMatrixHasLable(bool row, int index = -1)
 {
     if (row)
     {
-        return cnt.Rcpp_GetEntity()->getMatrix()->hasRowLable();
+        return cnt.Rcpp_GetEntity(index)->getMatrix()->hasRowLable();
     }
     else 
     {
-        return cnt.Rcpp_GetEntity()->getMatrix()->hasClmLable();
+        return cnt.Rcpp_GetEntity(index)->getMatrix()->hasClmLable();
     }
 }
 
 //[[Rcpp::export]]
-int ReturnMatrixLableType(bool row)
+int ReturnMatrixLableType(bool row, int index = -1)
 {
     if (row)
     {
         return cnt.Rcpp_ReturnRType(
             DATA_FORM::DF_VECTOR,
-            cnt.Rcpp_GetEntity()->getMatrix()->getRowLableType()
+            cnt.Rcpp_GetEntity(index)->getMatrix()->getRowLableType()
         );
     }
     else 
     {
         return cnt.Rcpp_ReturnRType(
             DATA_FORM::DF_VECTOR,
-            cnt.Rcpp_GetEntity()->getMatrix()->getClmLableType()
+            cnt.Rcpp_GetEntity(index)->getMatrix()->getClmLableType()
         );
     }
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnMatrixLableNAIndex(bool row)
+IntegerVector ReturnMatrixLableNAIndex(bool row, int index = -1)
 {
     if (row)
     {
         return wrap(
-            cnt.Rcpp_GetEntity()->getMatrix()->getRowLableNAIndex()
+            cnt.Rcpp_GetEntity(index)->getMatrix()->getRowLableNAIndex()
         );
     }
     else 
     {
         return wrap(
-            cnt.Rcpp_GetEntity()->getMatrix()->getClmLableNAIndex()
+            cnt.Rcpp_GetEntity(index)->getMatrix()->getClmLableNAIndex()
         );
     }
 }
 
 //[[Rcpp::export]]
-LogicalVector ReturnMatrixVectorBoolLable(bool row)
+LogicalVector ReturnMatrixVectorBoolLable(bool row, int index = -1)
 {
     if (row)
     {
@@ -431,7 +437,7 @@ LogicalVector ReturnMatrixVectorBoolLable(bool row)
             *(
                 (vector <bool>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getRowLable()
                 )
@@ -444,7 +450,7 @@ LogicalVector ReturnMatrixVectorBoolLable(bool row)
             *(
                 (vector <bool>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getClmLable()
                 )
@@ -454,7 +460,7 @@ LogicalVector ReturnMatrixVectorBoolLable(bool row)
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnMatrixVectorIntLable(bool row)
+IntegerVector ReturnMatrixVectorIntLable(bool row, int index = -1)
 {
     if (row)
     {
@@ -462,7 +468,7 @@ IntegerVector ReturnMatrixVectorIntLable(bool row)
             *(
                 (vector <int>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getRowLable()
                 )
@@ -475,7 +481,7 @@ IntegerVector ReturnMatrixVectorIntLable(bool row)
             *(
                 (vector <int>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getClmLable()
                 )
@@ -485,7 +491,7 @@ IntegerVector ReturnMatrixVectorIntLable(bool row)
 }
 
 //[[Rcpp::export]]
-NumericVector ReturnMatrixVectorDoubleLable(bool row)
+NumericVector ReturnMatrixVectorDoubleLable(bool row, int index = -1)
 {
     if (row)
     {
@@ -493,7 +499,7 @@ NumericVector ReturnMatrixVectorDoubleLable(bool row)
             *(
                 (vector <double>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getRowLable()
                 )
@@ -506,7 +512,7 @@ NumericVector ReturnMatrixVectorDoubleLable(bool row)
             *(
                 (vector <double>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getClmLable()
                 )
@@ -516,7 +522,7 @@ NumericVector ReturnMatrixVectorDoubleLable(bool row)
 }
 
 //[[Rcpp::export]]
-CharacterVector ReturnMatrixVectorStringLable(bool row)
+CharacterVector ReturnMatrixVectorStringLable(bool row, int index = -1)
 {
     if (row)
     {
@@ -524,7 +530,7 @@ CharacterVector ReturnMatrixVectorStringLable(bool row)
             *(
                 (vector <string>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getRowLable()
                 )
@@ -537,7 +543,7 @@ CharacterVector ReturnMatrixVectorStringLable(bool row)
             *(
                 (vector <string>*)
                 (
-                    cnt.Rcpp_GetEntity()-> 
+                    cnt.Rcpp_GetEntity(index)-> 
                     getMatrix()-> 
                     getClmLable()
                 )
@@ -547,112 +553,112 @@ CharacterVector ReturnMatrixVectorStringLable(bool row)
 }
 
 //[[Rcpp::export]]
-LogicalMatrix ReturnMatrixBool()
+LogicalMatrix ReturnMatrixBool(int index = -1)
 {
     vector <bool>& mtx = *(
         (vector <bool>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getMatrix()->
             getMatrix()
         )
     );
     return LogicalMatrix(
-        cnt.Rcpp_GetEntity()->getMatrix()->getRow(),
-        cnt.Rcpp_GetEntity()->getMatrix()->getClm(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getRow(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getClm(),
         mtx.begin()
     );
 }
 
 //[[Rcpp::export]]
-IntegerMatrix ReturnMatrixInt()
+IntegerMatrix ReturnMatrixInt(int index = -1)
 {
     vector <int>& mtx = *(
         (vector <int>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getMatrix()->
             getMatrix()
         )
     );
     return IntegerMatrix(
-        cnt.Rcpp_GetEntity()->getMatrix()->getRow(),
-        cnt.Rcpp_GetEntity()->getMatrix()->getClm(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getRow(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getClm(),
         mtx.begin()
     );
 }
 
 //[[Rcpp::export]]
-NumericMatrix ReturnMatrixDouble()
+NumericMatrix ReturnMatrixDouble(int index = -1)
 {
     vector <double>& mtx = *(
         (vector <double>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(index)->
             getMatrix()->
             getMatrix()
         )
     );
     return NumericMatrix(
-        cnt.Rcpp_GetEntity()->getMatrix()->getRow(),
-        cnt.Rcpp_GetEntity()->getMatrix()->getClm(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getRow(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getClm(),
         mtx.begin()
     );
 }
 
 //[[Rcpp::export]]
-CharacterMatrix ReturnMatrixString()
+CharacterMatrix ReturnMatrixString(int index = -1)
 {
     vector <string>&mtx = *(
         (vector <string>*)
         (
-            cnt.Rcpp_GetEntity()-> 
+            cnt.Rcpp_GetEntity(index)-> 
             getMatrix()-> 
             getMatrix()
         )
     );
     return CharacterMatrix(
-        cnt.Rcpp_GetEntity()->getMatrix()->getRow(),
-        cnt.Rcpp_GetEntity()->getMatrix()->getClm(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getRow(),
+        cnt.Rcpp_GetEntity(index)->getMatrix()->getClm(),
         mtx.begin()
     );
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnMatrixNAIndex()
+IntegerVector ReturnMatrixNAIndex(int index = -1)
 {
     return wrap(
-        cnt.Rcpp_GetEntity()->
+        cnt.Rcpp_GetEntity(index)->
         getMatrix()->
         getMatrixNAIndex()
     );
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnTableColumnType()
+IntegerVector ReturnTableColumnType(int index = -1)
 {
     return wrap(
-        cnt.Rcpp_GetEntity()->
+        cnt.Rcpp_GetEntity(index)->
         getTable()->
         getTableClmType()
     );
 }
 
 //[[Rcpp::export]]
-CharacterVector ReturnTableColumeName()
+CharacterVector ReturnTableColumeName(int index = -1)
 {
     return wrap(
-        cnt.Rcpp_GetEntity()->
+        cnt.Rcpp_GetEntity(index)->
         getTable()->
         getTableClmName()
     );
 }
 
 //[[Rcpp::export]]
-DataFrame ReturnEmptyDataFrame()
+DataFrame ReturnEmptyDataFrame(int index = -1)
 {
     vector <int> temp(
-        cnt.Rcpp_GetEntity()->
+        cnt.Rcpp_GetEntity(index)->
         getTable()->
         getTableRow()
     );
@@ -660,12 +666,12 @@ DataFrame ReturnEmptyDataFrame()
 }
 
 //[[Rcpp::export]]
-LogicalVector ReturnTableColumnLogical(int index)
+LogicalVector ReturnTableColumnLogical(int index, int entity_index = -1)
 {
     return wrap(
         *(vector <bool>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(entity_index)->
             getTable()->
             getTableClm(index-1)->
             getVector()
@@ -674,12 +680,12 @@ LogicalVector ReturnTableColumnLogical(int index)
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnTableColumnInteger(int index)
+IntegerVector ReturnTableColumnInteger(int index, int entity_index = -1)
 {
     return wrap(
         *(vector <int>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(entity_index)->
             getTable()->
             getTableClm(index-1)->
             getVector()
@@ -688,12 +694,12 @@ IntegerVector ReturnTableColumnInteger(int index)
 }
 
 //[[Rcpp::export]]
-NumericVector ReturnTableColumnDouble(int index)
+NumericVector ReturnTableColumnDouble(int index, int entity_index = -1)
 {
     return wrap(
         *(vector <double>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(entity_index)->
             getTable()->
             getTableClm(index-1)->
             getVector()
@@ -702,12 +708,12 @@ NumericVector ReturnTableColumnDouble(int index)
 }
 
 //[[Rcpp::export]]
-CharacterVector ReturnTableColumnString(int index)
+CharacterVector ReturnTableColumnString(int index, int entity_index = -1)
 {
     return wrap(
         *(vector <string>*)
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(entity_index)->
             getTable()->
             getTableClm(index-1)->
             getVector()
@@ -716,11 +722,11 @@ CharacterVector ReturnTableColumnString(int index)
 }
 
 //[[Rcpp::export]]
-IntegerVector ReturnTableColumnNAIndex(int index)
+IntegerVector ReturnTableColumnNAIndex(int index, int entity_index = -1)
 {
     return wrap(
         (
-            cnt.Rcpp_GetEntity()->
+            cnt.Rcpp_GetEntity(entity_index)->
             getTable()->
             getTableClm(index-1)->
             getNAIndex()

@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.18, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  **************************************************/
 
@@ -30,12 +30,13 @@ enum R_TYPE {
     TABLEE,
     SCALAR_DATE, SCALAR_DATETIME,
     VECTOR_DATE, VECTOR_DATETIME,
-    MATRIX_DATE, MATRIX_DATETIME
+    MATRIX_DATE, MATRIX_DATETIME,
+    VECTOR_ANY
 };
 
 #define DDB_NULL_INTEGER -2147483648
 #define DDB_NULL_SHORT -32768
-#define DDB_NULL_LOGICAL 0x80
+#define DDB_NULL_BYTE 0x80
 #define DDB_NULL_NUMERIC -DBL_MAX
 #define DDB_NULL_FLOAT -FLT_MAX
 #define DDB_NULL_LONG -LONG_LONG_MAX

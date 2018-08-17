@@ -117,123 +117,127 @@ DisConnect <- function() {
     invisible(.Call('_RDolphinDB_DisConnect', PACKAGE = 'RDolphinDB'))
 }
 
-ReturnScalarNA <- function() {
-    .Call('_RDolphinDB_ReturnScalarNA', PACKAGE = 'RDolphinDB')
+ReturnAnyVectorTypelist <- function() {
+    .Call('_RDolphinDB_ReturnAnyVectorTypelist', PACKAGE = 'RDolphinDB')
 }
 
-ReturnScalarBool <- function() {
-    .Call('_RDolphinDB_ReturnScalarBool', PACKAGE = 'RDolphinDB')
+ReturnScalarNA <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarNA', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnScalarInt <- function() {
-    .Call('_RDolphinDB_ReturnScalarInt', PACKAGE = 'RDolphinDB')
+ReturnScalarBool <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarBool', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnScalarDouble <- function() {
-    .Call('_RDolphinDB_ReturnScalarDouble', PACKAGE = 'RDolphinDB')
+ReturnScalarInt <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarInt', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnScalarString <- function() {
-    .Call('_RDolphinDB_ReturnScalarString', PACKAGE = 'RDolphinDB')
+ReturnScalarDouble <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarDouble', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnVectorBool <- function() {
-    .Call('_RDolphinDB_ReturnVectorBool', PACKAGE = 'RDolphinDB')
+ReturnScalarString <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarString', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnVectorInt <- function() {
-    .Call('_RDolphinDB_ReturnVectorInt', PACKAGE = 'RDolphinDB')
+ReturnVectorBool <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorBool', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnVectorDouble <- function() {
-    .Call('_RDolphinDB_ReturnVectorDouble', PACKAGE = 'RDolphinDB')
+ReturnVectorInt <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorInt', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnVectorString <- function() {
-    .Call('_RDolphinDB_ReturnVectorString', PACKAGE = 'RDolphinDB')
+ReturnVectorDouble <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorDouble', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnVectorNAIndex <- function() {
-    .Call('_RDolphinDB_ReturnVectorNAIndex', PACKAGE = 'RDolphinDB')
+ReturnVectorString <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorString', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnMatrixHasLable <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixHasLable', PACKAGE = 'RDolphinDB', row)
+ReturnVectorNAIndex <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorNAIndex', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnMatrixLableType <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixLableType', PACKAGE = 'RDolphinDB', row)
+ReturnMatrixHasLable <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixHasLable', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixLableNAIndex <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixLableNAIndex', PACKAGE = 'RDolphinDB', row)
+ReturnMatrixLableType <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixLableType', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixVectorBoolLable <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixVectorBoolLable', PACKAGE = 'RDolphinDB', row)
+ReturnMatrixLableNAIndex <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixLableNAIndex', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixVectorIntLable <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixVectorIntLable', PACKAGE = 'RDolphinDB', row)
+ReturnMatrixVectorBoolLable <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixVectorBoolLable', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixVectorDoubleLable <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixVectorDoubleLable', PACKAGE = 'RDolphinDB', row)
+ReturnMatrixVectorIntLable <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixVectorIntLable', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixVectorStringLable <- function(row) {
-    .Call('_RDolphinDB_ReturnMatrixVectorStringLable', PACKAGE = 'RDolphinDB', row)
+ReturnMatrixVectorDoubleLable <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixVectorDoubleLable', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixBool <- function() {
-    .Call('_RDolphinDB_ReturnMatrixBool', PACKAGE = 'RDolphinDB')
+ReturnMatrixVectorStringLable <- function(row, index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixVectorStringLable', PACKAGE = 'RDolphinDB', row, index)
 }
 
-ReturnMatrixInt <- function() {
-    .Call('_RDolphinDB_ReturnMatrixInt', PACKAGE = 'RDolphinDB')
+ReturnMatrixBool <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixBool', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnMatrixDouble <- function() {
-    .Call('_RDolphinDB_ReturnMatrixDouble', PACKAGE = 'RDolphinDB')
+ReturnMatrixInt <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixInt', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnMatrixString <- function() {
-    .Call('_RDolphinDB_ReturnMatrixString', PACKAGE = 'RDolphinDB')
+ReturnMatrixDouble <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixDouble', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnMatrixNAIndex <- function() {
-    .Call('_RDolphinDB_ReturnMatrixNAIndex', PACKAGE = 'RDolphinDB')
+ReturnMatrixString <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixString', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnTableColumnType <- function() {
-    .Call('_RDolphinDB_ReturnTableColumnType', PACKAGE = 'RDolphinDB')
+ReturnMatrixNAIndex <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnMatrixNAIndex', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnTableColumeName <- function() {
-    .Call('_RDolphinDB_ReturnTableColumeName', PACKAGE = 'RDolphinDB')
+ReturnTableColumnType <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnType', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnEmptyDataFrame <- function() {
-    .Call('_RDolphinDB_ReturnEmptyDataFrame', PACKAGE = 'RDolphinDB')
+ReturnTableColumeName <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumeName', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnTableColumnLogical <- function(index) {
-    .Call('_RDolphinDB_ReturnTableColumnLogical', PACKAGE = 'RDolphinDB', index)
+ReturnEmptyDataFrame <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnEmptyDataFrame', PACKAGE = 'RDolphinDB', index)
 }
 
-ReturnTableColumnInteger <- function(index) {
-    .Call('_RDolphinDB_ReturnTableColumnInteger', PACKAGE = 'RDolphinDB', index)
+ReturnTableColumnLogical <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnLogical', PACKAGE = 'RDolphinDB', index, entity_index)
 }
 
-ReturnTableColumnDouble <- function(index) {
-    .Call('_RDolphinDB_ReturnTableColumnDouble', PACKAGE = 'RDolphinDB', index)
+ReturnTableColumnInteger <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnInteger', PACKAGE = 'RDolphinDB', index, entity_index)
 }
 
-ReturnTableColumnString <- function(index) {
-    .Call('_RDolphinDB_ReturnTableColumnString', PACKAGE = 'RDolphinDB', index)
+ReturnTableColumnDouble <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnDouble', PACKAGE = 'RDolphinDB', index, entity_index)
 }
 
-ReturnTableColumnNAIndex <- function(index) {
-    .Call('_RDolphinDB_ReturnTableColumnNAIndex', PACKAGE = 'RDolphinDB', index)
+ReturnTableColumnString <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnString', PACKAGE = 'RDolphinDB', index, entity_index)
+}
+
+ReturnTableColumnNAIndex <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnNAIndex', PACKAGE = 'RDolphinDB', index, entity_index)
 }
 

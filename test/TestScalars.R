@@ -2,13 +2,19 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.31, Hangzhou
-# @Update -- 2018.8.1, Hangzhou
+# @Update -- 2018.8.17, Hangzhou
 #
 #
 
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.1.32", 8888)
+conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
 if (conn@connected == TRUE) {
+  
+    ptm <- proc.time()
+    result <- dbRun(conn, "a = `EXE`ELF;symbol(a)")
+    print(result)
+    print(class(result))
+    print(proc.time() - ptm)
 
     ptm <- proc.time()
     testList <- list("hello", "world")
@@ -81,6 +87,12 @@ if (conn@connected == TRUE) {
     print(result)
     print(class(result))
     print(proc.time() - ptm)
+    
+    ptm <- proc.time()
+    result <- dbRun(conn, "00c")
+    print(result)
+    print(class(result))
+    print(proc.time() - ptm)
 
     ptm <- proc.time()
     result <- dbRun(conn, "false")
@@ -96,6 +108,12 @@ if (conn@connected == TRUE) {
 
     ptm <- proc.time()
     result <- dbRun(conn, "`hello")
+    print(result)
+    print(class(result))
+    print(proc.time() - ptm)
+    
+    ptm <- proc.time()
+    result <- dbRun(conn, "'a'")
     print(result)
     print(class(result))
     print(proc.time() - ptm)

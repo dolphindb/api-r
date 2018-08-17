@@ -1,10 +1,10 @@
 Package: RDolphinDB
 Type: Package
 Title: Connecting to DolphinDB server with R
-Version: 0.6.1
-Date: 2018-08-02
-Author: Jingtang Zhang
-Maintainer: xxx <xxx@dolphindb.com>
+Version: 0.8.0
+Date: 2018-08-17
+Author: mrDrivingDuck
+Maintainer: mrDrivingDuck <jingtang.zhang@dolphindb.com>
 Description: The R API of DolphinDB.
     You can use R connecting to DolphinDB with IP address and port, 
     and then running scripts or functions and geting result in R form.
@@ -12,4 +12,4 @@ License: GPL (>= 2)
 Depends: R (>= 3.2.0)
 Imports: Rcpp (>= 0.12.17)
 LinkingTo: Rcpp
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

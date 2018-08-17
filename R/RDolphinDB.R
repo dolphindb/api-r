@@ -95,7 +95,8 @@ setMethod(
     signature(conn = "RDolphinDB"),
     function(conn, script) {
         type <- RunScript(script)
-        DDB_GetEntity(type)
+        entity <- DDB_GetEntity(type)
+        return (entity)
     }
 )
 
@@ -103,7 +104,7 @@ setMethod(
 #'
 #' @description Method of running remote procedure call.
 #' @param conn The connector object.
-#' @param func The function name running the DolphinDB server.
+#' @param func The function name running on the DolphinDB server.
 #' @param args The list containing all arguments needed to be uploaded to server.
 #' @return Return the excuted result of function from server in R type.
 #' @export
@@ -219,11 +220,11 @@ obj <- new("RDolphinDB")
 #' @description Method to getting an object of connector.
 #' @export
 #' @examples
-#' conn <- DolphinDB()
-#' conn <- dbConnect(conn, "localhost", 8848)
-#' 
-#' # Recommanded
 #' conn <- dbConnect(DolphinDB(), "localhost", 8848)
+#' if (conn@connected == TRUE) {
+#'     # TO DO ...
+#'     # dbRun(...)
+#' }
 DolphinDB <- function() {
     return (obj)
 }

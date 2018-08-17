@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.12, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  **************************************************/
 
@@ -29,6 +29,7 @@
 
 #include "Socket/SysIO.h"
 #include "Entity.h"
+#include "AnyVector.h"
 #include "R_Type.h"
 
 using std::stringstream;
@@ -47,11 +48,14 @@ private:
     bool connected;
 
     Entity* entity;
+    AnyVectorr* anyvector;
     
 public:
     Rcpp_Connector()
         : sessionID(""), remoteLittleEndian(false), connected(false)
     {
+        entity = NULL;
+        anyvector = NULL;
         socket = new Socket();
     }
     ~Rcpp_Connector()
@@ -60,6 +64,11 @@ public:
         {
             delete entity;
             entity = NULL;
+        }
+        if (anyvector != NULL)
+        {
+            delete anyvector;
+            anyvector = NULL;
         }
         // in -> close();
         // socket -> close();
@@ -70,6 +79,11 @@ public:
 
     void Rcpp_ClearEntity();
     Entity* Rcpp_GetEntity() {return entity;}
+    Entity* Rcpp_GetEntity(int index)
+    {
+        return (index<0) ? Rcpp_GetEntity() : anyvector->getEntity(index-1);
+    }
+    AnyVectorr* Rcpp_GetAnyVector() {return anyvector;}
     int Rcpp_ReceiveEntity();
     bool Rcpp_ReceiveHeader();
 
@@ -275,7 +289,7 @@ void Rcpp_Connector::Rcpp_UploadEntity(vector <bool>& mtx, vector <int>& NAIndex
     }
     for (unsigned int i = 0; i < NAIndex.size(); i++)
     {
-        convert[NAIndex[i]] = DDB_NULL_LOGICAL;
+        convert[NAIndex[i]] = DDB_NULL_BYTE;
     }
 
     Buffer buffer;
@@ -372,7 +386,7 @@ void Rcpp_Connector::Rcpp_UploadEntity(vector <bool>& vec, vector <int>& NAIndex
     }
     for (unsigned int i = 0; i < NAIndex.size(); i++)
     {
-        convert[NAIndex[i]] = DDB_NULL_LOGICAL;
+        convert[NAIndex[i]] = DDB_NULL_BYTE;
     }
 
     Buffer buffer;
@@ -769,9 +783,16 @@ int Rcpp_Connector::Rcpp_ReceiveEntity()
     // cout << "type:" << type << endl;
 
     // set data
-    entity = new Entity(form, type, *in);
+    if (type == DATA_TYPE::DT_ANY && form == DATA_FORM::DF_VECTOR)
+    {
+        anyvector = new AnyVectorr(*in);
+    }
+    else 
+    {
+        entity = new Entity(form, type, *in);
+    }
 
-    if (entity != NULL)
+    if (entity != NULL || anyvector != NULL)
     {
         return Rcpp_ReturnRType(form, type);
     }
@@ -817,100 +838,16 @@ void Rcpp_Connector::Rcpp_ClearEntity()
         delete entity;
         entity = NULL;
     }
+    if (anyvector != NULL)
+    {
+        delete anyvector;
+        anyvector = NULL;
+    }
 }
 
 int Rcpp_Connector::Rcpp_ReturnRType(int data_form, int data_type)
 {
-    if (data_form == DATA_FORM::DF_SCALAR)
-    {
-        switch(data_type)
-        {
-            case DATA_TYPE::DT_BOOL:
-                return SCALAR_LOGICAL;
-            case DATA_TYPE::DT_INT:
-                return SCALAR_INTEGER;
-            case DATA_TYPE::DT_SHORT: 
-                return SCALAR_INTEGER;
-            case DATA_TYPE::DT_DOUBLE:
-                return SCALAR_NUMERIC;
-            case DATA_TYPE::DT_LONG: 
-                return SCALAR_NUMERIC;
-            case DATA_TYPE::DT_STRING:
-                return SCALAR_CHARACTER;
-            case DATA_TYPE::DT_FLOAT:
-                return SCALAR_NUMERIC;
-            case DATA_TYPE::DT_DATE: 
-                return SCALAR_DATE;
-            case DATA_TYPE::DT_DATETIME: 
-                return SCALAR_DATETIME;
-            case DATA_TYPE::DT_VOID: 
-                return VOIDD;
-            default:
-                cout << "[ERROR] Data type not support in R" << endl;
-                return 0;
-        }
-    }
-    else if (data_form == DATA_FORM::DF_VECTOR || 
-             data_form == DATA_FORM::DF_SET)
-    {
-        switch(data_type)
-        {
-            case DATA_TYPE::DT_BOOL:
-                return VECTOR_LOGICAL;
-            case DATA_TYPE::DT_INT:
-                return VECTOR_INTEGER;
-            case DATA_TYPE::DT_SHORT:
-                return VECTOR_INTEGER;
-            case DATA_TYPE::DT_DOUBLE:
-                return VECTOR_NUMERIC;
-            case DATA_TYPE::DT_LONG:
-                return VECTOR_NUMERIC;
-            case DATA_TYPE::DT_FLOAT: 
-                return VECTOR_NUMERIC;
-            case DATA_TYPE::DT_STRING:
-                return VECTOR_CHARACTER;
-            case DATA_TYPE::DT_DATE: 
-                return VECTOR_DATE;
-            case DATA_TYPE::DT_DATETIME: 
-                return VECTOR_DATETIME;
-            default:
-                cout << "[ERROR] Data type not support in R" << endl;
-                return 0;
-        }
-    }
-    else if (data_form == DATA_FORM::DF_MATRIX)
-    {
-        switch(data_type)
-        {
-            case DATA_TYPE::DT_BOOL:
-                return MATRIX_LOGICAL;
-            case DATA_TYPE::DT_INT: 
-                return MATRIX_INTEGER;
-            case DATA_TYPE::DT_SHORT: 
-                return MATRIX_INTEGER;
-            case DATA_TYPE::DT_DOUBLE: 
-                return MATRIX_NUMERIC;
-            case DATA_TYPE::DT_LONG: 
-                return MATRIX_NUMERIC;
-            case DATA_TYPE::DT_FLOAT: 
-                return MATRIX_NUMERIC;
-            case DATA_TYPE::DT_DATE: 
-                return MATRIX_DATE;
-            case DATA_TYPE::DT_DATETIME: 
-                return MATRIX_DATETIME;
-            default:
-                cout << "[ERROR] Data type not support in R" << endl;
-                return 0;
-        }
-    }
-    else if (data_form == DATA_FORM::DF_TABLE)
-    {
-        return TABLEE;
-    }
-    else
-    {
-        cout << "[ERROR] Data form not support in R" << endl;
-    }
+    return Utill::ReturnRType(data_form, data_type);
 }
 
 void Rcpp_Connector::Rcpp_DisConnect()

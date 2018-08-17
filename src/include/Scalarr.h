@@ -5,11 +5,12 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.14, Hangzhou
- * @Update -- 2018.8.1, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  *********************************************/
 
 #include <iostream>
+#include <sstream>
 #include <string>
 using std::string;
 using std::cout;
@@ -60,7 +61,7 @@ public:
     {
         char temp;
         in.readChar(temp);
-        if (temp == (char) DDB_NULL_LOGICAL)
+        if (temp == (char) DDB_NULL_BYTE)
         {
             Scalarr::SetNull();
         }
@@ -68,6 +69,31 @@ public:
     }
     ScalarBool(bool in) {value = in;}
     ~ScalarBool() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
+class ScalarChar : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarChar(DataInputStream &in)
+        :Scalarr()
+    {
+        char temp;
+        in.readChar(temp);
+        if (temp == (char) DDB_NULL_BYTE)
+        {
+            Scalarr::SetNull();
+        }
+        stringstream ss;
+        ss << temp;
+        value = ss.str();
+        ss.str("");
+        ss.clear();
+    }
+    ~ScalarChar() {}
 
     void* getValue() {return (void *)(&value);}
 };
@@ -213,6 +239,27 @@ public:
     void* getValue() {return (void *)(&value);}
 };
 
+class ScalarMonth : public Scalarr
+{
+private: 
+    string value;
+public: 
+    ScalarMonth(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseMonth(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarMonth() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
 class ScalarDateTime : public Scalarr
 {
 private: 
@@ -234,6 +281,132 @@ public:
     void* getValue() {return (void *)(&value);}
 };
 
+class ScalarTime : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarTime(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseTime(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarTime() {}
+
+    void* getValue() {return (void*)(&value);}
+};
+
+class ScalarMinute : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarMinute(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseMinute(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarMinute() {}
+
+    void* getValue() {return (void*)(&value);}
+};
+
+class ScalarSecond : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarSecond(DataInputStream &in)
+        :Scalarr()
+    {
+        int temp;
+        in.readInt(temp);
+        value = Utill::ParseSecond(temp);
+        if (temp == DDB_NULL_INTEGER)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarSecond() {}
+
+    void* getValue() {return (void*)(&value);}
+};
+
+class ScalarTimestamp : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarTimestamp(DataInputStream &in)
+        :Scalarr()
+    {
+        long long temp;
+        in.readLong(temp);
+        value = Utill::ParseTimestamp(temp);
+        if (temp < DDB_NULL_LONG)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarTimestamp() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
+class ScalarNanotime : public Scalarr 
+{
+private:
+    string value;
+public:
+    ScalarNanotime(DataInputStream &in)
+        :Scalarr()
+    {
+        long long temp;
+        in.readLong(temp);
+        value = Utill::ParseNanotime(temp);
+        if (temp < DDB_NULL_LONG)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarNanotime() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
+class ScalarNanotimestamp : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarNanotimestamp(DataInputStream &in)
+        :Scalarr()
+    {
+        long long temp;
+        in.readLong(temp);
+        value = Utill::ParseNanotimestamp(temp);
+        if (temp < DDB_NULL_LONG)
+        {
+            Scalarr::SetNull();
+        }
+    }
+    ~ScalarNanotimestamp() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
 void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
 {
     switch(data_type)
@@ -247,7 +420,13 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
         case DATA_TYPE::DT_DOUBLE:
             scalar_ptr = new ScalarDouble(in);
             break;
+        case DATA_TYPE::DT_CHAR:
+            scalar_ptr = new ScalarChar(in);
+            break;
         case DATA_TYPE::DT_STRING:
+            scalar_ptr = new ScalarString(in);
+            break;
+        case DATA_TYPE::DT_SYMBOL:
             scalar_ptr = new ScalarString(in);
             break;
         case DATA_TYPE::DT_LONG:
@@ -262,8 +441,29 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
         case DATA_TYPE::DT_DATE: 
             scalar_ptr = new ScalarDate(in);
             break;
+        case DATA_TYPE::DT_MONTH:
+            scalar_ptr = new ScalarMonth(in);
+            break;
         case DATA_TYPE::DT_DATETIME: 
             scalar_ptr = new ScalarDateTime(in);
+            break;
+        case DATA_TYPE::DT_TIME:
+            scalar_ptr = new ScalarTime(in);
+            break;
+        case DATA_TYPE::DT_MINUTE:
+            scalar_ptr = new ScalarMinute(in);
+            break;
+        case DATA_TYPE::DT_SECOND:
+            scalar_ptr = new ScalarSecond(in);
+            break;
+        case DATA_TYPE::DT_TIMESTAMP:
+            scalar_ptr = new ScalarTimestamp(in);
+            break;
+        case DATA_TYPE::DT_NANOTIME:
+            scalar_ptr = new ScalarNanotime(in);
+            break;
+        case DATA_TYPE::DT_NANOTIMESTAMP:
+            scalar_ptr = new ScalarNanotimestamp(in);
             break;
         case DATA_TYPE::DT_VOID: 
             bool temp;
