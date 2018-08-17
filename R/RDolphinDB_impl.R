@@ -2,7 +2,7 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.13, Hangzhou
-# @Update -- 2018.8.16, Hangzhou
+# @Update -- 2018.8.17, Hangzhou
 #
 # @description Implementation of class 'RDolphinDB'
 #
@@ -10,11 +10,11 @@
 # @Function
 #   Set all NA for a received vector,
 #   according to an Index vector.
-DDB_SetReceiveVectorNA <- function(temp, NAIndex) {
+DDB_SetReceiveVectorNA <- function(vec, NAIndex) {
     for (i in NAIndex) {
-        temp[i] <- NA
+        vec[i] <- NA
     }
-    return (temp)
+    return (vec)
 }
 
 # @Function
@@ -34,50 +34,50 @@ DDB_SetUploadVectorNA <- function(vec) {
 # @Function
 #   Used for receiving row and column lables of a matrix.
 #   Lable needs to be a vector.
-DDB_ReceiveMatrixLable <- function(temp) {
-    if (ReturnMatrixHasLable(TRUE)) {
-        type <- ReturnMatrixLableType(TRUE)
+DDB_ReceiveMatrixLable <- function(mtx, index = -1) {
+    if (ReturnMatrixHasLable(TRUE, index)) {
+        type <- ReturnMatrixLableType(TRUE, index)
         if (type == 5) {
-            result <- ReturnMatrixVectorBoolLable(TRUE)
-            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(TRUE))
+            result <- ReturnMatrixVectorBoolLable(TRUE, index)
+            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(TRUE, index))
 
         } else if (type == 6) {
-            result <- ReturnMatrixVectorIntLable(TRUE)
+            result <- ReturnMatrixVectorIntLable(TRUE, index)
 
         } else if (type == 7) {
-            result <- ReturnMatrixVectorDoubleLable(TRUE)
-            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(TRUE))
+            result <- ReturnMatrixVectorDoubleLable(TRUE, index)
+            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(TRUE, index))
 
         } else if (type == 8) {
-            result <- ReturnMatrixVectorStringLable(TRUE)
+            result <- ReturnMatrixVectorStringLable(TRUE, index)
 
         } else {
             # ERROR
         }
-        rownames(temp) <- result
+        rownames(mtx) <- result
     }
-    if (ReturnMatrixHasLable(FALSE)) {
-        type <- ReturnMatrixLableType(FALSE)
+    if (ReturnMatrixHasLable(FALSE, index)) {
+        type <- ReturnMatrixLableType(FALSE, index)
         if (type == 5) {
-            result <- ReturnMatrixVectorBoolLable(FALSE)
-            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(FALSE))
+            result <- ReturnMatrixVectorBoolLable(FALSE, index)
+            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(FALSE, index))
 
         } else if (type == 6) {
-            result <- ReturnMatrixVectorIntLable(FALSE)
+            result <- ReturnMatrixVectorIntLable(FALSE, index)
 
         } else if (type == 7) {
-            result <- ReturnMatrixVectorDoubleLable(FALSE)
-            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(FALSE))
+            result <- ReturnMatrixVectorDoubleLable(FALSE, index)
+            result <- DDB_SetReceiveVectorNA(result, ReturnMatrixLableNAIndex(FALSE, index))
 
         } else if (type == 8) {
-            result <- ReturnMatrixVectorStringLable(FALSE)
+            result <- ReturnMatrixVectorStringLable(FALSE, index)
 
         } else {
             # ERROR
         }
-        colnames(temp) <- result
+        colnames(mtx) <- result
     }
-    return (temp)
+    return (mtx)
 }
 
 # @Function
@@ -265,7 +265,27 @@ DDB_GetEntity <- function(xxdb_type) {
 
             } else if (typelist[i] == 8) {
                 clm <- ReturnTableColumnString(i)
+                NAIndex <- ReturnTableColumnNAIndex(i)
+                for (j in NAIndex) {
+                    clm[j] <- NA
+                }
                 result <- cbind(result, clm)
+
+            } else if (typelist[i] == 16) {
+                clm <- ReturnTableColumnString(i)
+                NAIndex <- ReturnTableColumnNAIndex(i)
+                for (j in NAIndex) {
+                    clm[j] <- NA
+                }
+                result <- cbind(result, as.Date(clm))
+
+            } else if (typelist[i] == 17) {
+                clm <- ReturnTableColumnString(i)
+                NAIndex <- ReturnTableColumnNAIndex(i)
+                for (j in NAIndex) {
+                    clm[j] <- NA
+                }
+                result <- cbind(result, as.POSIXct(clm))
 
             } else {
                 print("error in DataFrame")
@@ -280,12 +300,196 @@ DDB_GetEntity <- function(xxdb_type) {
 
     } else if (xxdb_type == 20) {
         # AnyVector => list
-        typelist <- ReturnAnyVectorTypelist()
-        for (i in 1:length(typelist)) {
-            print(typelist[i])
+        anyVector <- list()
+        anytypelist <- ReturnAnyVectorTypelist()
+        
+        for (i in 1:length(anytypelist)) {
+            if (anytypelist[i] == 0) {
+                # void
+                result <- NA
+
+            } else if (anytypelist[i] == 1) {
+                # Scalar Logical
+                if (ReturnScalarNA(i)) {
+                    result <- NA
+                } else {
+                    result <- ReturnScalarBool(i)
+                }
+
+            } else if (anytypelist[i] == 2) {
+                # Scalar Integer
+                if (ReturnScalarNA(i)) {
+                    result <- NA
+                } else {
+                    result <- ReturnScalarInt(i)
+                }
+
+            } else if (anytypelist[i] == 3) {
+                # Scalar Numeric
+                if (ReturnScalarNA(i)) {
+                    result <- NA
+                } else {
+                    result <- ReturnScalarDouble(i)
+                }
+
+            } else if (anytypelist[i] == 4) {
+                # Scalar Character
+                if (ReturnScalarNA(i)) {
+                    result <- NA
+                } else {
+                    result <- ReturnScalarString(i)
+                }
+
+            } else if (anytypelist[i] == 14) {
+                # Scalar Date
+                if (ReturnScalarNA(i)) {
+                    result <- NA
+                } else {
+                    result <- ReturnScalarString(i)
+                }
+                result <- as.Date(result)
+
+            } else if (anytypelist[i] == 15) {
+                # Scalar DateTime
+                if (ReturnScalarNA(i)) {
+                    result <- NA
+                } else {
+                    result <- ReturnScalarString(i)
+                }
+                result <- as.POSIXct(result)
+
+            } else if (anytypelist[i] == 5) {
+                # Logical Vector
+                result <- ReturnVectorBool(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex(i))
+
+            } else if (anytypelist[i] == 6) {
+                # Integer Vector
+                result <- ReturnVectorInt(i)
+
+            } else if (anytypelist[i] == 7) {
+                # Numeric Vector
+                result <- ReturnVectorDouble(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex(i))
+
+            } else if (anytypelist[i] == 8) {
+                # Character Vector
+                result <- ReturnVectorString(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex(i))
+
+            } else if (anytypelist[i] == 16) {
+                # Vector Date
+                result <- ReturnVectorString(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex(i))
+                result <- as.Date(result)
+
+            } else if (anytypelist[i] == 17) {
+                # Vector DateTime
+                result <- ReturnVectorString(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex(i))
+                result <- as.POSIXct(result)
+
+            } else if (anytypelist[i] == 9) {
+                # Logical Matrix
+                result <- ReturnMatrixBool(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnMatrixNAIndex(i))
+                result <- DDB_ReceiveMatrixLable(result, i)
+
+            } else if (anytypelist[i] == 10) {
+                # Integer Matrix
+                result <- ReturnMatrixInt(i)
+                result <- DDB_ReceiveMatrixLable(result, i)
+
+            } else if (anytypelist[i] == 11) {
+                # Numeric Matrix
+                result <- ReturnMatrixDouble(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnMatrixNAIndex(i))
+                result <- DDB_ReceiveMatrixLable(result, i)
+                
+            } else if (anytypelist[i] == 18) {
+                # Matrix Date
+                result <- ReturnMatrixString(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnMatrixNAIndex(i))
+                result <- DDB_ReceiveMatrixLable(result, i)
+
+            } else if (anytypelist[i] == 19) {
+                # Matrix DateTime
+                result <- ReturnMatrixString(i)
+                result <- DDB_SetReceiveVectorNA(result, ReturnMatrixNAIndex(i))
+                result <- DDB_ReceiveMatrixLable(result, i)
+
+            } else if (anytypelist[i] == 12) {
+                # Character Matrix
+                result <- NA
+
+            } else if (anytypelist[i] == 13) {
+                # DataFrame
+                result <- ReturnEmptyDataFrame(i)
+                typelist <- ReturnTableColumnType(i)
+
+                for (k in 1:length(typelist)) {
+                    if (typelist[k] == 5) {
+                        clm <- ReturnTableColumnLogical(k, i)
+                        NAIndex <- ReturnTableColumnNAIndex(k, i)
+                        for (j in NAIndex) {
+                            clm[j] <- NA
+                        }
+                        result <- cbind(result, clm)
+
+                    } else if (typelist[k] == 6) {
+                        clm <- ReturnTableColumnInteger(k, i)
+                        result <- cbind(result, clm)
+
+                    } else if (typelist[k] == 7) {
+                        clm <- ReturnTableColumnDouble(k, i)
+                        NAIndex <- ReturnTableColumnNAIndex(k, i)
+                        for (j in NAIndex) {
+                            clm[j] <- NA
+                        }
+                        result <- cbind(result, clm)
+
+                    } else if (typelist[k] == 8) {
+                        clm <- ReturnTableColumnString(k, i)
+                        NAIndex <- ReturnTableColumnNAIndex(k, i)
+                        for (j in NAIndex) {
+                            clm[j] <- NA
+                        }
+                        result <- cbind(result, clm)
+
+                    } else if (typelist[k] == 16) {
+                        clm <- ReturnTableColumnString(k, i)
+                        NAIndex <- ReturnTableColumnNAIndex(k, i)
+                        for (j in NAIndex) {
+                            clm[j] <- NA
+                        }
+                        result <- cbind(result, as.Date(clm))
+
+                    } else if (typelist[k] == 17) {
+                        clm <- ReturnTableColumnString(k, i)
+                        NAIndex <- ReturnTableColumnNAIndex(k, i)
+                        for (j in NAIndex) {
+                            clm[j] <- NA
+                        }
+                        result <- cbind(result, as.POSIXct(clm))
+
+                    } else {
+                        print("error in DataFrame")
+                        #return (NULL)
+                    }
+                }
+                
+                result <- result[,-1]
+                colnames(result) <- ReturnTableColumeName(i)
+
+            } else {
+                result <- NA
+            }
+
+            anyVector <- c(anyVector, list(result))
         }
         Clear()
-        return (NULL)
+        return (anyVector)
+
     } else {
         # print("Error")
         Clear()

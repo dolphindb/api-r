@@ -21,7 +21,7 @@ if (conn@connected == TRUE) {
     print(proc.time() - ptm)
 
     ptm <- proc.time()
-    result <- dbRun(conn, "table(1 2 NULL as int, `x`dd`zz as str, 10.8 7.6 3.5 as dbl)")
+    result <- dbRun(conn, "table(2018.06.12 2018.07.22 2018.08.21 as date, 1 2 NULL as int, `x`dd`zz as str, 10.8 7.6 3.5 as dbl)")
     print(result)
     print(class(result))
     print(proc.time() - ptm)

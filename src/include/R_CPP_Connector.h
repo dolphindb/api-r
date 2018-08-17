@@ -5,7 +5,7 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.12, Hangzhou
- * @Update -- 2018.8.16, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  **************************************************/
 
@@ -81,7 +81,7 @@ public:
     Entity* Rcpp_GetEntity() {return entity;}
     Entity* Rcpp_GetEntity(int index)
     {
-        return (index<0) ? Rcpp_GetEntity() : anyvector->getEntity(index);
+        return (index<0) ? Rcpp_GetEntity() : anyvector->getEntity(index-1);
     }
     AnyVectorr* Rcpp_GetAnyVector() {return anyvector;}
     int Rcpp_ReceiveEntity();
