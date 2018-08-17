@@ -209,7 +209,7 @@ setMethod(
     signature(conn = "RDolphinDB"),
     function(conn) {
         DisConnect()
-        object@connected <- FALSE
+        conn@connected <- FALSE
     }
 )
 
