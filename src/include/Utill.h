@@ -76,6 +76,8 @@ int Utill::ReturnRType(int data_form, int data_type)
                 return SCALAR_NUMERIC;
             case DATA_TYPE::DT_LONG: 
                 return SCALAR_NUMERIC;
+            case DATA_TYPE::DT_CHAR:
+                return SCALAR_CHARACTER;
             case DATA_TYPE::DT_STRING:
                 return SCALAR_CHARACTER;
             case DATA_TYPE::DT_SYMBOL:
@@ -129,6 +131,8 @@ int Utill::ReturnRType(int data_form, int data_type)
                 return VECTOR_NUMERIC;
             case DATA_TYPE::DT_FLOAT: 
                 return VECTOR_NUMERIC;
+            case DATA_TYPE::DT_CHAR:
+                return VECTOR_CHARACTER;
             case DATA_TYPE::DT_STRING:
                 return VECTOR_CHARACTER;
             case DATA_TYPE::DT_SYMBOL:

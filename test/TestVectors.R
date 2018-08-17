@@ -2,7 +2,7 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.31, Hangzhou
-# @Update -- 2018.8.15, Hangzhou
+# @Update -- 2018.8.17, Hangzhou
 #
 #
 
@@ -87,6 +87,12 @@ if (conn@connected == TRUE) {
 
     ptm <- proc.time()
     result <- dbRun(conn, "sort(false true NULL)")
+    print(result)
+    print(class(result))
+    print(proc.time() - ptm)
+    
+    ptm <- proc.time()
+    result <- dbRun(conn, "'a' 'b' 'c'")
     print(result)
     print(class(result))
     print(proc.time() - ptm)

@@ -289,6 +289,7 @@ DDB_GetEntity <- function(xxdb_type) {
 
             } else {
                 print("error in DataFrame")
+                Clear()
                 return (NULL)
             }
         }
@@ -474,7 +475,8 @@ DDB_GetEntity <- function(xxdb_type) {
 
                     } else {
                         print("error in DataFrame")
-                        #return (NULL)
+                        Clear()
+                        return (NULL)
                     }
                 }
                 

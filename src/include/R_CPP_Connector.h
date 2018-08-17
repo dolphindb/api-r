@@ -289,7 +289,7 @@ void Rcpp_Connector::Rcpp_UploadEntity(vector <bool>& mtx, vector <int>& NAIndex
     }
     for (unsigned int i = 0; i < NAIndex.size(); i++)
     {
-        convert[NAIndex[i]] = DDB_NULL_LOGICAL;
+        convert[NAIndex[i]] = DDB_NULL_BYTE;
     }
 
     Buffer buffer;
@@ -386,7 +386,7 @@ void Rcpp_Connector::Rcpp_UploadEntity(vector <bool>& vec, vector <int>& NAIndex
     }
     for (unsigned int i = 0; i < NAIndex.size(); i++)
     {
-        convert[NAIndex[i]] = DDB_NULL_LOGICAL;
+        convert[NAIndex[i]] = DDB_NULL_BYTE;
     }
 
     Buffer buffer;

@@ -2,7 +2,7 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.31
-# @Update -- 2018.8.2
+# @Update -- 2018.8.17
 #
 # The document commet of package 'RDolphinDB'
 # The dynamic library declaration of package if using Rcpp
@@ -17,7 +17,7 @@
 #' @description You can use R connecting to DolphinDB with IP address and port, 
 #' @description and then running scripts or functions and geting result in R form.
 #' 
-#' @author Jingtang Zhang <jingtang.zhang@dolphindb.com>
+#' @author mrDrivingDuck <jingtang.zhang@dolphindb.com>
 #' @section RDolphinDB functions:
 #' DolphinDB()
 #' dbConnect()

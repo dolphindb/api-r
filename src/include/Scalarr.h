@@ -5,11 +5,12 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.14, Hangzhou
- * @Update -- 2018.8.15, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  *********************************************/
 
 #include <iostream>
+#include <sstream>
 #include <string>
 using std::string;
 using std::cout;
@@ -60,7 +61,7 @@ public:
     {
         char temp;
         in.readChar(temp);
-        if (temp == (char) DDB_NULL_LOGICAL)
+        if (temp == (char) DDB_NULL_BYTE)
         {
             Scalarr::SetNull();
         }
@@ -68,6 +69,31 @@ public:
     }
     ScalarBool(bool in) {value = in;}
     ~ScalarBool() {}
+
+    void* getValue() {return (void *)(&value);}
+};
+
+class ScalarChar : public Scalarr
+{
+private:
+    string value;
+public:
+    ScalarChar(DataInputStream &in)
+        :Scalarr()
+    {
+        char temp;
+        in.readChar(temp);
+        if (temp == (char) DDB_NULL_BYTE)
+        {
+            Scalarr::SetNull();
+        }
+        stringstream ss;
+        ss << temp;
+        value = ss.str();
+        ss.str("");
+        ss.clear();
+    }
+    ~ScalarChar() {}
 
     void* getValue() {return (void *)(&value);}
 };
@@ -393,6 +419,9 @@ void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)
             break;
         case DATA_TYPE::DT_DOUBLE:
             scalar_ptr = new ScalarDouble(in);
+            break;
+        case DATA_TYPE::DT_CHAR:
+            scalar_ptr = new ScalarChar(in);
             break;
         case DATA_TYPE::DT_STRING:
             scalar_ptr = new ScalarString(in);

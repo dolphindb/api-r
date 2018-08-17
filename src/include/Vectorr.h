@@ -5,11 +5,12 @@
  *
  * @Author -- Jingtang Zhang
  * @Date   -- 2018.7.14, Hangzhou
- * @Update -- 2018.8.15, Hangzhou
+ * @Update -- 2018.8.17, Hangzhou
  * 
  *****************************************/
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 using std::vector;
@@ -73,7 +74,7 @@ public:
             char temp;
             in.readChar(temp);
             vec.push_back((bool) temp);
-            if (temp == (char) DDB_NULL_LOGICAL)
+            if (temp == (char) DDB_NULL_BYTE)
             {
                 Vectorr::getNAIndex().push_back(i+1);
             }
@@ -154,6 +155,36 @@ public:
         }
     }
     ~VectorString() {}      // Free automatically
+
+    void* getVector() {return (void *)(&vec);}
+};
+
+class VectorChar : public Vectorr
+{
+private:
+    vector <string> vec;
+public:
+    VectorChar(DataInputStream &in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            char temp;
+            in.readChar(temp);
+            stringstream ss;
+            ss << temp;
+            vec.push_back(ss.str());
+            ss.str("");
+            ss.clear();
+            if (temp == DDB_NULL_BYTE)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+    }
+    ~VectorChar() {}
 
     void* getVector() {return (void *)(&vec);}
 };
@@ -507,6 +538,10 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
         case DATA_TYPE::DT_FLOAT: 
             vector_ptr = new VectorFloat(in);
             return VECTOR_NUMERIC;
+
+        case DATA_TYPE::DT_CHAR:
+            vector_ptr = new VectorChar(in);
+            return VECTOR_CHARACTER;
 
         case DATA_TYPE::DT_STRING:
             vector_ptr = new VectorString(in);
