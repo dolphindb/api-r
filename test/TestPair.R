@@ -2,31 +2,29 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.8.17, Hangzhou
-# @Update -- 2018.8.17, Hangzhou
+# @Update -- 2018.8.19, Ningbo
 #
 #
 
 library("RDolphinDB")
 conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
 if (conn@connected == TRUE) {
+
+    source("Assert.R")
+    record <- c(0L, 0L)
   
-    ptm <- proc.time()
     result <- dbRun(conn, "4:8")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(4L, 8L)
+    record <- assert(record, "test integer pair", result, vec)
     
-    ptm <- proc.time()
     result <- dbRun(conn, "3.5:6.8")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(3.5, 6.8)
+    record <- assert(record, "test numeric pair", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "`Hello:`World")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
-
+    vec <- c("Hello", "World")
+    record <- assert(record, "test character pair", result, vec)
+    
+    printer(record)
 }
 dbClose(conn)

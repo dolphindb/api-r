@@ -2,19 +2,19 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.31, Hangzhou
-# @Update -- 2018.8.17, Hangzhou
+# @Update -- 2018.8.19, Ningbo
 #
 #
 
 library("RDolphinDB")
 conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
 if (conn@connected == TRUE) {
+
+    source("Assert.R")
+    record <- c(0L, 0L)
   
-    ptm <- proc.time()
     result <- dbRun(conn, "a = `EXE`ELF;symbol(a)")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec
 
     ptm <- proc.time()
     testList <- list("hello", "world")

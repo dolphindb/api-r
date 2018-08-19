@@ -20,7 +20,6 @@ if (conn@connected == TRUE) {
     result <- dbRpc(conn, "cell", testList)
     record <- assert(record, "test dataframe rpc", result, 3.5)
 
-
     result <- dbRun(conn, "table(2018.06.12 2018.07.22 2018.08.21 as date, 1 2 NULL as int, `x`dd`zz as str, 10.8 7.6 3.5 as dbl)")
     table <- data.frame(
         date=as.Date(c("2018-06-12","2018-07-22","2018-08-21")),
@@ -29,6 +28,7 @@ if (conn@connected == TRUE) {
         dbl=c(10.8, 7.6, 3.5)
     )
     record <- assert(record, "test dataframe run", result, table)
+    
     printer(record)
 
 }
