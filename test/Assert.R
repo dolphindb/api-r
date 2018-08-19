@@ -6,6 +6,11 @@
 #
 #
 
+# Config IP address and port who is running DolphinDB server
+ip_addr <- "192.168.137.132"
+port <- 8888
+
+# Count all cases, print error message
 assert <- function(record, item, target, current) {
     
     if (TRUE == all.equal(target, current)) {
@@ -17,6 +22,7 @@ assert <- function(record, item, target, current) {
     return (record)
 }
 
+# Print testing result
 printer <- function(record) {
     msg <- paste("Build Failed:", as.character(record[2]-record[1]), "/", as.character(record[2]))
     print(msg, quote = FALSE)

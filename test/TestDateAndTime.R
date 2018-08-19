@@ -6,11 +6,12 @@
 #
 #
 
+source("Assert.R")
+
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
+conn <- dbConnect(DolphinDB(), ip_addr, port)
 if (conn@connected == TRUE) {
   
-    source("Assert.R")
     record <- c(0L, 0L)
     
     result <- dbRun(conn, "matrix(2018.08.14T16:16:16.016147852 2018.08.17T03:26:56.088985651, 2018.08.25T19:24:46.832147524 2018.08.25T19:24:46.832369852, NULL 2018.08.25T19:24:46.832025741)")

@@ -6,15 +6,16 @@
 #
 #
 
+source("Assert.R")
+
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888, "admin", "123456")
+conn <- dbConnect(DolphinDB(), ip_addr, port, "admin", "123456")
 if (conn@connected == TRUE) {
 
-    source("Assert.R")
     record <- c(0L, 0L)
     
     record <- assert(record, "test log in", 1L, 1L)
-    printer(record)
 
+    printer(record)
 }
 dbClose(conn)

@@ -6,11 +6,12 @@
 #
 #
 
+source("Assert.R")
+
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
+conn <- dbConnect(DolphinDB(), ip_addr, port)
 if (conn@connected == TRUE) {
 
-    source("Assert.R")
     record <- c(0L, 0L)
 
     result <- dbRun(conn, "(1, table(2018.07.22 2018.08.21 as date, `Hello`World as str), 5.5, 1 2 3, 2012.06M)")

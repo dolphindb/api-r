@@ -2,136 +2,107 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.31, Hangzhou
-# @Update -- 2018.8.17, Hangzhou
+# @Update -- 2018.8.19, Ningbo
 #
 #
+
+source("Assert.R") 
 
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
+conn <- dbConnect(DolphinDB(), ip_addr, port)
 if (conn@connected == TRUE) {
 
-    ptm <- proc.time()
+    record <- c(0L, 0L)
+
+    result <- dbRun(conn, "a = `EXE`ELF;symbol(a)")
+    vec <- c("EXE", "ELF")
+    record <- assert(record, "test symbol", result, vec)
+
     testList <- list(c("hello", "my", "world"))
     result <- dbRpc(conn, "concat", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- "hellomyworld"
+    record <- assert(record, "test character vector rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c("hello", NA, "world"))
     result <- dbRpc(conn, "concat", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- "helloworld"
+    record <- assert(record, "test character vector with NULL rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(2.5, 3.5, 6.55))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 12.55
+    record <- assert(record, "test numeric vector rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(2.5, NA, 6.55))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 9.05
+    record <- assert(record, "test numeric vector with NULL rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(TRUE, TRUE, FALSE))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 2
+    record <- assert(record, "test logical vector rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(TRUE, NA, FALSE))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 1
+    record <- assert(record, "test logical vector with NULL rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(1L, 2L, 3L))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 6L
+    record <- assert(record, "test integer vector rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(1L, NA, 3L))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 4L
+    record <- assert(record, "test integer vector with NULL rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(c(NA, NA, NA))
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test NULL vector rpc", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "00f NULL NULL")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- as.numeric(c(NA, NA, NA))
+    record <- assert(record, "test NULL vector", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "true false true")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(TRUE, FALSE, TRUE)
+    record <- assert(record, "test bool vector", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "sort(false true NULL)")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(NA, FALSE, TRUE)
+    record <- assert(record, "test bool vector with NULL", result, vec)
     
-    ptm <- proc.time()
     result <- dbRun(conn, "'a' 'b' 'c'")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c("a", "b", "c")
+    record <- assert(record, "test character vector", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "5 6 7")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(5L, 6L, 7L)
+    record <- assert(record, "test integer vector", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "sort(5 NULL 7)")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(NA, 5L, 7L)
+    record <- assert(record, "test integer vector with NULL", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "3.5 9 6")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(3.5, 9, 6)
+    record <- assert(record, "test double vector", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "3.5 9 NULL")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c(3.5, 9, NA)
+    record <- assert(record, "test double vector with NULL", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "`emm`666`ddd")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c("emm", "666", "ddd")
+    record <- assert(record, "test string vector", result, vec)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "`emm NULL `ddd")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    vec <- c("emm", NA, "ddd")
+    record <- assert(record, "test string vector with NULL", result, vec)
 
+    printer(record)
 }
 dbClose(conn)
