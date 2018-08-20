@@ -2,133 +2,100 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.7.31, Hangzhou
-# @Update -- 2018.8.17, Hangzhou
+# @Update -- 2018.8.19, Ningbo
 #
 #
+
+source("Assert.R")
 
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
+conn <- dbConnect(DolphinDB(), ip_addr, port)
 if (conn@connected == TRUE) {
-  
-    ptm <- proc.time()
-    result <- dbRun(conn, "a = `EXE`ELF;symbol(a)")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
 
-    ptm <- proc.time()
+    record <- c(0L, 0L)
+
     testList <- list("hello", "world")
     result <- dbRpc(conn, "concat", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- "helloworld"
+    record <- assert(record, "test character scalar rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(16L)
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 16L
+    record <- assert(record, "test integer scalar rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(TRUE)
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- TRUE
+    record <- assert(record, "test logical scalar rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(NA)
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test NULL scalar rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list(25.6)
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 25.6
+    record <- assert(record, "test numeric scalar rpc", result, scalar)
 
-    ptm <- proc.time()
     testList <- list("hello Rcpp")
     result <- dbRpc(conn, "sum", testList)
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- "hello Rcpp"
+    record <- assert(record, "test character scalar rpc", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "00h")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test short NULL scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "00l")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test long NULL scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "00b")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test bool NULL scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "00i")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- as.integer(NA)
+    record <- assert(record, "test int NULL scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "00f")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test float NULL scalar", result, scalar)
     
-    ptm <- proc.time()
     result <- dbRun(conn, "00c")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test character NULL scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "false")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- FALSE 
+    record <- assert(record, "test logical scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "2.5")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 2.5
+    record <- assert(record, "test double scalar", result, scalar)
 
-    ptm <- proc.time()
+    result <- dbRun(conn, "2.5f")
+    scalar <- 2.5
+    record <- assert(record, "test float scalar", result, scalar)
+
     result <- dbRun(conn, "`hello")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- "hello"
+    record <- assert(record, "test string scalar", result, scalar)
     
-    ptm <- proc.time()
     result <- dbRun(conn, "'a'")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- "a"
+    record <- assert(record, "test character scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "16")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- 16L
+    record <- assert(record, "test integer scalar", result, scalar)
 
-    ptm <- proc.time()
     result <- dbRun(conn, "NULL")
-    print(result)
-    print(class(result))
-    print(proc.time() - ptm)
+    scalar <- NA
+    record <- assert(record, "test NULL scalar", result, scalar)
 
+    printer(record)
 }
 dbClose(conn)

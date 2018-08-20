@@ -2,33 +2,35 @@
 #
 # @Author -- Jingtang Zhang
 # @Date   -- 2018.8.2, Hangzhou
-# @Update -- 2018.8.15, Hangzhou
+# @Update -- 2018.8.19, Ningbo
 #
 #
+
+source("Assert.R") 
 
 library("RDolphinDB")
-conn <- dbConnect(DolphinDB(), "192.168.137.132", 8888)
+conn <- dbConnect(DolphinDB(), ip_addr, port)
 if (conn@connected == TRUE) {
 
-    ptm <- proc.time()
+    record <- c(0L, 0L)
+
     keys <- c("x", "y", "z")
     args <- list(5, c(2L, 3L), "666")
     stat <- dbUpload(conn, keys, args)
     if (stat) {
         result <- dbRun(conn, "x")
-        print(result)
-        print(class(result))
+        scalar <- 5
+        record <- assert(record, "test upload numeric", result, scalar)
 
         result <- dbRun(conn, "y")
-        print(result)
-        print(class(result))
+        vec <- c(2L, 3L)
+        record <- assert(record, "test upload vector", result, vec)
 
         result <- dbRun(conn, "z")
-        print(result)
-        print(class(result))
+        scalar <- "666"
+        record <- assert(record, "test upload string", result, scalar)
     }
     
-    print(proc.time() - ptm)
-
+    printer(record)
 }
 dbClose(conn)
