@@ -7,8 +7,8 @@
 #
 
 # Config IP address and port who is running DolphinDB server
-ip_addr <- "192.168.137.132"
-port <- 8888
+ip_addr <- "192.168.1.61"
+port <- 8081
 
 # Count all cases, print error message
 assert <- function(record, item, target, current) {
