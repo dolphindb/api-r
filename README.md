@@ -23,13 +23,15 @@ on _DolphinDB_ server, while receiving object from server in the form and type o
 
 ---
 
-### 2. How to use
+### 2. Install
 
 #### 2.1 Install _R_ Environment
 
 * For __Linux__ user
   * `sudo apt-get install r-base`
   * __OR__ download and install manually : https://www.r-project.org/
+* For __Windows__ user
+  * Download and install the r base packages and the rtools at https://www.r-project.org/
 
 #### 2.2 Get into _R_ CMD
 
@@ -46,6 +48,14 @@ on _DolphinDB_ server, while receiving object from server in the form and type o
 
 * In _R_ CMD, type `devtools::install_github("dolphindb/api-r")`.
 * This command will automatically download and install _RDolphinDB_ and its dependency package.
+* For __Windows__ user
+  * If the Installation failed with message: *Warning in system(cmd) : 'make' not found*. Just try: 
+  
+  ```R
+  Sys.setenv(PATH = paste("*InstallDirectory*/Rtools/bin", Sys.getenv("PATH"), sep=";"))
+  Sys.setenv(BINPREF = "*InstallDirectory*/Rtools/mingw_64/bin") 
+  ```
+  
 * After installation, the package will be compiled and linked by _g++_ automatically.
 
 #### 2.5 Use the _RDolphinDB_ Package
@@ -66,8 +76,8 @@ if (conn@connected) {
 dbClose(conn)
 ```
 
----
 
+---
 ### 3. Documentation
 
 #### 3.1 In _R_ CMD

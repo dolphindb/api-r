@@ -97,9 +97,9 @@ public:
     void Rcpp_UploadEmptyVector(int row, int clm);
     void Rcpp_UploadEmptyMatrix(int row, int clm);
     void Rcpp_UploadDateScalar(string date_str);
-    void Rcpp_UploadDateVector(vector <string>& vec, vector <int>& NAIndex);
+    void Rcpp_UploadDateVector(vector <double>& vec, vector <int>& NAIndex);
     void Rcpp_UploadDateTimeScalar(string data_time_str);
-    void Rcpp_UploadDateTimeVector(vector <string>& vec, vector <int>& NAIndex);
+    void Rcpp_UploadDateTimeVector(vector <double>& vec, vector <int>& NAIndex);
     void Rcpp_UploadEntity(int val);
     void Rcpp_UploadEntity(double val);
     void Rcpp_UploadEntity(char val);
@@ -116,13 +116,13 @@ public:
     void Rcpp_UploadEntity(vector <double>& mtx, vector <int>& NAIndex, int row, int clm);
 };
 
-void Rcpp_Connector::Rcpp_UploadDateVector(vector <string>& vec, vector <int>& NAIndex)
+void Rcpp_Connector::Rcpp_UploadDateVector(vector <double>& vec, vector <int>& NAIndex)
 {
     for (unsigned int i = 0; i < NAIndex.size(); i++)
     {
-        vec[NAIndex[i]] = "";
+        vec[NAIndex[i]] = DDB_NULL_INTEGER;
     }
-
+/*
     vector <int> upload_date;
     upload_date.reserve(vec.size());
     for (unsigned int i = 0; i < vec.size(); i++) 
@@ -133,31 +133,31 @@ void Rcpp_Connector::Rcpp_UploadDateVector(vector <string>& vec, vector <int>& N
         }
         else
         {
-            upload_date.push_back(Utill::CountDays(vec[i]));
+            upload_date.push_back((int)vec[i]);
         }
     }
-
+*/
     Buffer buffer;
     int flag = (DATA_FORM::DF_VECTOR << 8) + DATA_TYPE::DT_DATE;
     buffer.write((short) flag);
-    buffer.write((int) upload_date.size());
+    buffer.write((int) vec.size());
     buffer.write((int) 1);
-    for (unsigned int i = 0; i < upload_date.size(); i++)
+    for (unsigned int i = 0; i < vec.size(); i++)
     {
-        buffer.write(upload_date[i]);
+        buffer.write((int)vec[i]);
     }
 
     size_t actual = 0;
     socket->write(buffer.getBuffer(), buffer.size(), actual);
 }
 
-void Rcpp_Connector::Rcpp_UploadDateTimeVector(vector <string>& vec, vector <int>& NAIndex)
+void Rcpp_Connector::Rcpp_UploadDateTimeVector(vector <double>& vec, vector <int>& NAIndex)
 {
     for (unsigned int i = 0; i < NAIndex.size(); i++)
     {
-        vec[NAIndex[i]] = "";
+        vec[NAIndex[i]] = DDB_NULL_INTEGER;
     }
-
+    /*
     vector <int> upload_date_time;
     upload_date_time.reserve(vec.size());
     for (unsigned int i = 0; i < vec.size(); i++)
@@ -171,15 +171,15 @@ void Rcpp_Connector::Rcpp_UploadDateTimeVector(vector <string>& vec, vector <int
             upload_date_time.push_back(Utill::CountSeconds(vec[i]));
         }
     }
-
+    */
     Buffer buffer;
     int flag = (DATA_FORM::DF_VECTOR << 8) + DATA_TYPE::DT_DATETIME;
     buffer.write((short) flag);
-    buffer.write((int) upload_date_time.size());
+    buffer.write((int) vec.size());
     buffer.write((int) 1);
-    for (unsigned int i = 0; i < upload_date_time.size(); i++)
+    for (unsigned int i = 0; i < vec.size(); i++)
     {
-        buffer.write(upload_date_time[i]);
+        buffer.write((int)vec[i]);
     }
 
     size_t actual = 0;

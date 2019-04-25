@@ -72,11 +72,11 @@ BEGIN_RCPP
 END_RCPP
 }
 // UploadVectorDateTime
-void UploadVectorDateTime(CharacterVector R_vec, IntegerVector R_NAIndex);
+void UploadVectorDateTime(NumericVector R_vec, IntegerVector R_NAIndex);
 RcppExport SEXP _RDolphinDB_UploadVectorDateTime(SEXP R_vecSEXP, SEXP R_NAIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type R_vec(R_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type R_vec(R_vecSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type R_NAIndex(R_NAIndexSEXP);
     UploadVectorDateTime(R_vec, R_NAIndex);
     return R_NilValue;
@@ -93,11 +93,11 @@ BEGIN_RCPP
 END_RCPP
 }
 // UploadVectorDate
-void UploadVectorDate(CharacterVector R_vec, IntegerVector R_NAIndex);
+void UploadVectorDate(DateVector R_vec, IntegerVector R_NAIndex);
 RcppExport SEXP _RDolphinDB_UploadVectorDate(SEXP R_vecSEXP, SEXP R_NAIndexSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type R_vec(R_vecSEXP);
+    Rcpp::traits::input_parameter< DateVector >::type R_vec(R_vecSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type R_NAIndex(R_NAIndexSEXP);
     UploadVectorDate(R_vec, R_NAIndex);
     return R_NilValue;
@@ -376,6 +376,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ReturnScalarTime
+NumericVector ReturnScalarTime(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarTime(SEXP indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarTime(index));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ReturnScalarDate
+NumericVector ReturnScalarDate(int index);
+RcppExport SEXP _RDolphinDB_ReturnScalarDate(SEXP indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnScalarDate(index));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ReturnVectorBool
 LogicalVector ReturnVectorBool(int index);
 RcppExport SEXP _RDolphinDB_ReturnVectorBool(SEXP indexSEXP) {
@@ -417,6 +439,28 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type index(indexSEXP);
     rcpp_result_gen = Rcpp::wrap(ReturnVectorString(index));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ReturnVectorDate
+DateVector ReturnVectorDate(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorDate(SEXP indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorDate(index));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ReturnVectorTime
+NumericVector ReturnVectorTime(int index);
+RcppExport SEXP _RDolphinDB_ReturnVectorTime(SEXP indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnVectorTime(index));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -639,6 +683,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ReturnTableColumnTime
+NumericVector ReturnTableColumnTime(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnTime(SEXP indexSEXP, SEXP entity_indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnTime(index, entity_index));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ReturnTableColumnDate
+DateVector ReturnTableColumnDate(int index, int entity_index);
+RcppExport SEXP _RDolphinDB_ReturnTableColumnDate(SEXP indexSEXP, SEXP entity_indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type index(indexSEXP);
+    Rcpp::traits::input_parameter< int >::type entity_index(entity_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(ReturnTableColumnDate(index, entity_index));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ReturnTableColumnString
 CharacterVector ReturnTableColumnString(int index, int entity_index);
 RcppExport SEXP _RDolphinDB_ReturnTableColumnString(SEXP indexSEXP, SEXP entity_indexSEXP) {
@@ -700,10 +768,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RDolphinDB_ReturnScalarInt", (DL_FUNC) &_RDolphinDB_ReturnScalarInt, 1},
     {"_RDolphinDB_ReturnScalarDouble", (DL_FUNC) &_RDolphinDB_ReturnScalarDouble, 1},
     {"_RDolphinDB_ReturnScalarString", (DL_FUNC) &_RDolphinDB_ReturnScalarString, 1},
+    {"_RDolphinDB_ReturnScalarTime", (DL_FUNC) &_RDolphinDB_ReturnScalarTime, 1},
+    {"_RDolphinDB_ReturnScalarDate", (DL_FUNC) &_RDolphinDB_ReturnScalarDate, 1},
     {"_RDolphinDB_ReturnVectorBool", (DL_FUNC) &_RDolphinDB_ReturnVectorBool, 1},
     {"_RDolphinDB_ReturnVectorInt", (DL_FUNC) &_RDolphinDB_ReturnVectorInt, 1},
     {"_RDolphinDB_ReturnVectorDouble", (DL_FUNC) &_RDolphinDB_ReturnVectorDouble, 1},
     {"_RDolphinDB_ReturnVectorString", (DL_FUNC) &_RDolphinDB_ReturnVectorString, 1},
+    {"_RDolphinDB_ReturnVectorDate", (DL_FUNC) &_RDolphinDB_ReturnVectorDate, 1},
+    {"_RDolphinDB_ReturnVectorTime", (DL_FUNC) &_RDolphinDB_ReturnVectorTime, 1},
     {"_RDolphinDB_ReturnVectorNAIndex", (DL_FUNC) &_RDolphinDB_ReturnVectorNAIndex, 1},
     {"_RDolphinDB_ReturnMatrixHasLable", (DL_FUNC) &_RDolphinDB_ReturnMatrixHasLable, 2},
     {"_RDolphinDB_ReturnMatrixLableType", (DL_FUNC) &_RDolphinDB_ReturnMatrixLableType, 2},
@@ -723,6 +795,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RDolphinDB_ReturnTableColumnLogical", (DL_FUNC) &_RDolphinDB_ReturnTableColumnLogical, 2},
     {"_RDolphinDB_ReturnTableColumnInteger", (DL_FUNC) &_RDolphinDB_ReturnTableColumnInteger, 2},
     {"_RDolphinDB_ReturnTableColumnDouble", (DL_FUNC) &_RDolphinDB_ReturnTableColumnDouble, 2},
+    {"_RDolphinDB_ReturnTableColumnTime", (DL_FUNC) &_RDolphinDB_ReturnTableColumnTime, 2},
+    {"_RDolphinDB_ReturnTableColumnDate", (DL_FUNC) &_RDolphinDB_ReturnTableColumnDate, 2},
     {"_RDolphinDB_ReturnTableColumnString", (DL_FUNC) &_RDolphinDB_ReturnTableColumnString, 2},
     {"_RDolphinDB_ReturnTableColumnNAIndex", (DL_FUNC) &_RDolphinDB_ReturnTableColumnNAIndex, 2},
     {NULL, NULL, 0}

@@ -13,6 +13,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#ifndef _RCPP_H_
+    #include <Rcpp.h>
+#endif
 using std::vector;
 using std::cout;
 using std::endl;
@@ -51,12 +54,13 @@ public:
     }
     Vectorr() {}
     virtual ~Vectorr() {}
-
+    virtual bool isDate() { return false; }
     int getRow() {return row;}
     int getClm() {return clm;}
     vector <int>& getNAIndex() {return NA_INDEX;}
 
     virtual void* getVector() = 0;
+    virtual void* getStringVector() {return NULL;};
 };
 
 class VectorBool : public Vectorr 
@@ -162,7 +166,7 @@ public:
 class VectorChar : public Vectorr
 {
 private:
-    vector <string> vec;
+    vector <int> vec;
 public:
     VectorChar(DataInputStream &in)
         :Vectorr(in)
@@ -171,13 +175,10 @@ public:
         vec.reserve(size);
         for (int i = 0; i < size; i++)
         {
-            char temp;
+            char temp = 0;
             in.readChar(temp);
-            stringstream ss;
-            ss << temp;
-            vec.push_back(ss.str());
-            ss.str("");
-            ss.clear();
+            int v = temp;
+            vec.push_back(v);
             if (temp == DDB_NULL_BYTE)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -270,73 +271,116 @@ public:
 class VectorDate : public Vectorr 
 {
 private: 
-    vector <string> vec;
+    Rcpp::NumericVector _vec;
+
+    vector<string> str_vec; 
+    vector<int> origin_v;
 public: 
     VectorDate(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        int y, m, d;
+        Rcpp::DateVector vec(size);
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             int temp;
             in.readInt(temp);
-            string date_str = Utill::ParseDate(temp);
-            vec.push_back(date_str);
+            origin_v.push_back(temp);
+            Utill::ParseDate(temp, y, m, d);
+            vec[i] = Date(y, m, d);
             if (temp == DDB_NULL_INTEGER)
             {
                 Vectorr::getNAIndex().push_back(i+1);
             }
         }
+        _vec = vec;
     }
     ~VectorDate() {}
-
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return _vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp = origin_v[i];
+            string date_str = Utill::ParseDate(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 class VectorMonth : public Vectorr
 {
 private: 
-    vector <string> vec;
+    //TODO
+    Rcpp::NumericVector _vec;
+    vector<string> str_vec; 
+    vector<int> origin_v;
 public: 
     VectorMonth(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        int y, m, d;
+        Rcpp::DateVector vec(size);
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             int temp;
             in.readInt(temp);
-            string month_str = Utill::ParseMonth(temp);
-            vec.push_back(month_str);
+            origin_v.push_back(temp);
+            Utill::ParseMonth(temp, y, m, d);
+            vec[i] = Date(y, m, d);
             if (temp == DDB_NULL_INTEGER)
             {
                 Vectorr::getNAIndex().push_back(i+1);
             }
         }
+        _vec = vec;
     }
     ~VectorMonth() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() { return _vec; }
+    
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp = origin_v[i];
+            string date_str = Utill::ParseMonth(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 class VectorDateTime : public Vectorr 
 {
 private: 
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<int> origin_v;
 public: 
     VectorDateTime(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::DatetimeVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             int temp;
             in.readInt(temp);
-            string date_time_str = Utill::ParseDateTime(temp);
-            vec.push_back(date_time_str);
+            vec[i] = (double)temp;
+            origin_v.push_back(temp);
             if (temp == DDB_NULL_INTEGER)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -345,25 +389,42 @@ public:
     }
     ~VectorDateTime() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp = origin_v[i];
+            string date_str = Utill::ParseDateTime(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 class VectorTime : public Vectorr
 {
 private:
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<int> origin_v;
 public:
     VectorTime(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::NumericVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             int temp;
             in.readInt(temp);
-            string time_str = Utill::ParseTime(temp);
-            vec.push_back(time_str);
+            origin_v.push_back(temp);
+            vec[i] = (double)temp/1000;
             if (temp == DDB_NULL_INTEGER)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -372,25 +433,42 @@ public:
     }
     ~VectorTime() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp = origin_v[i];
+            string date_str = Utill::ParseTime(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 class VectorMinute : public Vectorr
 {
 private:
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<int> origin_v;
 public:
     VectorMinute(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::NumericVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             int temp;
             in.readInt(temp);
-            string minute_str = Utill::ParseMinute(temp);
-            vec.push_back(minute_str);
+            origin_v.push_back(temp);
+            vec[i] = (double)(temp*60);
             if (temp == DDB_NULL_INTEGER)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -399,25 +477,42 @@ public:
     }
     ~VectorMinute() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp = origin_v[i];
+            string date_str = Utill::ParseMinute(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 class VectorSecond : public Vectorr 
 {
 private:
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<int> origin_v;
 public:
     VectorSecond(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::NumericVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             int temp;
             in.readInt(temp);
-            string second_str = Utill::ParseSecond(temp);
-            vec.push_back(second_str);
+            origin_v.push_back(temp);
+            vec[i] = ((double)temp);
             if (temp == DDB_NULL_INTEGER)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -426,25 +521,42 @@ public:
     }
     ~VectorSecond() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp = origin_v[i];
+            string date_str = Utill::ParseSecond(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 class VectorTimestamp : public Vectorr
 {
 private:
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<long long> origin_v;
 public:
     VectorTimestamp(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::NumericVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             long long temp;
             in.readLong(temp);
-            string timestamp_str = Utill::ParseTimestamp(temp);
-            vec.push_back(timestamp_str);
+            origin_v.push_back(temp);
+            vec[i] = ((double)temp)/1000; // milliseconds
             if (temp < DDB_NULL_LONG)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -453,25 +565,43 @@ public:
     }
     ~VectorTimestamp() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            long long temp = origin_v[i];
+            string date_str = Utill::ParseTimestamp(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
+// TODO: create a new class instead of POSIXct
 class VectorNanotime : public Vectorr
 {
 private:
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<long long> origin_v;
 public:
     VectorNanotime(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::NumericVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             long long temp;
             in.readLong(temp);
-            string nanotime_str = Utill::ParseNanotime(temp);
-            vec.push_back(nanotime_str);
+            origin_v.push_back(temp);
+            vec[i] = ((double)temp)/1000000000L;
             if (temp < DDB_NULL_LONG)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -480,25 +610,43 @@ public:
     }
     ~VectorNanotime() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            long long temp = origin_v[i];
+            string date_str = Utill::ParseNanotime(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
+// TODO: create a new class instead of POSIXct
 class VectorNanotimestamp : public Vectorr
 {
 private:
-    vector <string> vec;
+    Rcpp::NumericVector vec;
+    vector<string> str_vec; 
+    vector<long long> origin_v;
 public:
     VectorNanotimestamp(DataInputStream &in)
         :Vectorr(in)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
-        vec.reserve(size);
+        vec = Rcpp::NumericVector(size);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
+        origin_v.reserve(size);
         for (int i = 0; i < size; i++)
         {
             long long temp;
             in.readLong(temp);
-            string nanotimestamp_str = Utill::ParseNanotimestamp(temp);
-            vec.push_back(nanotimestamp_str);
+            origin_v.push_back(temp);
+            vec[i] = ((double)temp)/1000000000L;
             if (temp < DDB_NULL_LONG)
             {
                 Vectorr::getNAIndex().push_back(i+1);
@@ -507,7 +655,19 @@ public:
     }
     ~VectorNanotimestamp() {}
 
-    void* getVector() {return (void *)(&vec);}
+    void* getVector() {return vec;}
+    bool isDate() { return true; }
+    void* getStringVector() {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            long long temp = origin_v[i];
+            string date_str = Utill::ParseNanotimestamp(temp);
+            str_vec.push_back(date_str);
+        }
+        return (void*)&str_vec;
+    }
 };
 
 int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
@@ -541,7 +701,7 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
 
         case DATA_TYPE::DT_CHAR:
             vector_ptr = new VectorChar(in);
-            return VECTOR_CHARACTER;
+            return VECTOR_INTEGER;
 
         case DATA_TYPE::DT_STRING:
             vector_ptr = new VectorString(in);

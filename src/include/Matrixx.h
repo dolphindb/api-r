@@ -57,7 +57,12 @@ public:
 
     void* getRowLable() {return lable_row->getVector();}
     void* getClmLable() {return lable_clm->getVector();}
-    void* getMatrix() {return mtx->getVector();}
+    void* getMatrix() {
+        if(mtx->isDate()) {
+            return mtx->getStringVector();
+        }
+        return mtx->getVector();
+    }
 };
 
 Matrixx::Matrixx(DataInputStream &in)

@@ -76,7 +76,7 @@ public:
 class ScalarChar : public Scalarr
 {
 private:
-    string value;
+    int value;
 public:
     ScalarChar(DataInputStream &in)
         :Scalarr()
@@ -87,11 +87,7 @@ public:
         {
             Scalarr::SetNull();
         }
-        stringstream ss;
-        ss << temp;
-        value = ss.str();
-        ss.str("");
-        ss.clear();
+        value = temp;
     }
     ~ScalarChar() {}
 
@@ -221,56 +217,65 @@ public:
 class ScalarDate : public Scalarr 
 {
 private: 
-    string value;
+    Rcpp::NumericVector _vec;
 public: 
     ScalarDate(DataInputStream &in)
         :Scalarr()
     {
-        int temp;
+        Rcpp::DateVector vec(1);
+        int temp, y, m, d;
         in.readInt(temp);
-        value = Utill::ParseDate(temp);
+        Utill::ParseDate(temp, y, m, d);
+        vec[0] = Date(y, m, d);
         if (temp == DDB_NULL_INTEGER)
         {
             Scalarr::SetNull();
         }
+        _vec = vec;
     }
     ~ScalarDate() {}
 
-    void* getValue() {return (void *)(&value);}
+    void* getValue() {return (void *)(_vec);}
 };
 
 class ScalarMonth : public Scalarr
 {
 private: 
-    string value;
+    Rcpp::NumericVector _vec;
 public: 
     ScalarMonth(DataInputStream &in)
         :Scalarr()
     {
-        int temp;
+        Rcpp::DateVector vec(1);
+        int temp, y, m, d;
         in.readInt(temp);
-        value = Utill::ParseMonth(temp);
+        Utill::ParseMonth(temp, y, m, d);
+        vec[0] = Date(y, m, d);
         if (temp == DDB_NULL_INTEGER)
         {
             Scalarr::SetNull();
         }
+        _vec = vec;
     }
     ~ScalarMonth() {}
 
-    void* getValue() {return (void *)(&value);}
+    void* getValue() {return (void *)(_vec);}
 };
 
 class ScalarDateTime : public Scalarr
 {
 private: 
-    string value;
+    Rcpp::NumericVector vec;
 public: 
     ScalarDateTime(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         int temp;
         in.readInt(temp);
-        value = Utill::ParseDateTime(temp);
+        vec[0] = ((double)temp);
         if (temp == DDB_NULL_INTEGER)
         {
             Scalarr::SetNull();
@@ -278,20 +283,23 @@ public:
     }
     ~ScalarDateTime() {}
 
-    void* getValue() {return (void *)(&value);}
+    void* getValue() {return (void *)(vec);}
 };
 
 class ScalarTime : public Scalarr
 {
 private:
-    string value;
+    Rcpp::NumericVector vec;
 public:
     ScalarTime(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         int temp;
         in.readInt(temp);
-        value = Utill::ParseTime(temp);
+        vec[0] = ((double)temp)/1000;
         if (temp == DDB_NULL_INTEGER)
         {
             Scalarr::SetNull();
@@ -299,20 +307,23 @@ public:
     }
     ~ScalarTime() {}
 
-    void* getValue() {return (void*)(&value);}
+    void* getValue() {return (void*)(vec);}
 };
 
 class ScalarMinute : public Scalarr
 {
 private:
-    string value;
+    Rcpp::NumericVector vec;
 public:
     ScalarMinute(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         int temp;
         in.readInt(temp);
-        value = Utill::ParseMinute(temp);
+        vec[0] = (double)(temp*60);
         if (temp == DDB_NULL_INTEGER)
         {
             Scalarr::SetNull();
@@ -320,20 +331,23 @@ public:
     }
     ~ScalarMinute() {}
 
-    void* getValue() {return (void*)(&value);}
+    void* getValue() {return (void*)(vec);}
 };
 
 class ScalarSecond : public Scalarr
 {
 private:
-    string value;
+    Rcpp::NumericVector vec;
 public:
     ScalarSecond(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         int temp;
         in.readInt(temp);
-        value = Utill::ParseSecond(temp);
+        vec[0] = ((double)temp);
         if (temp == DDB_NULL_INTEGER)
         {
             Scalarr::SetNull();
@@ -341,20 +355,23 @@ public:
     }
     ~ScalarSecond() {}
 
-    void* getValue() {return (void*)(&value);}
+    void* getValue() {return (void*)(vec);}
 };
 
 class ScalarTimestamp : public Scalarr
 {
 private:
-    string value;
+    Rcpp::NumericVector vec;
 public:
     ScalarTimestamp(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         long long temp;
         in.readLong(temp);
-        value = Utill::ParseTimestamp(temp);
+        vec[0] = ((double)temp)/1000;
         if (temp < DDB_NULL_LONG)
         {
             Scalarr::SetNull();
@@ -362,20 +379,23 @@ public:
     }
     ~ScalarTimestamp() {}
 
-    void* getValue() {return (void *)(&value);}
+    void* getValue() {return (void *)(vec);}
 };
 
 class ScalarNanotime : public Scalarr 
 {
 private:
-    string value;
+    Rcpp::NumericVector vec;
 public:
     ScalarNanotime(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         long long temp;
         in.readLong(temp);
-        value = Utill::ParseNanotime(temp);
+        vec[0] = ((double)temp)/1000000000L;
         if (temp < DDB_NULL_LONG)
         {
             Scalarr::SetNull();
@@ -383,20 +403,23 @@ public:
     }
     ~ScalarNanotime() {}
 
-    void* getValue() {return (void *)(&value);}
+    void* getValue() {return (void *)(vec);}
 };
 
 class ScalarNanotimestamp : public Scalarr
 {
 private:
-    string value;
+    Rcpp::NumericVector vec;
 public:
     ScalarNanotimestamp(DataInputStream &in)
         :Scalarr()
     {
+        vec = Rcpp::NumericVector(1);
+        vec.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        vec.attr("tzone") = std::string("UTC");
         long long temp;
         in.readLong(temp);
-        value = Utill::ParseNanotimestamp(temp);
+        vec[0] = ((double)temp)/1000000000L;
         if (temp < DDB_NULL_LONG)
         {
             Scalarr::SetNull();
@@ -404,7 +427,7 @@ public:
     }
     ~ScalarNanotimestamp() {}
 
-    void* getValue() {return (void *)(&value);}
+    void* getValue() {return (void *)(vec);}
 };
 
 void CreateScalar(Scalarr*& scalar_ptr, int data_type, DataInputStream& in)

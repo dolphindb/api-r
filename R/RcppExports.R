@@ -141,6 +141,14 @@ ReturnScalarString <- function(index = -1L) {
     .Call('_RDolphinDB_ReturnScalarString', PACKAGE = 'RDolphinDB', index)
 }
 
+ReturnScalarTime <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarTime', PACKAGE = 'RDolphinDB', index)
+}
+
+ReturnScalarDate <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnScalarDate', PACKAGE = 'RDolphinDB', index)
+}
+
 ReturnVectorBool <- function(index = -1L) {
     .Call('_RDolphinDB_ReturnVectorBool', PACKAGE = 'RDolphinDB', index)
 }
@@ -155,6 +163,14 @@ ReturnVectorDouble <- function(index = -1L) {
 
 ReturnVectorString <- function(index = -1L) {
     .Call('_RDolphinDB_ReturnVectorString', PACKAGE = 'RDolphinDB', index)
+}
+
+ReturnVectorDate <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorDate', PACKAGE = 'RDolphinDB', index)
+}
+
+ReturnVectorTime <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorTime', PACKAGE = 'RDolphinDB', index)
 }
 
 ReturnVectorNAIndex <- function(index = -1L) {
@@ -231,6 +247,14 @@ ReturnTableColumnInteger <- function(index, entity_index = -1L) {
 
 ReturnTableColumnDouble <- function(index, entity_index = -1L) {
     .Call('_RDolphinDB_ReturnTableColumnDouble', PACKAGE = 'RDolphinDB', index, entity_index)
+}
+
+ReturnTableColumnTime <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnTime', PACKAGE = 'RDolphinDB', index, entity_index)
+}
+
+ReturnTableColumnDate <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnDate', PACKAGE = 'RDolphinDB', index, entity_index)
 }
 
 ReturnTableColumnString <- function(index, entity_index = -1L) {

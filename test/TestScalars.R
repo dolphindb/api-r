@@ -85,7 +85,7 @@ if (conn@connected == TRUE) {
     record <- assert(record, "test string scalar", result, scalar)
     
     result <- dbRun(conn, "'a'")
-    scalar <- "a"
+    scalar <- 0x61
     record <- assert(record, "test character scalar", result, scalar)
 
     result <- dbRun(conn, "16")

@@ -76,7 +76,7 @@ if (conn@connected == TRUE) {
     record <- assert(record, "test bool vector with NULL", result, vec)
     
     result <- dbRun(conn, "'a' 'b' 'c'")
-    vec <- c("a", "b", "c")
+    vec <- c(0x61, 0x62, 0x63)
     record <- assert(record, "test character vector", result, vec)
 
     result <- dbRun(conn, "5 6 7")

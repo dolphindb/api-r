@@ -1,1 +1,2 @@
 PKG_CXXFLAGS = -std=c++11 -D WINDOWS
+PKG_LIBS = $(LDFLAGS) -lwsock32 -lws2_32

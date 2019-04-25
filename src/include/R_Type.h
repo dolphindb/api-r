@@ -39,7 +39,11 @@ enum R_TYPE {
 #define DDB_NULL_BYTE 0x80
 #define DDB_NULL_NUMERIC -DBL_MAX
 #define DDB_NULL_FLOAT -FLT_MAX
-#define DDB_NULL_LONG -LONG_LONG_MAX
+#ifdef __APPLE__
+    #define DDB_NULL_LONG -LLONG_MAXS
+#else
+    #define DDB_NULL_LONG -LONG_LONG_MAX
+#endif
 
 const int cumMonthDays[] = {0,31,59,90,120,151,181,212,243,273,304,334,365};
 const int cumLeapMonthDays[] = {0,31,60,91,121,152,182,213,244,274,305,335,366};

@@ -87,9 +87,9 @@ int ReceiveEntity()
 }
 
 //[[Rcpp::export]]
-void UploadVectorDateTime(CharacterVector R_vec, IntegerVector R_NAIndex)
+void UploadVectorDateTime(NumericVector R_vec, IntegerVector R_NAIndex)
 {
-    vector <string> vec = as <vector <string> > (R_vec);
+    vector <double> vec = as <vector <double> > (R_vec);
     vector <int> NAIndex = as <vector <int> > (R_NAIndex);
     cnt.Rcpp_UploadDateTimeVector(vec, NAIndex);
 }
@@ -101,9 +101,10 @@ void UploadScalarDateTime(String date_time_str)
 }
 
 //[[Rcpp::export]]
-void UploadVectorDate(CharacterVector R_vec, IntegerVector R_NAIndex)
+void UploadVectorDate(DateVector R_vec, IntegerVector R_NAIndex)
 {
-    vector <string> vec = as <vector <string> > (R_vec);
+    //vector <string> vec = as <vector <string> > (R_vec);
+    vector <double> vec = as <vector <double> >(R_vec);
     vector <int> NAIndex = as <vector <int> > (R_NAIndex);
     cnt.Rcpp_UploadDateVector(vec, NAIndex);
 }
@@ -309,6 +310,25 @@ String ReturnScalarString(int index = -1)
 }
 
 //[[Rcpp::export]]
+NumericVector ReturnScalarTime(int index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(index)->
+            getScalar()->
+            getValue();
+    return *(NumericVector*)&tmp;
+}
+
+
+//[[Rcpp::export]]
+NumericVector ReturnScalarDate(int index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(index)->
+            getScalar()->
+            getValue();
+    return *(NumericVector*)&tmp;
+}
+
+//[[Rcpp::export]]
 LogicalVector ReturnVectorBool(int index = -1)
 {
     return wrap(
@@ -367,6 +387,24 @@ CharacterVector ReturnVectorString(int index = -1)
             )
         )
     );
+}
+
+//[[Rcpp::export]]
+DateVector ReturnVectorDate(int index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(index)->
+                getVector()->
+                getVector();
+    return wrap(*((DateVector*)&tmp));
+}
+
+//[[Rcpp::export]]
+NumericVector ReturnVectorTime(int index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(index)->
+                getVector()->
+                getVector();
+    return wrap(*((NumericVector*)&tmp));
 }
 
 //[[Rcpp::export]]
@@ -705,6 +743,26 @@ NumericVector ReturnTableColumnDouble(int index, int entity_index = -1)
             getVector()
         )
     );
+}
+
+//[[Rcpp::export]]
+NumericVector ReturnTableColumnTime(int index, int entity_index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(entity_index)->
+            getTable()->
+            getTableClm(index-1)->
+            getVector();
+    return *(NumericVector*)&tmp;
+}
+
+//[[Rcpp::export]]
+DateVector ReturnTableColumnDate(int index, int entity_index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(entity_index)->
+            getTable()->
+            getTableClm(index-1)->
+            getVector();
+    return *(DateVector*)&tmp;
 }
 
 //[[Rcpp::export]]

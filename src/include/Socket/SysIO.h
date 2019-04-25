@@ -14,8 +14,15 @@
 #include "SmartPointer.h"
 #include "Types.h"
 
+
 #define MAX_CAPACITY 65536
 #define MAX_PACKET_SIZE 1400
+
+#ifdef __APPLE__
+	#define MSG_NOSIGNAL 0x2000
+	#define ftello64 ftello
+	#define fseeko64 fseeko
+#endif
 
 #ifdef LINUX
 	#include <netinet/in.h>
@@ -25,6 +32,8 @@
 	#define INVALID_SOCKET -1
 	#define SOCKET_ERROR   -1
 #else
+	#undef Realloc
+	#undef Free
 	#include <winsock2.h>
 	#include<windows.h>
 #endif
@@ -284,7 +293,6 @@ struct FileAttributes{
 	#include <sys/socket.h>
 	#include <arpa/inet.h>
 	#include <fcntl.h>
-	#include <error.h>
 	#define closesocket(s) ::close(s)
 #else
 	#undef UNICODE
@@ -296,7 +304,7 @@ struct FileAttributes{
 // #include "Logger.h"
 #include <string.h>
 
-bool Socket::ENABLE_TCP_NODELAY = false;
+bool Socket::ENABLE_TCP_NODELAY = true;
 
 Socket::Socket():host_(""), port_(-1), blocking_(true), autoClose_(true){
     handle_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

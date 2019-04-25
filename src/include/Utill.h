@@ -20,11 +20,13 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
+#include <Rcpp.h>
 using std::string;
 using std::cout;
 using std::endl;
 using std::stringstream;
-
+using std::vector;
 #include "Socket/SysIO.h"
 #include "Socket/Types.h"
 #include "R_Type.h"
@@ -41,8 +43,10 @@ public:
     static string WarnPrecisonLost;
 
     static string ParseDate(int days);
+    static void ParseDate(int days, int& y, int& m, int& d);
     static string ParseDateTime(int seconds);
     static string ParseMonth(int months);
+    static void ParseMonth(int months, int& y, int& m, int& d);
     static string ParseMinute(int minutes);
     static string ParseSecond(int seconds);
     static string ParseTime(int milliseconds);
@@ -77,7 +81,7 @@ int Utill::ReturnRType(int data_form, int data_type)
             case DATA_TYPE::DT_LONG: 
                 return SCALAR_NUMERIC;
             case DATA_TYPE::DT_CHAR:
-                return SCALAR_CHARACTER;
+                return SCALAR_INTEGER;
             case DATA_TYPE::DT_STRING:
                 return SCALAR_CHARACTER;
             case DATA_TYPE::DT_SYMBOL:
@@ -132,7 +136,7 @@ int Utill::ReturnRType(int data_form, int data_type)
             case DATA_TYPE::DT_FLOAT: 
                 return VECTOR_NUMERIC;
             case DATA_TYPE::DT_CHAR:
-                return VECTOR_CHARACTER;
+                return VECTOR_INTEGER;
             case DATA_TYPE::DT_STRING:
                 return VECTOR_CHARACTER;
             case DATA_TYPE::DT_SYMBOL:
@@ -275,6 +279,12 @@ string Utill::ParseTimestamp(long long milliseconds)
 
     return FormatRDateTime(date_str, hour, minute, second);
 }
+/*
+Rcpp::NumericVector Utill::ParseTimestamp(long long milliseconds)
+{
+    return ToPOSIXct(new vector<long long>(1, milliseconds));
+}
+*/
 
 string Utill::ParseSecond(int seconds)
 {
@@ -309,6 +319,15 @@ string Utill::ParseMonth(int months)
     int month = months % 12 + 1;
 
     return FormatRDate(year, month);
+}
+
+void Utill::ParseMonth(int months, int& y, int& m, int& d)
+{
+    int year = months / 12;
+    int month = months % 12 + 1;
+    y = year;
+    m = month;
+    d = 1;
 }
 
 string Utill::ParseDate(int days)
@@ -359,6 +378,57 @@ string Utill::ParseDate(int days)
 
     return FormatRDate(year, month, day);
 }
+
+void Utill::ParseDate(int days, int& y, int& m, int& d)
+{
+    int year;
+    int month;
+    int day;
+
+    days += 719529;
+    int circleIn400Years = days / 146097;
+    int offsetIn400Years = days % 146097;
+    int resultYear = circleIn400Years * 400;
+    int similarYears = offsetIn400Years / 365;
+    int tmpDays = similarYears * 365;
+    if (similarYears > 0)
+    {
+        tmpDays += (similarYears - 1) / 4 + 1 - (similarYears - 1) / 100;
+    }
+    if (tmpDays >= offsetIn400Years)
+    {
+        --similarYears;
+    }
+    year = similarYears + resultYear;
+    days -= circleIn400Years * 146097 + tmpDays;
+    bool leap = ((year%4==0 && year%100!=0) || year%400==0);
+    if (days <= 0)
+    {
+        days += leap ? 366 : 365;
+    }
+    if (leap)
+    {
+        month = days / 32 + 1;
+        if (days > cumLeapMonthDays[month])
+        {
+            month++;
+        }
+        day = days - cumLeapMonthDays[month-1];
+    }
+    else 
+    {
+        month = days / 32 + 1;
+        if (days > cumMonthDays[month])
+        {
+            month++;
+        }
+        day = days - cumMonthDays[month-1];
+    }
+    y = year;
+    m = month;
+    d = day;
+}
+
 
 string Utill::ParseDateTime(int seconds)
 {
