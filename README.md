@@ -76,11 +76,37 @@ if (conn@connected) {
 dbClose(conn)
 ```
 
+## 3. Supported Data Types
+
+R API supports the following data types of DolphinDB:
+
+| DolphinDB Type | DolphinDB Example | R Type | R Example | Description |
+|---|---|---|---|---|
+| BOOL | false | Logical | FALSE |   |
+| CHAR | 'A' | Integer | 65 |   |
+| SHORT | 32 | Integer | 32 |   |
+| INT | 1 | Integer | 1 |   |
+| LONG | 100000 | Numeric | 10000 | The maximum integer in R is 2147483647 |
+| DATE | 2013.06.13 | Date | 2013-06-13 |   |
+| MONTH | 2013.08M | Date | 2013-08-01 | The first day of the specified month |
+| TIME | 13:30:10.008 | POSIXct | 1970-01-01 13:30:10 | The specified timestamp on 1970.01.01 (accurate to seconds) |
+| MINUTE | 13:30m | POSIXct | 1970-01-01 13:30:00 | The specified timestamp on 1970.01.01 |
+| SECOND | 13:30:10 | POSIXct | 1970-01-01 13:30:10 | The specified timestamp on 1970.01.01 |
+| DATETIME | 2012.06.13T13:30:10 | POSIXct | 2012-06-13 13:30:10 |   |
+| TIMESTAMP | 2012.06.13T13:30:10.008 | POSIXct | 2012-06-13 13:30:10 |   |
+| NANOTIME | 13:30:10.008007006 | POSIXct | 1970-01-01 13:30:10 | The specified timestamp on 1970.01.01 (accurate to seconds) |
+| NANOTIMESTAMP | 2012.06.13T13:30:10.008007006 | POSIXct | 2012-06-13 13:30:10 |   |
+| FLOAT | 2.1f | Numeric | 2.1 |   |
+| DOUBLE | 2.1 | Numeric | 2.1 |   |
+| STRING | “123” | character | “123” |   |
+| SYMBOL |   | Not supported |   |   |
+| BLOB |   | Not supported |   |   |
+| DATEHOUR |   | Not supported |   |   |
 
 ---
-### 3. Documentation
+### 4. Documentation
 
-#### 3.1 In _R_ CMD
+#### 4.1 In _R_ CMD
 
 ```R
 # About the package
@@ -95,9 +121,9 @@ help("dbUpload")
 help("dbClose")
 ```
 
-#### 3.2 Through our website
+#### 4.2 Through our website
 
-* www.dolphindb.com/help
+* www.dolphindb.com
 
 ---
 
