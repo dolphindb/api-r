@@ -76,7 +76,7 @@ if (conn@connected) {
 dbClose(conn)
 ```
 
-## 3. Supported Data Types
+### 3. Supported Data Types
 
 R API supports the following data types of DolphinDB:
 
