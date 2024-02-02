@@ -30,7 +30,7 @@ AnyVectorr::AnyVectorr(DataInputStream &in)
 
     for (int i = 0; i < size; i++)
     {
-        short flag;
+        short flag{};
         in.readShort(flag);
 
         int form = flag >> 8;

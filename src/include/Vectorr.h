@@ -75,7 +75,7 @@ public:
         vec.reserve(size);
         for (int i = 0; i < size; i++)
         {
-            char temp;
+            char temp{};
             in.readChar(temp);
             vec.push_back((bool) temp);
             if (temp == (char) DDB_NULL_BYTE)
@@ -179,7 +179,7 @@ public:
             in.readChar(temp);
             int v = temp;
             vec.push_back(v);
-            if (temp == DDB_NULL_BYTE)
+            if (temp == (char)DDB_NULL_BYTE)
             {
                 Vectorr::getNAIndex().push_back(i+1);
             }

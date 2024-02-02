@@ -240,46 +240,38 @@ DDB_GetEntity <- function(xxdb_type) {
             if (typelist[i] == 5) {
                 clm <- ReturnTableColumnLogical(i)
                 NAIndex <- ReturnTableColumnNAIndex(i)
-                for (j in NAIndex) {
-                    clm[j] <- NA
-                }
+                clm[NAIndex] <- NA
                 result <- cbind(result, clm)
 
             } else if (typelist[i] == 6) {
                 clm <- ReturnTableColumnInteger(i)
+                NAIndex <- ReturnTableColumnNAIndex(i)
+                clm[NAIndex] <- NA
                 result <- cbind(result, clm)
 
             } else if (typelist[i] == 7) {
                 clm <- ReturnTableColumnDouble(i)
                 NAIndex <- ReturnTableColumnNAIndex(i)
-                for (j in NAIndex) {
-                    clm[j] <- NA
-                }
+                clm[NAIndex] <- NA
                 result <- cbind(result, clm)
 
             } else if (typelist[i] == 8) {
                 clm <- ReturnTableColumnString(i)
                 NAIndex <- ReturnTableColumnNAIndex(i)
-                for (j in NAIndex) {
-                    clm[j] <- NA
-                }
-                result <- cbind(result, clm)
+                clm[NAIndex] <- NA
+                result <- cbind(result, clm, stringsAsFactors=FALSE)
 
             } else if (typelist[i] == 16) {
                 clm <- ReturnTableColumnDate(i)
                 NAIndex <- ReturnTableColumnNAIndex(i)
-                for (j in NAIndex) {
-                    clm[j] <- NA
-                } 
+                clm[NAIndex] <- NA
                 result <- cbind(result, clm)
 
             } else if (typelist[i] == 17) {
                 # date time
                 clm <- ReturnTableColumnTime(i)
                 NAIndex <- ReturnTableColumnNAIndex(i)
-                for (j in NAIndex) {
-                    clm[j] <- NA
-                }
+                clm[NAIndex] <- NA
                 result <- cbind(result, clm)
 
             } else {
@@ -290,6 +282,10 @@ DDB_GetEntity <- function(xxdb_type) {
         }
         
         result <- result[,-1]
+        if(class(result) != "data.frame"){
+            # if the result only contains one column, then must convert it to dataFrame Explicitly, or it will be a vecor
+            result = data.frame(result)
+        }
         colnames(result) <- ReturnTableColumeName()
         Clear()
         return (result)
@@ -427,45 +423,37 @@ DDB_GetEntity <- function(xxdb_type) {
                     if (typelist[k] == 5) {
                         clm <- ReturnTableColumnLogical(k, i)
                         NAIndex <- ReturnTableColumnNAIndex(k, i)
-                        for (j in NAIndex) {
-                            clm[j] <- NA
-                        }
+                        clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
                     } else if (typelist[k] == 6) {
                         clm <- ReturnTableColumnInteger(k, i)
+                        NAIndex <- ReturnTableColumnNAIndex(k, i)
+                        clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
                     } else if (typelist[k] == 7) {
                         clm <- ReturnTableColumnDouble(k, i)
                         NAIndex <- ReturnTableColumnNAIndex(k, i)
-                        for (j in NAIndex) {
-                            clm[j] <- NA
-                        }
+                        clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
                     } else if (typelist[k] == 8) {
                         clm <- ReturnTableColumnString(k, i)
                         NAIndex <- ReturnTableColumnNAIndex(k, i)
-                        for (j in NAIndex) {
-                            clm[j] <- NA
-                        }
+                        clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
                     } else if (typelist[k] == 16) {
                         clm <- ReturnTableColumnDate(k, i)
                         NAIndex <- ReturnTableColumnNAIndex(k, i)
-                        for (j in NAIndex) {
-                            clm[j] <- NA
-                        }
+                        clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
                     } else if (typelist[k] == 17) {
                         clm <- ReturnTableColumnTime(k, i)
                         NAIndex <- ReturnTableColumnNAIndex(k, i)
-                        for (j in NAIndex) {
-                            clm[j] <- NA
-                        }
+                        clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
                     } else {

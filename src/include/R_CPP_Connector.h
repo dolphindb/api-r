@@ -54,6 +54,12 @@ public:
     Rcpp_Connector()
         : sessionID(""), remoteLittleEndian(false), connected(false)
     {
+        #ifdef WINDOWS
+            WSADATA wsaData;
+            if (WSAStartup(MAKEWORD(2, 1), &wsaData) != 0) {
+                cout << "[Error] WSAStartup Fail" << endl;
+            }
+        #endif
         entity = NULL;
         anyvector = NULL;
         socket = new Socket();
@@ -603,7 +609,7 @@ bool Rcpp_Connector::Rcpp_Connect(string host, int port)
         string line;
         in -> readLine(line);
 
-        int endPos = line.find_first_of(" ", 0);
+        auto endPos = line.find_first_of(" ", 0);
         if (endPos == string::npos)
         {
             cout << "[ERROR] Data format error" << endl;
@@ -666,7 +672,7 @@ bool Rcpp_Connector::Rcpp_ReceiveHeader()
         {
             break;
         }
-        int endPos = header.find_first_of(' ', 0);
+        auto endPos = header.find_first_of(' ', 0);
         if (endPos == string::npos)
         {
             headers.push_back(header);
@@ -732,7 +738,7 @@ int Rcpp_Connector::Rcpp_ReceiveEntity()
         {
             break;
         }
-        int endPos = header.find_first_of(' ', 0);
+        auto endPos = header.find_first_of(' ', 0);
         if (endPos == string::npos)
         {
             headers.push_back(header);

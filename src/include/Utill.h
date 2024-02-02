@@ -227,7 +227,7 @@ int Utill::ReturnRType(int data_form, int data_type)
 
 string Utill::ParseNanotimestamp(long long nanoseconds)
 {
-    long long NANOS_PER_DAY = 24L*60L*60L*1000000000L;
+    long long NANOS_PER_DAY = 24LL * 60LL * 60LL * 1000000000LL;
     int days = (int) floor((double)nanoseconds / NANOS_PER_DAY);
     string date_str = ParseDate(days);
 
@@ -238,24 +238,24 @@ string Utill::ParseNanotimestamp(long long nanoseconds)
     }
     
     nanoseconds %= NANOS_PER_DAY;
-    int hours = (int)(nanoseconds / (60L*60L*1000000000L));
-    nanoseconds -= hours * (60L*60L*1000000000L);
-    int minutes = (int)(nanoseconds / (60L*1000000000L));
-    nanoseconds -= minutes * (60L*1000000000L);
-    int seconds = (int)(nanoseconds / (1000000000L));
-    nanoseconds -= seconds * (1000000000L);
+    int hours = (int)(nanoseconds / (60LL * 60LL * 1000000000LL));
+    nanoseconds -= hours * (60LL * 60LL * 1000000000LL);
+    int minutes = (int)(nanoseconds / (60LL * 1000000000LL));
+    nanoseconds -= minutes * (60LL * 1000000000LL);
+    int seconds = (int)(nanoseconds / (1000000000LL));
+    nanoseconds -= seconds * (1000000000LL);
 
     return FormatRDateTime(date_str, hours, minutes, seconds);
 }
 
 string Utill::ParseNanotime(long long nanoseconds)
 {
-    int hours = (int)(nanoseconds / (60L*60L*1000000000L));
-    nanoseconds -= hours * (60L*60L*1000000000L);
-    int minutes = (int)(nanoseconds / (60L*1000000000L));
-    nanoseconds -= minutes * (60L*1000000000L);
-    int seconds = (int)(nanoseconds / (1000000000L));
-    nanoseconds -= seconds * (1000000000L);
+    int hours = (int)(nanoseconds / (60LL * 60LL * 1000000000LL));
+    nanoseconds -= hours * (60LL * 60LL * 1000000000LL);
+    int minutes = (int)(nanoseconds / (60LL * 1000000000LL));
+    nanoseconds -= minutes * (60LL * 1000000000LL);
+    int seconds = (int)(nanoseconds / (1000000000LL));
+    nanoseconds -= seconds * (1000000000LL);
 
     return FormatRDateTime(1970, 1, 1, hours, minutes, seconds);
 }
@@ -270,7 +270,7 @@ string Utill::ParseTimestamp(long long milliseconds)
     {
         milliseconds += 86400000;
     }
-    int millisecond = (int)(milliseconds % 1000);
+
     int seconds = (int)(milliseconds / 1000);
     int hour = seconds / 3600;
     seconds %= 3600;
@@ -539,7 +539,7 @@ bool Utill::IsVariableCandidate(string key)
     {
         return false;
     }
-    for (int i = 1; i < key.length(); i++)
+    for (unsigned i = 1; i < key.length(); i++)
     {
         cur = key[i];
         if ((cur<'a' || cur>'z') && (cur<'A' || cur>'Z') && (cur<'0' || cur>'9') && cur!='_')

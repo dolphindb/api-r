@@ -67,7 +67,7 @@ Tablee::Tablee(DataInputStream &in)
 
     for (int i = 0; i < table_clm; i++)
     {
-        short flag;
+        short flag{};
         in.readShort(flag);
         int form = flag >> 8;
         int type = flag & 0xff;

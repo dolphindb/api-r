@@ -527,8 +527,9 @@ IO_ERR Socket::connect(){
 			continue;
 		if(!blocking_)
 			setNonBlocking();
-	    if(ENABLE_TCP_NODELAY)
-	    	setTcpNoDelay();
+		if(ENABLE_TCP_NODELAY){
+			setTcpNoDelay();
+		}
 
 		if(::connect(handle_, p->ai_addr, p->ai_addrlen) == SOCKET_ERROR) {
 			if(!blocking_){
@@ -693,11 +694,11 @@ DataInputStream::~DataInputStream(){
 }
 
 IO_ERR DataInputStream::internalStreamRead(char* buf, size_t length, size_t& actualLength){
-	// throw RuntimeException("DataInputStream::internalStreamRead not implemented yet.");
+	return OTHERERR;
 }
 
 IO_ERR DataInputStream::internalClose(){
-	// throw RuntimeException("DataInputStream::internalStreamRead not implemented yet.");
+	return OTHERERR;
 }
 
 bool DataInputStream::reset(int size){

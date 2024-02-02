@@ -114,7 +114,7 @@ Entity::Entity(int df, int dt, DataInputStream& in)
 
 void Entity::CreateSet(DataInputStream &in)
 {
-    short flag;
+    short flag{};
     in.readShort(flag);
     int form = flag >> 8;
     int type = flag & 0xff;
