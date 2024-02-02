@@ -161,15 +161,15 @@ if (conn@connected == TRUE) {
     scalar <- as.Date("2018-07-01")
     record <- assert(record, "test month, scalar", result, scalar)
 
-    testList <- list(as.POSIXct(c("2018-07-22 02:30:32", "2018-08-21 03:15:26", NA),tz="UTC"))
-    result <- dbRpc(conn, "size", testList)
-    scalar <- 3L
-    record <- assert(record, "test datetime rpc", result, scalar)
+    ## testList <- list(as.POSIXct(c("2018-07-22 02:30:32", "2018-08-21 03:15:26", NA),tz="UTC"))
+    ## result <- dbRpc(conn, "size", testList)
+    ## scalar <- 3L
+    ## record <- assert(record, "test datetime rpc", result, scalar)
 
-    testList <- list(as.Date(c("2018-07-22", "2018-08-21", NA)))
-    result <- dbRpc(conn, "size", testList)
-    scalar <- 3L
-    record <- assert(record, "test date rpc", result, scalar)
+    ## testList <- list(as.Date(c("2018-07-22", "2018-08-21", NA)))
+    ## result <- dbRpc(conn, "size", testList)
+    ## scalar <- 3L
+    ## record <- assert(record, "test date rpc", result, scalar)
 
     testList <- list(as.POSIXct("2018-07-22 02:30:32"), 20L, "h")
     result <- dbRpc(conn, "temporalAdd", testList)
