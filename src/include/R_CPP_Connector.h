@@ -707,7 +707,21 @@ bool Rcpp_Connector::Rcpp_ReceiveHeader()
         cout << "[1] " << msg << endl;
         return false;
     }
+    if(numObject != 0){
+        short flag;
+        in -> readShort(flag);
+        int form = flag >> 8;
+        int type = flag & 0xff;
 
+        if (type == DATA_TYPE::DT_ANY && form == DATA_FORM::DF_VECTOR)
+        {
+            anyvector = new AnyVectorr(*in);
+        }
+        else 
+        {
+            entity = new Entity(form, type, *in);
+        }
+    }
     return true;
 }
 

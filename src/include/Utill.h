@@ -176,6 +176,8 @@ int Utill::ReturnRType(int data_form, int data_type)
         {
             case DATA_TYPE::DT_BOOL:
                 return MATRIX_LOGICAL;
+            case DATA_TYPE::DT_CHAR: 
+                return MATRIX_INTEGER;
             case DATA_TYPE::DT_INT: 
                 return MATRIX_INTEGER;
             case DATA_TYPE::DT_SHORT: 
@@ -503,31 +505,39 @@ int Utill::CountDays(string date_str)
 int Utill::CountSeconds(string date_time_str)
 {
     string date_str(date_time_str, 0, 10);
-    string time_str(date_time_str, 11, time_str.size() - 11);
-
-    string hour_str(time_str, 0, 2);
-    string minute_str(time_str, 3, 2);
-    string second_str(time_str, 6, 2);
     int hour;
     int minute;
     int second;
-    stringstream ss;
+    if(date_time_str.size() < 11){
+        //date_time_str only contain date, no time
+        hour = 0;
+        minute = 0;
+        second = 0;
+    }
+    else{
+        string time_str(date_time_str, 11, date_str.size() - 11);
 
-    ss << hour_str;
-    ss >> hour;
-    ss.str("");
-    ss.clear();
+        string hour_str(time_str, 0, 2);
+        string minute_str(time_str, 3, 2);
+        string second_str(time_str, 6, 2);
+        
+        stringstream ss;
 
-    ss << minute_str;
-    ss >> minute;
-    ss.str("");
-    ss.clear();
+        ss << hour_str;
+        ss >> hour;
+        ss.str("");
+        ss.clear();
 
-    ss << second_str;
-    ss >> second;
-    ss.str("");
-    ss.clear();
+        ss << minute_str;
+        ss >> minute;
+        ss.str("");
+        ss.clear();
 
+        ss << second_str;
+        ss >> second;
+        ss.str("");
+        ss.clear();
+    }
     int days = Utill::CountDays(date_str);
     return days * 86400 + (hour * 60 + minute) * 60 + second;
 }

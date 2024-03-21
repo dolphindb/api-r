@@ -187,6 +187,7 @@ setMethod(
         DDB_UploadEntity(args)
         # Get status
         res_stat <- ReceiveHeader()
+        Clear()
         return (res_stat)
     }
 )
@@ -210,6 +211,7 @@ setMethod(
     function(conn) {
         DisConnect()
         conn@connected <- FALSE
+        return (conn)
     }
 )
 

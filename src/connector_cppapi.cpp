@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include <cmath>
 using namespace Rcpp;
 
 /*************************************************
@@ -223,6 +224,9 @@ void UploadScalarNULL()
 //[[Rcpp::export]]
 void UploadScalarDouble(double val)
 {
+    if(std::isnan(val)){
+        val = DDB_NULL_NUMERIC;
+    }
     cnt.Rcpp_UploadEntity(val);
 }
 

@@ -1,0 +1,6 @@
+library(RDolphinDB)
+conn <- dbConnect(DolphinDB(),"192.168.0.54",8848,"admin","123456")
+result <- dbRun(conn,"string(`a`a`a`a`a`a`a`a`a`a`a`a`a`a`a`a`b)")
+print(result)
+print(length(result))
+print(typeof(result))

@@ -90,7 +90,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 1) {
         # Scalar Logical
         if (ReturnScalarNA()) {
-            result <- NA
+            result <- as.logical(NA)
         } else {
             result <- ReturnScalarBool()
         }
@@ -100,7 +100,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 2) {
         # Scalar Integer
         if (ReturnScalarNA()) {
-            result <- NA
+            result <- as.integer(NA)
         } else {
             result <- ReturnScalarInt()
         }
@@ -110,7 +110,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 3) {
         # Scalar Numeric
         if (ReturnScalarNA()) {
-            result <- NA
+            result <- as.numeric(NA)
         } else {
             result <- ReturnScalarDouble()
         }
@@ -120,7 +120,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 4) {
         # Scalar Character
         if (ReturnScalarNA()) {
-            result <- NA
+            result <- as.character(NA)
         } else {
             result <- ReturnScalarString()
         }
@@ -130,7 +130,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 14) {
         # Scalar Date
         if (ReturnScalarNA()) {
-            result <- NA
+            result <- as.Date(NA)
         } else {
             result <- ReturnScalarDate()
         }
@@ -140,7 +140,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 15) {
         # Scalar DateTime
         if (ReturnScalarNA()) {
-            result <- NA
+            result <- as.POSIXct(NA)
         } else {
             result <- ReturnScalarTime()
         }
@@ -157,6 +157,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 6) {
         # Integer Vector
         result <- ReturnVectorInt()
+        result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex())
         Clear()
         return (result)
 
@@ -199,6 +200,7 @@ DDB_GetEntity <- function(xxdb_type) {
     } else if (xxdb_type == 10) {
         # Integer Matrix
         result <- ReturnMatrixInt()
+        result <- DDB_SetReceiveVectorNA(result, ReturnMatrixNAIndex())
         result <- DDB_ReceiveMatrixLable(result)
         Clear()
         return (result)
@@ -282,7 +284,7 @@ DDB_GetEntity <- function(xxdb_type) {
         }
         
         result <- result[,-1]
-        if(class(result) != "data.frame"){
+        if(class(result)[1] != "data.frame"){
             # if the result only contains one column, then must convert it to dataFrame Explicitly, or it will be a vecor
             result = data.frame(result)
         }
@@ -294,8 +296,12 @@ DDB_GetEntity <- function(xxdb_type) {
         # AnyVector => list
         anyVector <- list()
         anytypelist <- ReturnAnyVectorTypelist()
-        
-        for (i in 1:length(anytypelist)) {
+        len = length(anytypelist)
+        if(len == 0){
+            Clear()
+            return (anyVector)
+        }
+        for (i in 1:len) {
             if (anytypelist[i] == 0) {
                 # void
                 result <- NA
@@ -487,21 +493,19 @@ DDB_GetEntity <- function(xxdb_type) {
 #   call different C++ functions to upload 
 #   different types of R objects.
 DDB_UploadScalar <- function(scl) {
-    if (is.na(scl) || is.nan(scl)) {
+    if (is.integer(scl)) {
+        UploadScalarInt(scl)
+    }
+    else if (is.numeric(scl)) {
+        UploadScalarDouble(scl)
+    }
+    else if (is.na(scl)) {
         
         UploadScalarNULL()
 
     } else if (is.logical(scl)) {
 
         UploadScalarBool(scl)
-
-    } else if (is.integer(scl)) {
-
-        UploadScalarInt(scl)
-
-    } else if (is.numeric(scl)) {
-        
-        UploadScalarDouble(scl)
 
     } else if (is.character(scl)) {
 
@@ -572,7 +576,7 @@ DDB_UploadVector <- function(vec) {
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorDouble(vec, NAIndex)
 
-    } else if (is.character(vec) || class(vec) == "factor") {
+    } else if (is.character(vec) || is.factor(vec)) {
 
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorString(vec, NAIndex)
@@ -583,7 +587,7 @@ DDB_UploadVector <- function(vec) {
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorDateTime(vec, NAIndex)
 
-    } else if (class(vec) == "Date") {
+    } else if (inherits(vec, "Date")) {
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorDate(vec, NAIndex)
 
@@ -615,7 +619,7 @@ DDB_UploadMatrixLable <- function(mtx) {
         DDB_UploadVector(rownames(mtx))
     }
     if (is.null(colnames(mtx)) == FALSE) {
-        DDB_UploadVector(rownames(mtx))
+        DDB_UploadVector(colnames(mtx))
     }
 }
 
@@ -683,13 +687,13 @@ DDB_UploadObjectCheck <- function(args) {
             
         } else if (is.vector(args[[i]]) && length(args[[i]]) == 1) {
             
-        } else if (class(args[[i]]) == "Date" && length(args[[i]]) == 1) {
+        } else if (class(args[[i]])[1] == "Date" && length(args[[i]]) == 1) {
             
-        } else if (class(args[[i]]) == "Date" && length(args[[i]]) > 1) {
+        } else if (class(args[[i]])[1] == "Date" && length(args[[i]]) > 1) {
             
-        } else if (class(args[[i]]) == c("POSIXct", "POSIXt") && length(args[[i]]) == 1) {
+        } else if (class(args[[i]])[1] == "POSIXct" && length(args[[i]]) == 1) {
             
-        } else if (class(args[[i]]) == c("POSIXct", "POSIXt") && length(args[[i]]) > 1) {
+        } else if (class(args[[i]])[1] == "POSIXct" && length(args[[i]]) > 1) {
             
         } else {
             print("Data form not support yet.")
@@ -715,9 +719,20 @@ DDB_UploadEntity <- function(args) {
         } else if (is.vector(args[[i]]) && length(args[[i]]) == 1) {
             DDB_UploadScalar(args[[i]])
         } else if (length(class(args[[i]])) == 2 && class(args[[i]])[1] == "POSIXct") {
-            DDB_UploadVectorDateTime(args[[i]])
+            if(length(args[[i]]) == 1){
+                DDB_UploadScalarDateTime(args[[i]])
+            }
+            else{
+                DDB_UploadVectorDateTime(args[[i]])
+            }
+            
         } else if (class(args[[i]]) == "Date") {
-            DDB_UploadVectorDate(args[[i]])
+            if(length(args[[i]]) == 1){
+                DDB_UploadScalarDate(args[[i]])
+            }
+            else{
+                DDB_UploadVectorDate(args[[i]])
+            }
         } else {
             print("Data form not support yet")
             Clear()
