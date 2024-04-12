@@ -455,6 +455,9 @@ string Utill::ParseDateTime(int seconds)
 
 int Utill::CountDays(string date_str)
 {
+    if(date_str == "NA"){
+        return DDB_NULL_INTEGER;
+    }
     string year_str(date_str, 0, 4);
     string month_str(date_str, 5, 2);
     string day_str(date_str, 8, 2);
@@ -504,6 +507,9 @@ int Utill::CountDays(string date_str)
 
 int Utill::CountSeconds(string date_time_str)
 {
+    if(date_time_str == "NA"){
+        return DDB_NULL_INTEGER;
+    }
     string date_str(date_time_str, 0, 10);
     int hour;
     int minute;

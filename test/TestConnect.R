@@ -5,7 +5,7 @@ library(RDolphinDB)
 
 record <- c(0L,0L)
 # host error
-conn <- dbConnect(DolphinDB(),"192.168.0.1",PORT)
+conn <- dbConnect(DolphinDB(),"192.1.1.1",PORT)
 record <- assert(record,"connect host error",conn@connected,FALSE)
 
 # port error

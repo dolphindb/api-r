@@ -271,13 +271,13 @@ public:
 class VectorDate : public Vectorr 
 {
 private: 
-    Rcpp::NumericVector _vec;
+    Rcpp::DateVector _vec;
 
     vector<string> str_vec; 
     vector<int> origin_v;
 public: 
     VectorDate(DataInputStream &in)
-        :Vectorr(in)
+        :Vectorr(in), _vec(0)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
         int y, m, d;

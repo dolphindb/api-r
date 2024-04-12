@@ -14,7 +14,7 @@ if (conn@connected){
     result <- dbRun(conn,"true")
     record <- assert(record,"download scalar bool true",result,TRUE)
     result <- dbRun(conn,"false")
-    record <- assert(record,"download scalar bool true",result,FALSE)
+    record <- assert(record,"download scalar bool false",result,FALSE)
     result <- dbRun(conn,"00b")
     record <- assert(record,"download scalar bool true",result,NA)
 

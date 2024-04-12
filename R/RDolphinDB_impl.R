@@ -557,11 +557,7 @@ DDB_UploadVectorDateTime <- function(vec) {
 #   call different C++ functions to upload vectors.
 #   At the same time, deal with NA in vectors.
 DDB_UploadVector <- function(vec) {
-    if (all(is.na(vec))) {
-
-        UploadVectorNULL(length(vec), 1L)
-
-    } else if (is.logical(vec)) {
+    if (is.logical(vec)) {
 
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorBool(vec, NAIndex)
@@ -709,6 +705,9 @@ DDB_UploadObjectCheck <- function(args) {
 #   call the different functions to upload
 #   different forms of objects.
 DDB_UploadEntity <- function(args) {
+    if(length(args) == 0){
+        return (TRUE)
+    }
     for (i in 1:length(args)) {
         if (is.matrix(args[[i]])) {
             DDB_UploadMatrix(args[[i]])
