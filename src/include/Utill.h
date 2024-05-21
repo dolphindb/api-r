@@ -165,6 +165,8 @@ int Utill::ReturnRType(int data_form, int data_type)
                 return VECTOR_DATETIME;
             case DATA_TYPE::DT_ANY:
                 return VECTOR_ANY;
+            case DATA_TYPE::DT_SYMBOL + 128:
+                return VECTOR_FACTOR;
             default:
                 cout << Utill::ErrorTypeNotSupport << endl;
                 return 0;
@@ -194,6 +196,10 @@ int Utill::ReturnRType(int data_form, int data_type)
                 return MATRIX_DATE;
             case DATA_TYPE::DT_DATETIME: 
                 return MATRIX_DATETIME;
+            case DATA_TYPE::DT_SYMBOL:
+            case DATA_TYPE::DT_STRING:
+            case DATA_TYPE::DT_SYMBOL + 128:
+                return MATRIX_CHARACTER;
             case DATA_TYPE::DT_MINUTE:
                 return MATRIX_DATETIME;
             case DATA_TYPE::DT_SECOND:

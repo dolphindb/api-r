@@ -231,7 +231,11 @@ DDB_GetEntity <- function(xxdb_type) {
 
     } else if (xxdb_type == 12) {
         # Character Matrix
-        return (NULL)
+        result <- ReturnMatrixString()
+        result <- DDB_SetReceiveVectorNA(result, ReturnMatrixNAIndex())
+        result <- DDB_ReceiveMatrixLable(result)
+        Clear()
+        return (result)
 
     } else if (xxdb_type == 13) {
         # DataFrame
@@ -276,6 +280,10 @@ DDB_GetEntity <- function(xxdb_type) {
                 clm[NAIndex] <- NA
                 result <- cbind(result, clm)
 
+            } else if (typelist[i] == 21) {
+                # factor
+                clm <- ReturnTableColumnFactor(i)
+                result <- cbind(result, clm)
             } else {
                 print("error in DataFrame")
                 Clear()
@@ -387,6 +395,10 @@ DDB_GetEntity <- function(xxdb_type) {
                 result <- DDB_SetReceiveVectorNA(result, ReturnVectorNAIndex(i))
                 result <- result
 
+            } else if (anytypelist[i] == 21) {
+                # Factor
+                result <- ReturnVectorFactor(i)
+
             } else if (anytypelist[i] == 9) {
                 # Logical Matrix
                 result <- ReturnMatrixBool(i)
@@ -462,6 +474,10 @@ DDB_GetEntity <- function(xxdb_type) {
                         clm[NAIndex] <- NA
                         result <- cbind(result, clm)
 
+                    } else if (typelist[k] == 21) {
+                        # factor
+                        clm <- ReturnTableColumnFactor(k, i)
+                        result <- cbind(result, clm)
                     } else {
                         print("error in DataFrame")
                         Clear()
@@ -470,6 +486,10 @@ DDB_GetEntity <- function(xxdb_type) {
                 }
                 
                 result <- result[,-1]
+                if(class(result)[1] != "data.frame"){
+                    # if the result only contains one column, then must convert it to dataFrame Explicitly, or it will be a vecor
+                    result = data.frame(result)
+                }
                 colnames(result) <- ReturnTableColumeName(i)
 
             } else {
@@ -480,6 +500,12 @@ DDB_GetEntity <- function(xxdb_type) {
         }
         Clear()
         return (anyVector)
+
+    } else if (xxdb_type == 21) {
+        # Factor
+        result <- ReturnVectorFactor()
+        Clear()
+        return (result)
 
     } else {
         # print("Error")
@@ -572,10 +598,14 @@ DDB_UploadVector <- function(vec) {
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorDouble(vec, NAIndex)
 
-    } else if (is.character(vec) || is.factor(vec)) {
+    } else if (is.character(vec)) {
 
         NAIndex <- DDB_SetUploadVectorNA(vec)
         UploadVectorString(vec, NAIndex)
+
+    } else if(is.factor(vec)){
+
+        UploadVectorSymbol(vec)
 
     } else if (length(class(vec)) > 1 && 
                 class(vec)[1] == "POSIXct") {
@@ -691,6 +721,7 @@ DDB_UploadObjectCheck <- function(args) {
             
         } else if (class(args[[i]])[1] == "POSIXct" && length(args[[i]]) > 1) {
             
+        } else if (is.factor(args[[i]])){
         } else {
             print("Data form not support yet.")
             return (FALSE)
@@ -713,6 +744,8 @@ DDB_UploadEntity <- function(args) {
             DDB_UploadMatrix(args[[i]])
         } else if (is.data.frame(args[[i]])) {
             DDB_UploadTable(args[[i]])
+        } else if (is.factor(args[[i]])){
+            UploadVectorSymbol(args[[i]])
         } else if (is.vector(args[[i]]) && length(args[[i]]) > 1) {
             DDB_UploadVector(args[[i]])
         } else if (is.vector(args[[i]]) && length(args[[i]]) == 1) {

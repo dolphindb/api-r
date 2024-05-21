@@ -1,18 +1,27 @@
-source("setup/Settings.R")
-source("pub/Assert.R")
+if (!exists("TESTCLOSE_R__", envir = .GlobalEnv)){
+    TESTCLOSE_R__ <- NULL
+    source("pub/Test.R")
 
-library(RDolphinDB)
+    library(RDolphinDB)
 
-record <- c(0L,0L)
-# close
-conn <- dbConnect(DolphinDB(),HOST,PORT)
-conn <- dbClose(conn)
-record <- assert(record,"connect close",conn@connected,FALSE)
+    # close
+    test$add_case(
+        "connect close",
+        function(conn){
+            .conn <- dbConnect(DolphinDB(), HOST, PORT)
+            .conn <- dbClose(.conn)
+            test$assert(.conn@connected, FALSE)
+        }
+    )
 
-# already closed
-conn <- dbConnect(DolphinDB(),HOST,PORT)
-conn <- dbClose(conn)
-conn <- dbClose(conn)
-record <- assert(record,"connect close",conn@connected,FALSE)
-
-printTestResult(record)
+    # already closed
+    test$add_case(
+        "already closed",
+        function(conn){
+            .conn <- dbConnect(DolphinDB(), HOST, PORT)
+            .conn <- dbClose(.conn)
+            .conn <- dbClose(.conn)
+            test$assert(.conn@connected, FALSE)
+        }
+    )
+}

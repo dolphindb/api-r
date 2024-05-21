@@ -24,6 +24,8 @@ Return the connector object with status of connection.
 Method of getting connection with DolphinDB server.
 
 (If the input contains 'username' and 'password', a log-in job will be done)
+
+Currently, there is at most one TCP connection between the R API and dolphindb. If you call dbConnect multiple times, it closes the previously created connection and creates a new one
 }
 \examples{
 conn <- dbConnect(DolphinDB(), "localhost", 8848)    # Without log-in

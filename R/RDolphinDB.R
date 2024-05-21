@@ -22,6 +22,7 @@ setClass("RDolphinDB", slots = list(connected = "logical"))
 #'
 #' @description Method of getting connection with DolphinDB server.
 #' @description (If the input contains 'username' and 'password', a log-in job will be done)
+#' @description Currently, there is at most one TCP connection between the R API and dolphindb. If you call dbConnect multiple times, it closes the previously created connection and creates a new one
 #' @param conn The connector object.
 #' @param host The host running the DolphinDB server.
 #' @param port The port running the DolphinDB server.

@@ -55,6 +55,7 @@ public:
     Vectorr() {}
     virtual ~Vectorr() {}
     virtual bool isDate() { return false; }
+    virtual bool isString() { return false; }
     int getRow() {return row;}
     int getClm() {return clm;}
     vector <int>& getNAIndex() {return NA_INDEX;}
@@ -137,6 +138,63 @@ public:
     void* getVector() {return (void *)(&vec);}
 };
 
+class VectorSymbol : public Vectorr{
+private:
+    Rcpp::IntegerVector _vec;
+    std::vector<std::string> str_vec;
+    std::vector<std::string> _levels;
+
+public:
+    VectorSymbol(DataInputStream& in)
+        :Vectorr(in)
+    {
+        int size = Vectorr::getRow() * Vectorr::getClm();
+        int symbaseId_ = -1;
+        in.readInt(symbaseId_);
+        int levelSize;
+        in.readInt(levelSize);
+        _levels.reserve(levelSize);
+        for(int i = 0; i < levelSize; i++){
+            std::string s;
+            in.readString(s);
+            _levels.push_back(s);
+        }
+
+        std::vector<int> vec;
+        vec.reserve(size);
+        for (int i = 0; i < size; i++)
+        {
+            int temp;
+            in.readInt(temp);
+            vec.push_back(temp + 1);
+        }
+
+        Rcpp::CharacterVector v = wrap(_levels);
+        if(v.size() > 0){
+            v[0] = NA_STRING;
+        }
+        _vec = wrap(vec);
+        _vec.attr("class") = "factor";
+        _vec.attr("levels") = v;
+    }
+    bool isString() override{ return true; }
+    void* getVector() override{return (void *)(&_vec);}
+    void* getStringVector() override
+    {
+        int size = _vec.size();
+        str_vec.reserve(size);
+        for (int i = 0; i < size; ++i)
+        {
+            str_vec.push_back(_levels[_vec[i] - 1]);
+            if (_vec[i] == 1)
+            {
+                Vectorr::getNAIndex().push_back(i+1);
+            }
+        }
+        return (void *)(&str_vec);
+    }
+};
+
 class VectorString : public Vectorr 
 {
 private:
@@ -160,7 +218,9 @@ public:
     }
     ~VectorString() {}      // Free automatically
 
-    void* getVector() {return (void *)(&vec);}
+    bool isString() override{ return true; }
+    void* getVector() override{return (void *)(&vec);}
+    void* getStringVector() override{return (void *)(&vec);}
 };
 
 class VectorChar : public Vectorr
@@ -317,12 +377,12 @@ class VectorMonth : public Vectorr
 {
 private: 
     //TODO
-    Rcpp::NumericVector _vec;
+    Rcpp::DateVector  _vec;
     vector<string> str_vec; 
     vector<int> origin_v;
 public: 
     VectorMonth(DataInputStream &in)
-        :Vectorr(in)
+        :Vectorr(in), _vec(0)
     {
         int size = Vectorr::getRow() * Vectorr::getClm();
         int y, m, d;
@@ -746,7 +806,10 @@ int CreateVector(Vectorr*& vector_ptr, int data_type, DataInputStream& in)
         case DATA_TYPE::DT_NANOTIMESTAMP:
             vector_ptr = new VectorNanotimestamp(in);
             return VECTOR_DATETIME;
-            
+        
+        case DATA_TYPE::DT_SYMBOL + 128:
+            vector_ptr = new VectorSymbol(in);
+            return VECTOR_FACTOR;
         default:
             // cout << "UNSURPORT VECTOR TYPE" << endl;
             break;

@@ -1,8 +1,8 @@
 Package: RDolphinDB
 Type: Package
 Title: Connecting to DolphinDB server with R
-Version: 2.0.11.1
-Date: 2024-03-19
+Version: 3.0.0.1
+Date: 2024-05-17
 Author: mrDrivingDuck
 Maintainer: mrDrivingDuck <jingtang.zhang@dolphindb.com>
 Description: The R API of DolphinDB.

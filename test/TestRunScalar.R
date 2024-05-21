@@ -1,143 +1,385 @@
-source("setup/Settings.R")
-source("pub/Assert.R")
+if (!exists("TESTRUNSCALAR_R__", envir = .GlobalEnv)){
+    TESTRUNSCALAR_R__ <- NULL
+    source("pub/Test.R")
 
-library(RDolphinDB)
-
-conn <- dbConnect(DolphinDB(),HOST,PORT,USER,PASSWD)
-if (conn@connected){
-    record <- c(0L,0L)
     # void
-    result <- dbRun(conn,"NULL")
-    record <- assert(record,"download scalar void",result,NA)
+    test$add_case(
+        "download scalar void",
+        function(conn){
+            result <- dbRun(conn, "NULL")
+            test$assert(result, NA)
+        }
+    )
 
     # bool
-    result <- dbRun(conn,"true")
-    record <- assert(record,"download scalar bool true",result,TRUE)
-    result <- dbRun(conn,"false")
-    record <- assert(record,"download scalar bool false",result,FALSE)
-    result <- dbRun(conn,"00b")
-    record <- assert(record,"download scalar bool true",result,NA)
+    test$add_case(
+        "download scalar bool true",
+        function(conn){
+            result <- dbRun(conn, "true")
+            test$assert(result, TRUE)
+        }
+    )
+    test$add_case(
+        "download scalar bool false",
+        function(conn){
+            result <- dbRun(conn, "false")
+            test$assert(result, FALSE)
+        }
+    )
+    test$add_case(
+        "download scalar bool 00b",
+        function(conn){
+            result <- dbRun(conn, "00b")
+            test$assert(result, NA)
+        }
+    )
 
     # char
-    result <- dbRun(conn,"0c")
-    record <- assert(record,"download scalar char 0c",result,0L)
-    result <- dbRun(conn,"127c")
-    record <- assert(record,"download scalar char 128c",result,127L)
-    result <- dbRun(conn,"-127c")
-    record <- assert(record,"download scalar char -127c",result,-127L)
-    result <- dbRun(conn,"00c")
-    record <- assert(record,"download scalar char 00c",result,NA_integer_)
+    test$add_case(
+        "download scalar char 0c",
+        function(conn){
+            result <- dbRun(conn, "0c")
+            test$assert(result, 0L)
+        }
+    )
+    test$add_case(
+        "download scalar char 127c",
+        function(conn){
+            result <- dbRun(conn, "127c")
+            test$assert(result, 127L)
+        }
+    )
+    test$add_case(
+        "download scalar char -127c",
+        function(conn){
+            result <- dbRun(conn, "-127c")
+            test$assert(result, -127L)
+        }
+    )
+    test$add_case(
+        "download scalar char 00c",
+        function(conn){
+            result <- dbRun(conn, "00c")
+            test$assert(result, NA_integer_)
+        }
+    )
 
     # short
-    result <- dbRun(conn,"0h")
-    record <- assert(record,"download scalar short 0h",result,0L)
-    result <- dbRun(conn,"32767h")
-    record <- assert(record,"download scalar short 32767h",result,32767L)
-    result <- dbRun(conn,"-32767h")
-    record <- assert(record,"download scalar short -32767h",result,-32767L)
-    result <- dbRun(conn,"00h")
-    record <- assert(record,"download scalar short 00h",result,NA_integer_)
+    test$add_case(
+        "download scalar short 0h",
+        function(conn){
+            result <- dbRun(conn, "0h")
+            test$assert(result, 0L)
+        }
+    )
+    test$add_case(
+        "download scalar short 32767h",
+        function(conn){
+            result <- dbRun(conn, "32767h")
+            test$assert(result, 32767L)
+        }
+    )
+    test$add_case(
+        "download scalar short -32767h",
+        function(conn){
+            result <- dbRun(conn, "-32767h")
+            test$assert(result, -32767L)
+        }
+    )
+    test$add_case(
+        "download scalar short 00h",
+        function(conn){
+            result <- dbRun(conn, "00h")
+            test$assert(result, NA_integer_)
+        }
+    )
 
     # int
-    result <- dbRun(conn,"0i")
-    record <- assert(record,"download scalar int 0i",result,0L)
-    result <- dbRun(conn,"2147483647i")
-    record <- assert(record,"download scalar int 2147483647i",result,2147483647L)
-    result <- dbRun(conn,"-2147483647i")
-    record <- assert(record,"download scalar int -2147483647i",result,-2147483647L)
-    result <- dbRun(conn,"00i")
-    record <- assert(record,"download scalar int 00i",result,NA_integer_)
+    test$add_case(
+        "download scalar int 0i",
+        function(conn){
+            result <- dbRun(conn, "0i")
+            test$assert(result, 0L)
+        }
+    )
+    test$add_case(
+        "download scalar int 2147483647i",
+        function(conn){
+            result <- dbRun(conn, "2147483647i")
+            test$assert(result, 2147483647L)
+        }
+    )
+    test$add_case(
+        "download scalar int -2147483647i",
+        function(conn){
+            result <- dbRun(conn, "-2147483647i")
+            test$assert(result, -2147483647L)
+        }
+    )
+    test$add_case(
+        "download scalar int 00i",
+        function(conn){
+            result <- dbRun(conn, "00i")
+            test$assert(result, NA_integer_)
+        }
+    )
 
     # long
-    result <- dbRun(conn,"0l")
-    record <- assert(record,"download scalar long 0l",result,0)
-    result <- dbRun(conn,"9223372036854775807l")
-    record <- assert(record,"download scalar long 9223372036854775807l",result,9223372036854775807)
-    result <- dbRun(conn,"-9223372036854775807l")
-    record <- assert(record,"download scalar long -9223372036854775807l",result,-9223372036854775807)
-    result <- dbRun(conn,"00l")
-    record <- assert(record,"download scalar long 00l",result,NA_real_)
+    test$add_case(
+        "download scalar long 0l",
+        function(conn){
+            result <- dbRun(conn, "0l")
+            test$assert(result, 0)
+        }
+    )
+    test$add_case(
+        "download scalar long 9223372036854775807l",
+        function(conn){
+            result <- dbRun(conn, "9223372036854775807l")
+            test$assert(result, 9223372036854775807)
+        }
+    )
+    test$add_case(
+        "download scalar long -9223372036854775807l",
+        function(conn){
+            result <- dbRun(conn, "-9223372036854775807l")
+            test$assert(result, -9223372036854775807)
+        }
+    )
+    test$add_case(
+        "download scalar long 00l",
+        function(conn){
+            result <- dbRun(conn, "00l")
+            test$assert(result, NA_real_)
+        }
+    )
 
     # date
-    result <- dbRun(conn,"1970.01.01d")
-    record <- assert(record,"download scalar date 1970.01.01d",result,as.Date("1970-01-01"))
-    result <- dbRun(conn,"00d")
-    record <- assert(record,"download scalar date 00d",result,as.Date(NA))
+    test$add_case(
+        "download scalar date 1970.01.01d",
+        function(conn){
+            result <- dbRun(conn, "1970.01.01d")
+            test$assert(result, as.Date("1970-01-01"))
+        }
+    )
+    test$add_case(
+        "download scalar date 00d",
+        function(conn){
+            result <- dbRun(conn, "00d")
+            test$assert(result, as.Date(NA))
+        }
+    )
 
     # month
-    result <- dbRun(conn,"1970.01M")
-    record <- assert(record,"download scalar month 1970.01M",result,as.Date("1970-01-01"))
-    result <- dbRun(conn,"00M")
-    record <- assert(record,"download scalar month 00m",result,as.Date(NA))
+    test$add_case(
+        "download scalar month 1970.01M",
+        function(conn){
+            result <- dbRun(conn, "1970.01M")
+            test$assert(result, as.Date("1970-01-01"))
+        }
+    )
+    test$add_case(
+        "download scalar month 00M",
+        function(conn){
+            result <- dbRun(conn, "00M")
+            test$assert(result, as.Date(NA))
+        }
+    )
 
     # time
-    result <- dbRun(conn,"13:30:10.008t")
-    record <- assert(record,"download scalar time 13:30:10.008t",result,as.POSIXct("1970-01-01 13:30:10.008",tz="UTC"))
-    result <- dbRun(conn,"00t")
-    record <- assert(record,"download scalar time 00t",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar time 13:30:10.008t",
+        function(conn){
+            result <- dbRun(conn, "13:30:10.008t")
+            test$assert(result, as.POSIXct("1970-01-01 13:30:10.008", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar time 00t",
+        function(conn){
+            result <- dbRun(conn, "00t")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # minute
-    result <- dbRun(conn,"13:30m")
-    record <- assert(record,"download scalar minute 13:30m",result,as.POSIXct("1970-01-01 13:30:00",tz="UTC"))
-    result <- dbRun(conn,"00m")
-    record <- assert(record,"download scalar minute 00m",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar minute 13:30m",
+        function(conn){
+            result <- dbRun(conn, "13:30m")
+            test$assert(result, as.POSIXct("1970-01-01 13:30:00", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar minute 00m",
+        function(conn){
+            result <- dbRun(conn, "00m")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
+
+    # minute
+    test$add_case(
+        "download scalar minute 13:30m",
+        function(conn){
+            result <- dbRun(conn, "13:30m")
+            test$assert(result, as.POSIXct("1970-01-01 13:30:00", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar minute 00m",
+        function(conn){
+            result <- dbRun(conn, "00m")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # second
-    result <- dbRun(conn,"13:30:10s")
-    record <- assert(record,"download scalar second 13:30:10s",result,as.POSIXct("1970-01-01 13:30:10",tz="UTC"))
-    result <- dbRun(conn,"00s")
-    record <- assert(record,"download scalar second 00s",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar second 13:30:10s",
+        function(conn){
+            result <- dbRun(conn, "13:30:10s")
+            test$assert(result, as.POSIXct("1970-01-01 13:30:10", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar second 00s",
+        function(conn){
+            result <- dbRun(conn, "00s")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # datetime
-    result <- dbRun(conn,"2012.06.13T13:30:10D")
-    record <- assert(record,"download scalar datetime 2012.06.13T13:30:10D",result,as.POSIXct("2012-06-13 13:30:10",tz="UTC"))
-    result <- dbRun(conn,"00D")
-    record <- assert(record,"download scalar datetime 00D",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar datetime 2012.06.13T13:30:10D",
+        function(conn){
+            result <- dbRun(conn, "2012.06.13T13:30:10D")
+            test$assert(result, as.POSIXct("2012-06-13 13:30:10", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar datetime 00D",
+        function(conn){
+            result <- dbRun(conn, "00D")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # timestamp
-    result <- dbRun(conn,"2012.06.13T13:30:10.008T")
-    record <- assert(record,"download scalar timestamp 2012.06.13T13:30:10.008T",result,as.POSIXct("2012-06-13 13:30:10.008",tz="UTC"))
-    result <- dbRun(conn,"00T")
-    record <- assert(record,"download scalar timestamp 00T",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar timestamp 2012.06.13T13:30:10.008T",
+        function(conn){
+            result <- dbRun(conn, "2012.06.13T13:30:10.008T")
+            test$assert(result, as.POSIXct("2012-06-13 13:30:10.008", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar timestamp 00T",
+        function(conn){
+            result <- dbRun(conn, "00T")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # nanotime
-    result <- dbRun(conn,"13:30:10.008007006n")
-    record <- assert(record,"download scalar nanotime 13:30:10.008007006n",result,as.POSIXct("1970-01-01 13:30:10.008007006",tz="UTC"))
-    result <- dbRun(conn,"00n")
-    record <- assert(record,"download scalar nanotime 00n",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar nanotime 13:30:10.008007006n",
+        function(conn){
+            result <- dbRun(conn, "13:30:10.008007006n")
+            test$assert(result, as.POSIXct("1970-01-01 13:30:10.008007006", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar nanotime 00n",
+        function(conn){
+            result <- dbRun(conn, "00n")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # nanotimestamp
-    result <- dbRun(conn,"2012.06.13T13:30:10.008007006N")
-    record <- assert(record,"download scalar nanotimestamp 2012.06.13T13:30:10.008007006N",result,as.POSIXct("2012-06-13 13:30:10.008007006",tz="UTC"))
-    result <- dbRun(conn,"00N")
-    record <- assert(record,"download scalar nanotimestamp 00N",result,as.POSIXct(NA))
+    test$add_case(
+        "download scalar nanotimestamp 2012.06.13T13:30:10.008007006N",
+        function(conn){
+            result <- dbRun(conn, "2012.06.13T13:30:10.008007006N")
+            test$assert(result, as.POSIXct("2012-06-13 13:30:10.008007006", tz = "UTC"))
+        }
+    )
+    test$add_case(
+        "download scalar nanotimestamp 00N",
+        function(conn){
+            result <- dbRun(conn, "00N")
+            test$assert(result, as.POSIXct(NA))
+        }
+    )
 
     # float
-    result <- dbRun(conn,"0.0f")
-    record <- assert(record,"download scalar float 0.0f",result,0)
-    result <- dbRun(conn,"float('nan')")
-    record <- assert(record,"download scalar float nan",result,NaN)
-    result <- dbRun(conn,"float('inf')")
-    record <- assert(record,"download scalar float inf",result,Inf)
-    result <- dbRun(conn,"00f")
-    record <- assert(record,"download scalar float 00f",result,NA_real_)
+    test$add_case(
+        "download scalar float 0.0f",
+        function(conn){
+            result <- dbRun(conn, "0.0f")
+            test$assert(result, 0)
+        }
+    )
+    test$add_case(
+        "download scalar float float('nan')",
+        function(conn){
+            result <- dbRun(conn, "float('nan')")
+            test$assert(result, NaN)
+        }
+    )
+    test$add_case(
+        "download pair float 0.0f:float('inf')",
+        function(conn){
+            result <- dbRun(conn, "0.0f:float('inf')")
+            test$assert(result, c(0, Inf))
+        }
+    )
+    test$add_case(
+        "download scalar float 00f",
+        function(conn){
+            result <- dbRun(conn, "00f")
+            test$assert(result, NA_real_)
+        }
+    )
 
     # double
-    result <- dbRun(conn,"0.0F")
-    record <- assert(record,"download scalar double 0.0f",result,0)
-    result <- dbRun(conn,"pi")
-    record <- assert(record,"download scalar double 0.0f",result,pi)
-    result <- dbRun(conn,"00F")
-    record <- assert(record,"download scalar double 00F",result,NA_real_)
+    test$add_case(
+        "download scalar double 0.0F",
+        function(conn){
+            result <- dbRun(conn, "0.0F")
+            test$assert(result, 0)
+        }
+    )
+    test$add_case(
+        "download scalar double pi",
+        function(conn){
+            result <- dbRun(conn, "pi")
+            test$assert(result, pi)
+        }
+    )
+    test$add_case(
+        "download scalar double 00F",
+        function(conn){
+            result <- dbRun(conn, "00F")
+            test$assert(result, NA_real_)
+        }
+    )
 
     # string
-    result <- dbRun(conn,"'abc!@#中文 123'")
-    record <- assert(record,"download scalar string 'abc!@#中文 123'",result,"abc!@#中文 123")
-    result <- dbRun(conn,"\"\"")
-    record <- assert(record,"download scalar string \"\"",result,NA_character_)
-
-    printTestResult(record)
-    conn <- dbClose(conn)
-} else {
-    stop("connect error in TestDownloadScalar.R")
+    test$add_case(
+        "download scalar string 'abc!@#中文 123'",
+        function(conn){
+            result <- dbRun(conn, "'abc!@#中文 123'")
+            test$assert(result, "abc!@#中文 123")
+        }
+    )
+    test$add_case(
+        "download scalar string \"\"",
+        function(conn){
+            result <- dbRun(conn, "\"\"")
+            test$assert(result, NA_character_)
+        }
+    )
 }

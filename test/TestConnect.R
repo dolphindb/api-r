@@ -1,25 +1,43 @@
-source("setup/Settings.R")
-source("pub/Assert.R")
+if (!exists("TESTCONNECT_R__", envir = .GlobalEnv)){
+    TESTCONNECT_R__ <- NULL
+    source("pub/Test.R")
 
-library(RDolphinDB)
+    library(RDolphinDB)
 
-record <- c(0L,0L)
-# host error
-conn <- dbConnect(DolphinDB(),"192.1.1.1",PORT)
-record <- assert(record,"connect host error",conn@connected,FALSE)
+    # host error
+    test$add_case(
+        "host error",
+        function(conn){
+            .conn <- dbConnect(DolphinDB(), "192.1.1.1", PORT)
+            test$assert(.conn@connected, FALSE)
+        }
+    )
 
-# port error
-conn <- dbConnect(DolphinDB(),HOST,22)
-record <- assert(record,"connect port error",conn@connected,FALSE)
+    # port error
+    test$add_case(
+        "port error",
+        function(conn){
+            .conn <- dbConnect(DolphinDB(), HOST, 22)
+            test$assert(.conn@connected, FALSE)
+        }
+    )
 
-# user error
-conn <- dbConnect(DolphinDB(),HOST,PORT,"dolphindb",PASSWD)
-record <- assert(record,"connect user error",conn@connected,TRUE)
-conn <- dbClose(conn)
+    # user error
+    test$add_case(
+        "user error",
+        function(conn){
+            .conn <- dbConnect(DolphinDB(), HOST, PORT, "dolphindb", PASSWD)
 
-# password error
-conn <- dbConnect(DolphinDB(),HOST,PORT,USER,"000000")
-record <- assert(record,"connect password error",conn@connected,TRUE)
-conn <- dbClose(conn)
+            test$assert(.conn@connected, TRUE)
+        }
+    )
 
-printTestResult(record)
+    # password error
+    test$add_case(
+        "password error",
+        function(conn){
+            .conn <- dbConnect(DolphinDB(), HOST, PORT, USER, "111111")
+            test$assert(.conn@connected, TRUE)
+        }
+    )
+}

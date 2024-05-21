@@ -166,6 +166,43 @@ void UploadMatrixDouble(NumericMatrix R_mtx, IntegerVector R_NAIndex)
 }
 
 //[[Rcpp::export]]
+void UploadVectorSymbol(IntegerVector R_vec)
+{
+    std::vector<std::string> symbolBase;
+    std::vector<int>         index;
+
+    CharacterVector level = R_vec.attr("levels");
+    LogicalVector isNaVec = is_na(level);
+    int naIndex           = INT_MAX;
+
+    //dolphindb中空值固定在首位，需要找到R中的空值位置并跳过
+    symbolBase.push_back("");
+    for(int i = 0; i < level.size(); ++i){
+        if(isNaVec[i]){
+            naIndex = i == INT_MAX ? i : i + 1;
+        }
+        else{
+            symbolBase.push_back(std::string(level[i]));
+        }
+    }
+
+    index.reserve(R_vec.size());
+    for(int i = 0; i < R_vec.size(); ++i){
+        if(R_vec[i] == naIndex){
+            index.push_back(0);
+        }
+        else if(R_vec[i] > naIndex){
+            index.push_back(R_vec[i] - 1);
+        }
+        else{
+            index.push_back(R_vec[i]);
+        }
+    }
+
+    cnt.Rcpp_UploadSymbolVector(symbolBase, index);
+}
+
+//[[Rcpp::export]]
 void UploadVectorString(CharacterVector R_vec, IntegerVector R_NAIndex)
 {
     vector <string> vec = as <vector <string> > (R_vec);
@@ -345,6 +382,15 @@ LogicalVector ReturnVectorBool(int index = -1)
             )
         )
     );
+}
+
+//[[Rcpp::export]]
+IntegerVector ReturnVectorFactor(int index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(index)->
+                getVector()->
+                getVector();
+    return wrap(*((IntegerVector*)tmp));
 }
 
 //[[Rcpp::export]]
@@ -719,6 +765,16 @@ LogicalVector ReturnTableColumnLogical(int index, int entity_index = -1)
             getVector()
         )
     );
+}
+
+//[[Rcpp::export]]
+IntegerVector ReturnTableColumnFactor(int index, int entity_index = -1)
+{
+    void* tmp = cnt.Rcpp_GetEntity(entity_index)->
+                getTable()->
+                getTableClm(index-1)->
+                getVector();
+    return wrap(*((IntegerVector*)tmp));
 }
 
 //[[Rcpp::export]]

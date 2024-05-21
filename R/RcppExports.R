@@ -69,6 +69,10 @@ UploadMatrixDouble <- function(R_mtx, R_NAIndex) {
     invisible(.Call('_RDolphinDB_UploadMatrixDouble', PACKAGE = 'RDolphinDB', R_mtx, R_NAIndex))
 }
 
+UploadVectorSymbol <- function(R_vec) {
+    invisible(.Call('_RDolphinDB_UploadVectorSymbol', PACKAGE = 'RDolphinDB', R_vec))
+}
+
 UploadVectorString <- function(R_vec, R_NAIndex) {
     invisible(.Call('_RDolphinDB_UploadVectorString', PACKAGE = 'RDolphinDB', R_vec, R_NAIndex))
 }
@@ -151,6 +155,10 @@ ReturnScalarDate <- function(index = -1L) {
 
 ReturnVectorBool <- function(index = -1L) {
     .Call('_RDolphinDB_ReturnVectorBool', PACKAGE = 'RDolphinDB', index)
+}
+
+ReturnVectorFactor <- function(index = -1L) {
+    .Call('_RDolphinDB_ReturnVectorFactor', PACKAGE = 'RDolphinDB', index)
 }
 
 ReturnVectorInt <- function(index = -1L) {
@@ -239,6 +247,10 @@ ReturnEmptyDataFrame <- function(index = -1L) {
 
 ReturnTableColumnLogical <- function(index, entity_index = -1L) {
     .Call('_RDolphinDB_ReturnTableColumnLogical', PACKAGE = 'RDolphinDB', index, entity_index)
+}
+
+ReturnTableColumnFactor <- function(index, entity_index = -1L) {
+    .Call('_RDolphinDB_ReturnTableColumnFactor', PACKAGE = 'RDolphinDB', index, entity_index)
 }
 
 ReturnTableColumnInteger <- function(index, entity_index = -1L) {

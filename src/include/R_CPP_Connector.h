@@ -120,6 +120,7 @@ public:
     void Rcpp_UploadEntity(vector <bool>& mtx, vector <int>& NAIndex, int row, int clm);
     void Rcpp_UploadEntity(vector <int>& mtx, vector <int>& NAIndex, int row, int clm);
     void Rcpp_UploadEntity(vector <double>& mtx, vector <int>& NAIndex, int row, int clm);
+    void Rcpp_UploadSymbolVector(const std::vector<std::string>& symbolBase, const std::vector<int>& index);
 };
 
 void Rcpp_Connector::Rcpp_UploadDateVector(vector <double>& vec, vector <int>& NAIndex)
@@ -336,6 +337,28 @@ void Rcpp_Connector::Rcpp_UploadMatrixBasic(int type)
     Buffer buffer;
     buffer.write((short) flag);
     
+    size_t actual = 0;
+    socket->write(buffer.getBuffer(), buffer.size(), actual);
+}
+
+void Rcpp_Connector::Rcpp_UploadSymbolVector(const std::vector<std::string>& symbolBase, const std::vector<int>& index){
+    Buffer buffer;
+    int flag = (DATA_FORM::DF_VECTOR << 8) + DATA_TYPE::DT_SYMBOL + 128;
+    buffer.write((short) flag);
+    buffer.write((int) index.size());
+    buffer.write((int) 1);
+
+    //write symbol Base
+    buffer.write((int) 0);  //symbolBaseID
+    buffer.write((int) symbolBase.size());  //symbolBaseSize
+    for(const auto& base : symbolBase){
+        buffer.write(base);
+    }
+    //write index
+    for (auto ind : index)
+    {
+        buffer.write(ind);
+    }
     size_t actual = 0;
     socket->write(buffer.getBuffer(), buffer.size(), actual);
 }

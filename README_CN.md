@@ -109,3 +109,4 @@ help("dbClose")
 |FLOAT|2.1f|Numeric|2.1|
 |DOUBLE|2.1|Numeric|2.1|
 |STRING|"123"|Character|"123"|
+|SYMBOL|"123"|Factor|"123"|
